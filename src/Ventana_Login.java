@@ -68,6 +68,8 @@ System.out.println("falla 2");
         switch(usuarioLogin.gettipo()){
             case 1:
                 marco.vadministrador.tablaUser();
+                marco.vadministrador.tablaPC();
+                marco.vadministrador.tablaRuta();
                 marco.vadministrador.show();
                 
                 break;

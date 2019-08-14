@@ -3,12 +3,20 @@ import java.sql.ResultSet;
 import javax.swing.table.DefaultTableModel;
 
 public class Ventana_Admin extends javax.swing.JInternalFrame {
-
+    
     String usuarios="SELECT * FROM usuario";
+    String punto = "SELECT * FROM punto_de_control";
+    String rutaS = "SELECT * FROM ruta";
     Marco marco;
     Ventana_Nuevo_Usuario vnuevoUsuario = new Ventana_Nuevo_Usuario(this);
     Editar_Usuario editarUsuario = new Editar_Usuario(this);
     Ventana_Eliminar_Usuario vEliminar = new Ventana_Eliminar_Usuario(this);
+    Ventana_NuevoPC vNuevoPC = new Ventana_NuevoPC(this);
+    Ventana_EditarPC vEditarPC =  new Ventana_EditarPC(this);
+    Ventana_EliminarPC vEliminarPC = new Ventana_EliminarPC(this);
+    
+    
+    
     
     public Ventana_Admin(Marco marco) {
         initComponents();
@@ -43,6 +51,78 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         } catch (Exception e) {    
         }
     }
+    
+    public void tablaPC(){
+        DefaultTableModel modelo1 = new DefaultTableModel();
+        
+        modelo1.addColumn("ID");
+        modelo1.addColumn("Nombre");
+        modelo1.addColumn("Estado");
+        modelo1.addColumn("Tarifa");
+        modelo1.addColumn("Capacidad");
+        modelo1.addColumn("Operador Asignado");
+        modelo1.addColumn("Ruta");
+        modelo1.addColumn("PC Siguiente");
+
+        tablaPC.setModel(modelo1);
+        String datos[]= new String[8];
+        try {
+            marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
+            marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(punto);
+            
+            while (marco.vLogin.conect.res.next()) {                
+                //System.out.println(marco.vLogin.conect.res.getString(1));
+                datos[0]=marco.vLogin.conect.res.getString(1);
+                datos[1]=marco.vLogin.conect.res.getString(2);
+                datos[2]=marco.vLogin.conect.res.getString(3);
+                datos[3]=marco.vLogin.conect.res.getString(4);
+                datos[4]=marco.vLogin.conect.res.getString(5);
+                datos[5]=marco.vLogin.conect.res.getString(6);
+                datos[6]=marco.vLogin.conect.res.getString(7);
+                datos[7]=marco.vLogin.conect.res.getString(8);
+                modelo1.addRow(datos);      
+            }  
+        } catch (Exception e) {    
+        }
+    }
+    
+    public void tablaRuta(){
+        DefaultTableModel modelo1 = new DefaultTableModel();
+        
+        modelo1.addColumn("ID");
+        modelo1.addColumn("Inicio");
+        modelo1.addColumn("Destino");
+        modelo1.addColumn("Estado");
+        modelo1.addColumn("Cuota");
+        modelo1.addColumn("Ingresos");
+        modelo1.addColumn("Costos");
+        modelo1.addColumn("Ganancias");
+        modelo1.addColumn("Entregas");
+        modelo1.addColumn("En Camino");
+
+        tablaRutas.setModel(modelo1);
+        String datos[]= new String[10];
+        try {
+            marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
+            marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(rutaS);
+            
+            while (marco.vLogin.conect.res.next()) {                
+                //System.out.println(marco.vLogin.conect.res.getString(1));
+                datos[0]=marco.vLogin.conect.res.getString(1);
+                datos[1]=marco.vLogin.conect.res.getString(2);
+                datos[2]=marco.vLogin.conect.res.getString(3);
+                datos[3]=marco.vLogin.conect.res.getString(4);
+                datos[4]=marco.vLogin.conect.res.getString(5);
+                datos[5]=marco.vLogin.conect.res.getString(6);
+                datos[6]=marco.vLogin.conect.res.getString(7);
+                datos[7]=marco.vLogin.conect.res.getString(8);
+                datos[8]=marco.vLogin.conect.res.getString(9);
+                datos[9]=marco.vLogin.conect.res.getString(10);
+                modelo1.addRow(datos);      
+            }  
+        } catch (Exception e) {    
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -56,12 +136,16 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         tablaUsusarios = new javax.swing.JTable();
         jButton9 = new javax.swing.JButton();
         Panel_Rutas = new javax.swing.JPanel();
+        scrollTRutas = new javax.swing.JScrollPane();
+        tablaRutas = new javax.swing.JTable();
+        scrollTPc = new javax.swing.JScrollPane();
+        tablaPCRutas = new javax.swing.JTable();
         Panel_Puntos = new javax.swing.JPanel();
         botonNuevoPC = new javax.swing.JButton();
         botonEditarPC = new javax.swing.JButton();
         botonEliminarPC = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaPC = new javax.swing.JTable();
 
         setIconifiable(true);
         setRequestFocusEnabled(false);
@@ -104,7 +188,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             Panel_UsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_UsuariosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 887, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(Panel_UsuariosLayout.createSequentialGroup()
                 .addGap(32, 32, 32)
@@ -123,33 +207,14 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                     .addComponent(botonNuevoUsusario, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Usuarios", Panel_Usuarios);
 
-        javax.swing.GroupLayout Panel_RutasLayout = new javax.swing.GroupLayout(Panel_Rutas);
-        Panel_Rutas.setLayout(Panel_RutasLayout);
-        Panel_RutasLayout.setHorizontalGroup(
-            Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 888, Short.MAX_VALUE)
-        );
-        Panel_RutasLayout.setVerticalGroup(
-            Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 644, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Rutas", Panel_Rutas);
-
-        botonNuevoPC.setText("Nuevo Punto de Control");
-
-        botonEditarPC.setText("Editar Punto de Control");
-
-        botonEliminarPC.setText("Eliminar Punto de Control");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaRutas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -157,7 +222,71 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
 
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        scrollTRutas.setViewportView(tablaRutas);
+
+        tablaPCRutas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        scrollTPc.setViewportView(tablaPCRutas);
+
+        javax.swing.GroupLayout Panel_RutasLayout = new javax.swing.GroupLayout(Panel_Rutas);
+        Panel_Rutas.setLayout(Panel_RutasLayout);
+        Panel_RutasLayout.setHorizontalGroup(
+            Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel_RutasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrollTRutas, javax.swing.GroupLayout.PREFERRED_SIZE, 641, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollTPc, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        Panel_RutasLayout.setVerticalGroup(
+            Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_RutasLayout.createSequentialGroup()
+                .addContainerGap(193, Short.MAX_VALUE)
+                .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(scrollTRutas, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+                    .addComponent(scrollTPc))
+                .addGap(34, 34, 34))
+        );
+
+        jTabbedPane1.addTab("Rutas", Panel_Rutas);
+
+        botonNuevoPC.setText("Nuevo Punto de Control");
+        botonNuevoPC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonNuevoPCMouseClicked(evt);
+            }
+        });
+
+        botonEditarPC.setText("Editar Punto de Control");
+        botonEditarPC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonEditarPCMouseClicked(evt);
+            }
+        });
+
+        botonEliminarPC.setText("Eliminar Punto de Control");
+        botonEliminarPC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonEliminarPCMouseClicked(evt);
+            }
+        });
+
+        tablaPC.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(tablaPC);
 
         javax.swing.GroupLayout Panel_PuntosLayout = new javax.swing.GroupLayout(Panel_Puntos);
         Panel_Puntos.setLayout(Panel_PuntosLayout);
@@ -170,7 +299,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 .addComponent(botonEditarPC, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(83, 83, 83)
                 .addComponent(botonEliminarPC, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(112, Short.MAX_VALUE))
             .addGroup(Panel_PuntosLayout.createSequentialGroup()
                 .addComponent(jScrollPane2)
                 .addContainerGap())
@@ -184,13 +313,13 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                     .addComponent(botonEditarPC, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonEliminarPC, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Puntos de Control", Panel_Puntos);
 
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 660));
         jTabbedPane1.getAccessibleContext().setAccessibleDescription("");
 
         pack();
@@ -216,6 +345,27 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         editarUsuario.tablaUser();
     }//GEN-LAST:event_jButton9MouseClicked
 
+    private void botonNuevoPCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonNuevoPCMouseClicked
+        // TODO add your handling code here:
+        marco.PanelEscritorio.add(vNuevoPC);
+        vNuevoPC.show();
+        
+    }//GEN-LAST:event_botonNuevoPCMouseClicked
+
+    private void botonEditarPCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEditarPCMouseClicked
+        // TODO add your handling code here:
+        marco.PanelEscritorio.add(vEditarPC);
+        vEditarPC.show();
+        vEditarPC.tablaPc();
+    }//GEN-LAST:event_botonEditarPCMouseClicked
+
+    private void botonEliminarPCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarPCMouseClicked
+        // TODO add your handling code here:
+        marco.PanelEscritorio.add(vEliminarPC);
+        vEliminarPC.show();
+        vEliminarPC.tablaPc();
+    }//GEN-LAST:event_botonEliminarPCMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel_Puntos;
@@ -230,7 +380,11 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane scrollTPc;
+    private javax.swing.JScrollPane scrollTRutas;
+    private javax.swing.JTable tablaPC;
+    private javax.swing.JTable tablaPCRutas;
+    private javax.swing.JTable tablaRutas;
     private javax.swing.JTable tablaUsusarios;
     // End of variables declaration//GEN-END:variables
 }

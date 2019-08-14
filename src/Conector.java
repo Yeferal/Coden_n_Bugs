@@ -95,23 +95,23 @@ System.out.println("falla 2");
         }
     }
 
-    public void insertarPC(Usuario use) throws SQLException{
+    public void insertarPC(Punto_de_Control pc) throws SQLException{
         
-        insercion = conexion.prepareStatement("INSERT INTO punto_de_control (nombre_pc,tarifa,capacidad,operador_asignado) VALUES ('"+use.getNombre()+"','"+use.getCodigo()+"',"+use.gettipo()+",'"+use.getPassword()+"');");
+        insercion = conexion.prepareStatement("INSERT INTO punto_de_control (nombre_pc,tarifa,capacidad,operador_asignado) VALUES ('"+pc.getNombre()+"','"+pc.getTarifa()+"',"+pc.getCapacidad()+",'"+pc.getOperadorAsig()+"');");
 
         insercion.executeUpdate();
     }
     
     public void editarPC(int id, String Nombre, double tarifa, int capacidad, int operador_Asig) throws SQLException{
         
-        insercion = conexion.prepareStatement("UPDATE punto_de_control SET nombre_pc='"+Nombre+"', tarifa='"+tarifa+"', capacidad="+capacidad+",operador_asignado='"+operador_Asig+"' WHERE id_usuario="+id);
+        insercion = conexion.prepareStatement("UPDATE punto_de_control SET nombre_pc='"+Nombre+"', tarifa='"+tarifa+"', capacidad="+capacidad+",operador_asignado='"+operador_Asig+"' WHERE id_pc="+id);
         insercion.executeUpdate();
         
     }
     
     public void eliminarPC(int id){
         try {
-            insercion = conexion.prepareStatement("DELETE FROM punto_de_control WHERE id_usuario="+id);
+            insercion = conexion.prepareStatement("DELETE FROM punto_de_control WHERE id_pc="+id);
             insercion.executeUpdate();
         } catch (SQLException ex) {
             //Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);

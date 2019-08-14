@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+  <Properties>
+    <Property name="closable" type="boolean" value="true"/>
+    <Property name="iconifiable" type="boolean" value="true"/>
+  </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
@@ -104,7 +108,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="textoUsuerAsign">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Operador Asignado"/>
+            <Property name="text" type="java.lang.String" value="Operador Asignado (ID):"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="cajaNombre">

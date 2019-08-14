@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+  <Properties>
+    <Property name="closable" type="boolean" value="true"/>
+    <Property name="iconifiable" type="boolean" value="true"/>
+  </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
@@ -66,11 +70,14 @@
                   </Group>
                   <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="labelDescripcion" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="cajaNombre" alignment="0" max="32767" attributes="0"/>
                       <Component id="cajaTrifa" alignment="0" pref="315" max="32767" attributes="0"/>
                       <Component id="cajauserasig" alignment="0" max="32767" attributes="0"/>
                       <Component id="cajaCapacidad" alignment="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                          <Component id="labelDescripcion" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace pref="129" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -83,9 +90,7 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="botonModificar" min="-2" pref="101" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="botonUCrear" min="-2" pref="82" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -129,12 +134,11 @@
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="cajauserasig" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                           <Component id="botonModificar" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="botonUCrear" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="labelDescripcion" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="17" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -169,16 +173,8 @@
         </Component>
         <Component class="javax.swing.JLabel" name="labelDescripcion">
           <Properties>
-            <Property name="text" type="java.lang.String" value="El operador asignado puede omitirlo no es Obligatorio"/>
+            <Property name="text" type="java.lang.String" value="Todos los campos son Obligatorio"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="botonUCrear">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Crear"/>
-          </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonUCrearMouseClicked"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="cajaCapacidad">
         </Component>

@@ -1,14 +1,89 @@
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
 public class Ventana_EditarPC extends javax.swing.JInternalFrame {
 
     Ventana_Admin vadmin;
     boolean seleccionado;
+    int tip;
     
     public Ventana_EditarPC(Ventana_Admin vadmin) {
         initComponents();
         this.vadmin=vadmin;
     }
 
+    public void enviar_Modificacion(){
+                int id;
+        String Nombre;
+        int capacidad;
+        int tipo = 0;
+        double tarifa;
+        int operadorAsi;
+        if(!cajaNombre.getText().equals("") && !cajaCapacidad.getText().equals("") && !cajaTrifa.getText().equals("") && !cajauserasig.getText().equals("")){
+            id=tip;
+            Nombre=cajaNombre.getText();
+            capacidad = Integer.parseInt(cajaCapacidad.getText());
+            tarifa= Double.parseDouble(cajaTrifa.getText());
+            operadorAsi= Integer.parseInt(cajauserasig.getText());
+            //comboUTipo.getSelectedItem().toString()
+                    try {
+                        vadmin.marco.vLogin.conect.editarPC(id, Nombre, tarifa, capacidad, operadorAsi);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Ventana_EditarPC.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            tablaPc();
+            limpiar();
+            seleccionado=false;
+            vadmin.tablaPC();
+            JOptionPane.showMessageDialog(null, "Se actualizo el Punto de Control");
+        }else{
+            
+            JOptionPane.showMessageDialog(null, "No se encuentran todos los campos llenos");
+        }
+    }
+    
+    public void tablaPc(){
+        DefaultTableModel modelo1 = new DefaultTableModel();
+        
+        modelo1.addColumn("ID");
+        modelo1.addColumn("Nombre");
+        modelo1.addColumn("Tarifa");
+        modelo1.addColumn("Capacidad");
+        modelo1.addColumn("Operador Asignado");
+
+        tablaPC.setModel(modelo1);
+        String datos[]= new String[5];
+        try {
+            vadmin.marco.vLogin.conect.stmt = vadmin.marco.vLogin.conect.conexion.createStatement();
+            vadmin.marco.vLogin.conect.res = vadmin.marco.vLogin.conect.stmt.executeQuery(vadmin.punto);
+            
+            while (vadmin.marco.vLogin.conect.res.next()) {                
+                //System.out.println(marco.vLogin.conect.res.getString(1));
+                datos[0]=vadmin.marco.vLogin.conect.res.getString(1);
+                datos[1]=vadmin.marco.vLogin.conect.res.getString(2);
+                datos[2]=vadmin.marco.vLogin.conect.res.getString(4);
+                datos[3]=vadmin.marco.vLogin.conect.res.getString(5);
+                datos[4]=vadmin.marco.vLogin.conect.res.getString(6);
+
+                modelo1.addRow(datos);      
+            }  
+        } catch (Exception e) {    
+        }
+    }
+    private void limpiar(){
+        cajaNombre.setText("");
+        cajaCapacidad.setText("");
+        cajaTrifa.setText("");
+        cajauserasig.setText("");
+        texto_Id.setText("");
+    }
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -24,13 +99,14 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
         cajaTrifa = new javax.swing.JTextField();
         cajauserasig = new javax.swing.JTextField();
         labelDescripcion = new javax.swing.JLabel();
-        botonUCrear = new javax.swing.JButton();
         cajaCapacidad = new javax.swing.JTextField();
         textoID = new javax.swing.JLabel();
         texto_Id = new javax.swing.JLabel();
         botonModificar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
+        setClosable(true);
+        setIconifiable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tablaPC.setModel(new javax.swing.table.DefaultTableModel(
@@ -59,14 +135,7 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
 
         textoUsuerAsign.setText("Operador Asignado");
 
-        labelDescripcion.setText("El operador asignado puede omitirlo no es Obligatorio");
-
-        botonUCrear.setText("Crear");
-        botonUCrear.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                botonUCrearMouseClicked(evt);
-            }
-        });
+        labelDescripcion.setText("Todos los campos son Obligatorio");
 
         textoID.setText("ID Usuario");
 
@@ -92,11 +161,13 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
                     .addComponent(textoTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addGroup(panelNuevoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(labelDescripcion)
                     .addComponent(cajaNombre)
                     .addComponent(cajaTrifa, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
                     .addComponent(cajauserasig)
-                    .addComponent(cajaCapacidad))
+                    .addComponent(cajaCapacidad)
+                    .addGroup(panelNuevoUsuarioLayout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(labelDescripcion)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
                 .addGroup(panelNuevoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelNuevoUsuarioLayout.createSequentialGroup()
@@ -106,9 +177,7 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
                         .addGap(140, 140, 140))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelNuevoUsuarioLayout.createSequentialGroup()
                         .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(botonUCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21))))
+                        .addGap(115, 115, 115))))
             .addGroup(panelNuevoUsuarioLayout.createSequentialGroup()
                 .addGap(274, 274, 274)
                 .addComponent(jLabel1)
@@ -140,11 +209,10 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
                     .addComponent(textoUsuerAsign, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelNuevoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cajauserasig, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(botonModificar)
-                        .addComponent(botonUCrear)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botonModificar)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelDescripcion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1))
         );
 
@@ -157,43 +225,18 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
         seleccionado = true;
         int fila=tablaPC.getSelectedRow();
 
-        cajaUNombre.setText( tablaPC.getValueAt(fila, 1).toString());
-        cajaUCodigo.setText( tablaPC.getValueAt(fila, 2).toString());
-        //cajaUNombre.setText((String) tablaUsuarios.getValueAt(fila, 3).toString());
-        cajaUContrasenia.setText(tablaPC.getValueAt(fila, 4).toString());
+        cajaNombre.setText( tablaPC.getValueAt(fila, 1).toString());
+        cajaTrifa.setText( tablaPC.getValueAt(fila, 2).toString());
+        cajauserasig.setText(tablaPC.getValueAt(fila, 4).toString());
+        cajaCapacidad.setText(tablaPC.getValueAt(fila, 3).toString());
         texto_Id.setText(tablaPC.getValueAt(fila, 0).toString());
-        switch (tablaPC.getValueAt(fila, 3).toString()) {
-            case "1":
-            comboUTipo.setSelectedIndex(0);
-            break;
-            case "2":
-            comboUTipo.setSelectedIndex(1);
-            break;
-            case "3":
-            comboUTipo.setSelectedIndex(2);
-            break;
-            case "0":
-            comboUTipo.setSelectedIndex(3);
-            break;
-            default:
-
-            break;
-        }
-        tip=  Integer.parseInt((String) tablaPC.getValueAt(fila, 0));
+        tip=  Integer.parseInt( tablaPC.getValueAt(fila, 0).toString());
     }//GEN-LAST:event_tablaPCMouseClicked
-
-    private void botonUCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonUCrearMouseClicked
-
-    }//GEN-LAST:event_botonUCrearMouseClicked
 
     private void botonModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonModificarMouseClicked
 
         if(seleccionado){
-            try {
-                enviar_Modificacion();
-            } catch (SQLException ex) {
-                //Logger.getLogger(Editar_Usuario.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            enviar_Modificacion();
         }
 
     }//GEN-LAST:event_botonModificarMouseClicked
@@ -201,7 +244,6 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonModificar;
-    private javax.swing.JButton botonUCrear;
     private javax.swing.JTextField cajaCapacidad;
     private javax.swing.JTextField cajaNombre;
     private javax.swing.JTextField cajaTrifa;

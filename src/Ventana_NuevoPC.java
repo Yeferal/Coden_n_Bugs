@@ -1,12 +1,41 @@
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
+
 public class Ventana_NuevoPC extends javax.swing.JInternalFrame {
 
     Ventana_Admin vadmin;
     boolean seleccionado;
     
+    
     public Ventana_NuevoPC(Ventana_Admin vadmin) {
         initComponents();
         this.vadmin=vadmin;
+    }
+    
+    public boolean verifiacardatos(String cad1, String cad2, String cad3){
+        int num1, num2, num3;
+        
+        try {
+            num1=Integer.parseInt(cad1);
+            num2=Integer.parseInt(cad2);
+            num3=Integer.parseInt(cad3);
+            
+            return true;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Los datos no son lo correctos");
+            return false;
+        }
+        
+    }
+    public void limpiar(){
+        cajaNombre.setText("");
+        cajaCapacidad.setText("");
+        cajaTrifa.setText("");
+        cajauserasig.setText("");
     }
 
     
@@ -26,6 +55,8 @@ public class Ventana_NuevoPC extends javax.swing.JInternalFrame {
         botonUCrear = new javax.swing.JButton();
         cajaCapacidad = new javax.swing.JTextField();
 
+        setClosable(true);
+        setIconifiable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textoNombre.setText("Nombre:");
@@ -34,7 +65,7 @@ public class Ventana_NuevoPC extends javax.swing.JInternalFrame {
 
         textoTarifa.setText("Tarifa:");
 
-        textoUsuerAsign.setText("Operador Asignado");
+        textoUsuerAsign.setText("Operador Asignado (ID):");
 
         jLabel1.setText("El operador asignado puede omitirlo no es Obligatorio");
 
@@ -100,6 +131,20 @@ public class Ventana_NuevoPC extends javax.swing.JInternalFrame {
 
     private void botonUCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonUCrearMouseClicked
         
+        if((verifiacardatos(cajaCapacidad.getText(), cajaTrifa.getText(), cajauserasig.getText())) && !cajaNombre.getText().equals("")){
+            Punto_de_Control tmpPc = new Punto_de_Control();
+            tmpPc.setDatos(cajaNombre.getText(), Double.parseDouble(cajaTrifa.getText()), Integer.parseInt(cajaCapacidad.getText()), Integer.parseInt(cajauserasig.getText()));
+            try {
+                vadmin.marco.vLogin.conect.insertarPC(tmpPc);
+            } catch (SQLException ex) {
+                Logger.getLogger(Ventana_NuevoPC.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            JOptionPane.showMessageDialog(null, "Se creo el Punto de Control correctamente");
+            limpiar();
+            vadmin.tablaPC();
+        }else{
+            
+        }
         
     }//GEN-LAST:event_botonUCrearMouseClicked
 
