@@ -116,5 +116,21 @@ System.out.println("falla 2");
         } catch (SQLException ex) {
             //Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }
+
+    public void insertarRuta(String inicio, String destino, double  cuota) throws SQLException{
+        
+        insercion = conexion.prepareStatement("INSERT INTO ruta (inicio,destino,estado_ruta,cuota_destino) VALUES ('"+inicio+"','"+destino+"',"+0+","+cuota+");");
+
+        insercion.executeUpdate();
+    }
+    
+    public void eliminarRuta(int id){
+        try {
+            insercion = conexion.prepareStatement("DELETE FROM ruta WHERE id_ruta="+id);
+            insercion.executeUpdate();
+        } catch (SQLException ex) {
+            //Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

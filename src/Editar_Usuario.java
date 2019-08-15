@@ -48,7 +48,19 @@ public class Editar_Usuario extends javax.swing.JInternalFrame {
                 datos[0]=vadmin.marco.vLogin.conect.res.getString(1);
                 datos[1]=vadmin.marco.vLogin.conect.res.getString(2);
                 datos[2]=vadmin.marco.vLogin.conect.res.getString(3);
-                datos[3]=vadmin.marco.vLogin.conect.res.getString(4);
+                switch(vadmin.marco.vLogin.conect.res.getString(4)){
+                    case "1":
+                         datos[3] = "Administrador";
+                         break;
+                    case "2":
+                        datos[3] = "Operador";
+                        break;
+                    case "3":
+                        datos[3] = "Recepcionista";
+                        break;
+                        default:
+                            datos[3] = "Desactivado";
+                }
                 datos[4]=vadmin.marco.vLogin.conect.res.getString(5);
                 modelo1.addRow(datos);
                 

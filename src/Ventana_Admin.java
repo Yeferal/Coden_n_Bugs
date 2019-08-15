@@ -1,5 +1,6 @@
 
 import java.sql.ResultSet;
+
 import javax.swing.table.DefaultTableModel;
 
 public class Ventana_Admin extends javax.swing.JInternalFrame {
@@ -14,8 +15,8 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     Ventana_NuevoPC vNuevoPC = new Ventana_NuevoPC(this);
     Ventana_EditarPC vEditarPC =  new Ventana_EditarPC(this);
     Ventana_EliminarPC vEliminarPC = new Ventana_EliminarPC(this);
-    
-    
+    Ventana_Nueva_Ruta vNuevaRuta = new Ventana_Nueva_Ruta(this);
+    Ventana_Eliminar_Ruta vEliminarRuta = new Ventana_Eliminar_Ruta(this);
     
     
     public Ventana_Admin(Marco marco) {
@@ -41,11 +42,25 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             
             while (marco.vLogin.conect.res.next()) {                
                 //System.out.println(marco.vLogin.conect.res.getString(1));
-                datos[0]=marco.vLogin.conect.res.getString(1);
-                datos[1]=marco.vLogin.conect.res.getString(2);
-                datos[2]=marco.vLogin.conect.res.getString(3);
-                datos[3]=marco.vLogin.conect.res.getString(4);
-                datos[4]=marco.vLogin.conect.res.getString(5);
+                datos[0] = marco.vLogin.conect.res.getString(1);
+                datos[1] = marco.vLogin.conect.res.getString(2);
+                datos[2] = marco.vLogin.conect.res.getString(3);
+                
+                //datos[3] = marco.vLogin.conect.res.getString(4);
+                switch(marco.vLogin.conect.res.getString(4)){
+                    case "1":
+                         datos[3] = "Administrador";
+                         break;
+                    case "2":
+                        datos[3] = "Operador";
+                        break;
+                    case "3":
+                        datos[3] = "Recepcionista";
+                        break;
+                        default:
+                            datos[3] = "Desactivado";
+                }
+                datos[4] = marco.vLogin.conect.res.getString(5);
                 modelo1.addRow(datos);      
             }  
         } catch (Exception e) {    
@@ -111,13 +126,49 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 datos[0]=marco.vLogin.conect.res.getString(1);
                 datos[1]=marco.vLogin.conect.res.getString(2);
                 datos[2]=marco.vLogin.conect.res.getString(3);
-                datos[3]=marco.vLogin.conect.res.getString(4);
+                
+                //datos[3]=marco.vLogin.conect.res.getString(4);
+                if(marco.vLogin.conect.res.getString(4).equals("1")){
+                    datos[3]="Activo";
+                }else{
+                    datos[3]="Desactivado";
+                }
+                
                 datos[4]=marco.vLogin.conect.res.getString(5);
                 datos[5]=marco.vLogin.conect.res.getString(6);
                 datos[6]=marco.vLogin.conect.res.getString(7);
                 datos[7]=marco.vLogin.conect.res.getString(8);
                 datos[8]=marco.vLogin.conect.res.getString(9);
                 datos[9]=marco.vLogin.conect.res.getString(10);
+                modelo1.addRow(datos);      
+            }  
+        } catch (Exception e) {    
+        }
+    }
+
+    public void tablaPCenRuta(){
+        DefaultTableModel modelo1 = new DefaultTableModel();
+        
+        modelo1.addColumn("Nombre");
+        modelo1.addColumn("Capacidad");
+        modelo1.addColumn("PC Siguiente");
+
+        tablaPC.setModel(modelo1);
+        String datos[]= new String[8];
+        try {
+            marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
+            marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(punto);
+            
+            while (marco.vLogin.conect.res.next()) {                
+                //System.out.println(marco.vLogin.conect.res.getString(1));
+                datos[0]=marco.vLogin.conect.res.getString(1);
+                datos[1]=marco.vLogin.conect.res.getString(2);
+                datos[2]=marco.vLogin.conect.res.getString(3);
+                datos[3]=marco.vLogin.conect.res.getString(4);
+                datos[4]=marco.vLogin.conect.res.getString(5);
+                datos[5]=marco.vLogin.conect.res.getString(6);
+                datos[6]=marco.vLogin.conect.res.getString(7);
+                datos[7]=marco.vLogin.conect.res.getString(8);
                 modelo1.addRow(datos);      
             }  
         } catch (Exception e) {    
@@ -140,6 +191,12 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         tablaRutas = new javax.swing.JTable();
         scrollTPc = new javax.swing.JScrollPane();
         tablaPCRutas = new javax.swing.JTable();
+        botonNuevaRuta = new javax.swing.JButton();
+        botonEditar = new javax.swing.JButton();
+        botonEliminarRuta = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        botonAsignatPC = new javax.swing.JButton();
+        botonquitatPC = new javax.swing.JButton();
         Panel_Puntos = new javax.swing.JPanel();
         botonNuevoPC = new javax.swing.JButton();
         botonEditarPC = new javax.swing.JButton();
@@ -234,21 +291,67 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         ));
         scrollTPc.setViewportView(tablaPCRutas);
 
+        botonNuevaRuta.setText("Nueva Ruta");
+        botonNuevaRuta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonNuevaRutaMouseClicked(evt);
+            }
+        });
+
+        botonEditar.setText("Editar Ruta");
+
+        botonEliminarRuta.setText("Eliminar Ruta");
+        botonEliminarRuta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonEliminarRutaMouseClicked(evt);
+            }
+        });
+
+        jButton4.setText("jButton4");
+
+        botonAsignatPC.setText("Asignar punto de control a Ruta");
+
+        botonquitatPC.setText("Quitar punto de control a Ruta");
+
         javax.swing.GroupLayout Panel_RutasLayout = new javax.swing.GroupLayout(Panel_Rutas);
         Panel_Rutas.setLayout(Panel_RutasLayout);
         Panel_RutasLayout.setHorizontalGroup(
             Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_RutasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrollTRutas, javax.swing.GroupLayout.PREFERRED_SIZE, 641, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Panel_RutasLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(scrollTRutas, javax.swing.GroupLayout.PREFERRED_SIZE, 641, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(Panel_RutasLayout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(botonNuevaRuta)
+                            .addComponent(botonEditar))
+                        .addGap(149, 149, 149)
+                        .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(botonAsignatPC)
+                            .addComponent(botonquitatPC))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollTPc, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonEliminarRuta)
+                    .addComponent(scrollTPc, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Panel_RutasLayout.setVerticalGroup(
             Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_RutasLayout.createSequentialGroup()
-                .addContainerGap(193, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
+                .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonNuevaRuta)
+                    .addComponent(botonEliminarRuta)
+                    .addComponent(botonAsignatPC))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonEditar)
+                    .addComponent(jButton4)
+                    .addComponent(botonquitatPC))
+                .addGap(47, 47, 47)
                 .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(scrollTRutas, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
                     .addComponent(scrollTPc))
@@ -366,15 +469,34 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         vEliminarPC.tablaPc();
     }//GEN-LAST:event_botonEliminarPCMouseClicked
 
+    private void botonNuevaRutaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonNuevaRutaMouseClicked
+        marco.PanelEscritorio.add(vNuevaRuta);
+        vNuevaRuta.show();
+        
+    }//GEN-LAST:event_botonNuevaRutaMouseClicked
+
+    private void botonEliminarRutaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarRutaMouseClicked
+        
+        marco.PanelEscritorio.add(vEliminarRuta);
+        vEliminarRuta.show();
+        vEliminarRuta.tablaRuta();
+    }//GEN-LAST:event_botonEliminarRutaMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel_Puntos;
     private javax.swing.JPanel Panel_Rutas;
     private javax.swing.JPanel Panel_Usuarios;
+    private javax.swing.JButton botonAsignatPC;
+    private javax.swing.JButton botonEditar;
     private javax.swing.JButton botonEditarPC;
     private javax.swing.JButton botonEliminarPC;
+    private javax.swing.JButton botonEliminarRuta;
+    private javax.swing.JButton botonNuevaRuta;
     private javax.swing.JButton botonNuevoPC;
     private javax.swing.JButton botonNuevoUsusario;
+    private javax.swing.JButton botonquitatPC;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JScrollPane jScrollPane1;
