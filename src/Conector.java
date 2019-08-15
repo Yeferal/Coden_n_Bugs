@@ -17,6 +17,7 @@ public class Conector {
     String password = "123-abc";
     String servidor = "jdbc:mysql://localhost:3306/codenbugs";
     boolean existe;
+    String punto = "SELECT * FROM punto_de_control";
     
     public Conector(){
         try {
@@ -132,5 +133,92 @@ System.out.println("falla 2");
         } catch (SQLException ex) {
             //Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public boolean buscarPcenRuta(int rutaID){
+         System.out.println("entro a esto");
+             //Statement stmt1;
+             //ResultSet res1;
+        try {
+            stmt = conexion.createStatement();
+            res = stmt.executeQuery(punto);
+            existe=false;
+            System.out.println("entro a esto 1");
+            while (res.next()) {
+                int nu=0;
+                if(res.getString(7)!=null){
+                    nu=Integer.parseInt(res.getString(7));
+                }
+                
+                if(nu==rutaID){
+                    System.out.println("entro a esto siiiii");
+                    existe=true;
+                    break;
+                }
+                System.out.println("entro a esto nooooo");
+                
+            }  
+        } catch (SQLException e) {
+            System.out.println("Fallo en el retorno de existente");
+            e.getMessage();
+            e.printStackTrace();
+        }
+        return existe;
+    }
+    
+    public int idRutaAnte(int idR){
+        int idP=0;
+        try {
+            stmt = conexion.createStatement();
+            res = stmt.executeQuery(punto);
+            
+            while (res.next()) {                
+                    int idPP=0;
+                if(res.getString(7)!=null){
+                    idPP=Integer.parseInt(res.getString(7));
+                }
+                    String idSig=res.getString(8);
+                if(idPP==idR && idSig==null){
+                    idP=Integer.parseInt(res.getString(1));
+                    break;
+                }
+
+            }  
+        } catch (SQLException e) { 
+            System.out.println("Fallo en retorno de id");
+            e.getMessage();
+            e.printStackTrace();
+        }
+        
+        
+        return idP;
+    }
+    
+    public void agregarPC(int idR, int idPc){
+        
+
+        if(buscarPcenRuta(idR)){
+            try {
+                int sig = idRutaAnte(idR);
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+idPc+" WHERE id_pc="+sig);
+                insercion.executeUpdate();
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET ruta="+idR+" WHERE id_pc="+idPc);
+                insercion.executeUpdate();
+            } catch (Exception ex) {
+                System.out.println("Fallo en existente");
+                ex.getMessage();
+                ex.printStackTrace();
+            }
+            
+        }else{
+            try {
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET ruta="+idR+" WHERE id_pc="+idPc);
+                insercion.executeUpdate();
+            } catch (Exception ex) {
+                System.out.println("Fallo en no existente");
+            ex.getMessage();
+            ex.printStackTrace();
+            }
+        }
+
     }
 }

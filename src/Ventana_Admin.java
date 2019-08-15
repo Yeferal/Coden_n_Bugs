@@ -1,5 +1,8 @@
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -17,7 +20,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     Ventana_EliminarPC vEliminarPC = new Ventana_EliminarPC(this);
     Ventana_Nueva_Ruta vNuevaRuta = new Ventana_Nueva_Ruta(this);
     Ventana_Eliminar_Ruta vEliminarRuta = new Ventana_Eliminar_Ruta(this);
-    
+    Ventana_AsigPC vAsigPc = new Ventana_AsigPC(this);
     
     public Ventana_Admin(Marco marco) {
         initComponents();
@@ -153,7 +156,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         modelo1.addColumn("Capacidad");
         modelo1.addColumn("PC Siguiente");
 
-        tablaPC.setModel(modelo1);
+        tablaPCRutas.setModel(modelo1);
         String datos[]= new String[8];
         try {
             marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
@@ -173,6 +176,43 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             }  
         } catch (Exception e) {    
         }
+    }
+    private void tablaPCDisponible(){
+        DefaultTableModel modelo1 = new DefaultTableModel();
+        
+        modelo1.addColumn("ID");
+        modelo1.addColumn("Nombre");
+        modelo1.addColumn("Capacidad");
+        
+        tablaPCRutas.setModel(modelo1);
+        String datos[]= new String[3];
+        try {
+            marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
+            marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(punto);
+            
+            while (marco.vLogin.conect.res.next()) {                
+                    String nu=marco.vLogin.conect.res.getString(7);
+                if(nu==null){
+                    datos[0]=marco.vLogin.conect.res.getString(1);
+                    datos[1]=marco.vLogin.conect.res.getString(2);
+                    datos[2]=marco.vLogin.conect.res.getString(5);
+                    modelo1.addRow(datos);
+                }else{
+                    System.out.println("No agrego");
+                }  
+                
+            }  
+        } catch (Exception e) {  
+            e.getMessage();
+            e.printStackTrace();
+        }
+    }
+    public void actualizarTablas(){
+        tablaPC();
+        tablaPCDisponible();
+        //tablaPCenRuta();
+        tablaRuta();
+        tablaUser();
     }
 
     @SuppressWarnings("unchecked")
@@ -207,6 +247,12 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setRequestFocusEnabled(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseClicked(evt);
+            }
+        });
 
         botonNuevoUsusario.setText("Nuevo Usuario");
         botonNuevoUsusario.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -310,6 +356,11 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         jButton4.setText("jButton4");
 
         botonAsignatPC.setText("Asignar punto de control a Ruta");
+        botonAsignatPC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonAsignatPCMouseClicked(evt);
+            }
+        });
 
         botonquitatPC.setText("Quitar punto de control a Ruta");
 
@@ -320,9 +371,6 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             .addGroup(Panel_RutasLayout.createSequentialGroup()
                 .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Panel_RutasLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(scrollTRutas, javax.swing.GroupLayout.PREFERRED_SIZE, 641, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Panel_RutasLayout.createSequentialGroup()
                         .addGap(90, 90, 90)
                         .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(botonNuevaRuta)
@@ -330,12 +378,19 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                         .addGap(149, 149, 149)
                         .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(botonAsignatPC)
-                            .addComponent(botonquitatPC))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(botonquitatPC)))
+                    .addGroup(Panel_RutasLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(scrollTRutas, javax.swing.GroupLayout.PREFERRED_SIZE, 582, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(botonEliminarRuta)
-                    .addComponent(scrollTPc, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4))
+                    .addGroup(Panel_RutasLayout.createSequentialGroup()
+                        .addGap(65, 65, 65)
+                        .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(botonEliminarRuta)
+                            .addComponent(jButton4)))
+                    .addGroup(Panel_RutasLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scrollTPc, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Panel_RutasLayout.setVerticalGroup(
@@ -481,6 +536,32 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         vEliminarRuta.show();
         vEliminarRuta.tablaRuta();
     }//GEN-LAST:event_botonEliminarRutaMouseClicked
+
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+        // TODO add your handling code here:
+        
+        actualizarTablas();
+        
+        
+    }//GEN-LAST:event_jTabbedPane1MouseClicked
+
+    private void botonAsignatPCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonAsignatPCMouseClicked
+        try {
+            // TODO add your handling code here:
+            marco.vLogin.conect.insercion =  marco.vLogin.conect.conexion.prepareStatement("UPDATE punto_de_control SET ruta=null WHERE id_pc="+6);
+            marco.vLogin.conect.insercion.executeUpdate();
+            marco.vLogin.conect.insercion =  marco.vLogin.conect.conexion.prepareStatement("UPDATE punto_de_control SET ruta=null WHERE id_pc="+7);
+            marco.vLogin.conect.insercion.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Falo");
+            ex.getMessage();
+                ex.printStackTrace();
+        }
+         marco.PanelEscritorio.add(vAsigPc);
+         vAsigPc.show();
+         vAsigPc.tablaRuta();
+         vAsigPc.tablaPCDisponible();
+    }//GEN-LAST:event_botonAsignatPCMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
