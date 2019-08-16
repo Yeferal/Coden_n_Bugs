@@ -1,13 +1,18 @@
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 
 public class Ventana_AsigPC extends javax.swing.JInternalFrame {
 
      Ventana_Admin vadmin;
-     boolean agregar;
+     boolean agregar, eliminar, mover;
      int idSeleccionado;
      int idRuta;
+     int idSelEl, idApuntador, idSelEl2;
+     String idcambio1, idcambio2;
      
     public Ventana_AsigPC( Ventana_Admin vadmin) {
         initComponents();
@@ -48,9 +53,10 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
         modelo1.addColumn("ID");
         modelo1.addColumn("Nombre");
         modelo1.addColumn("Capacidad");
+        modelo1.addColumn("id siguiente");
         
         tablaPCAsign.setModel(modelo1);
-        String datos[]= new String[3];
+        String datos[]= new String[4];
         try {
             vadmin.marco.vLogin.conect.stmt = vadmin.marco.vLogin.conect.conexion.createStatement();
             vadmin.marco.vLogin.conect.res = vadmin.marco.vLogin.conect.stmt.executeQuery(vadmin.punto);
@@ -68,6 +74,7 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
                     datos[0]=vadmin.marco.vLogin.conect.res.getString(1);
                     datos[1]=vadmin.marco.vLogin.conect.res.getString(2);
                     datos[2]=vadmin.marco.vLogin.conect.res.getString(5);
+                    datos[3]=vadmin.marco.vLogin.conect.res.getString(8);
                     modelo1.addRow(datos);
                 }                     
             }  
@@ -84,6 +91,7 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
         modelo1.addColumn("Nombre");
         modelo1.addColumn("Capacidad");
         
+        
         tablaPCDispo.setModel(modelo1);
         String datos[]= new String[3];
         try {
@@ -96,6 +104,7 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
                     datos[0]=vadmin.marco.vLogin.conect.res.getString(1);
                     datos[1]=vadmin.marco.vLogin.conect.res.getString(2);
                     datos[2]=vadmin.marco.vLogin.conect.res.getString(5);
+
                     modelo1.addRow(datos);
                 }                     
             }  
@@ -107,6 +116,16 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
         System.out.println("id Ruta: "+idR);
         System.out.println("id Punto: "+idPc);
         vadmin.marco.vLogin.conect.agregarPC(idR, idPc);
+        actualizarTabla();
+    }
+    public void enviarEliminar(int idPCdelet, int idsig){
+        vadmin.marco.vLogin.conect.eliminarPCdeRuta(idPCdelet, idsig);
+        actualizarTabla();
+    }
+    
+    public void enviarCambiar(int idsele1, int idsele2, String sig1 , String sig2) throws SQLException{
+        
+        vadmin.marco.vLogin.conect.cambiarPCs(idsele1, idsele2, sig1, sig2);
         actualizarTabla();
     }
     
@@ -134,15 +153,16 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
         botonMover = new javax.swing.JButton();
         laberSelecion = new javax.swing.JLabel();
         textoRuta = new javax.swing.JLabel();
+        botonEliminar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        l2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        labeln1 = new javax.swing.JLabel();
+        cajaNE = new javax.swing.JLabel();
         labeln2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         labelCambiar = new javax.swing.JLabel();
-        labelNombre2 = new javax.swing.JLabel();
-        labeln3 = new javax.swing.JLabel();
+        l3 = new javax.swing.JLabel();
+        cajaNM = new javax.swing.JLabel();
         botonListo = new javax.swing.JButton();
 
         setClosable(true);
@@ -187,6 +207,11 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
 
             }
         ));
+        tablaPCAsign.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaPCAsignMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tablaPCAsign);
 
         labelrutas.setText("Selecciona la Ruta que deseas Asignarle los Puntos de control");
@@ -205,10 +230,22 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
         });
 
         botonCambitar.setText("Cambiar");
+        botonCambitar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonCambitarMouseClicked(evt);
+            }
+        });
 
         botonMover.setText("Mover");
 
         laberSelecion.setText("Ruta:");
+
+        botonEliminar.setText("Eliminar");
+        botonEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonEliminarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -221,9 +258,12 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
                         .addGap(69, 69, 69)
                         .addComponent(botonAsiganar)
                         .addGap(40, 40, 40)
-                        .addComponent(botonCambitar)
-                        .addGap(51, 51, 51)
-                        .addComponent(botonMover)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(botonCambitar)
+                                .addGap(51, 51, 51)
+                                .addComponent(botonMover))
+                            .addComponent(botonEliminar))
                         .addGap(102, 102, 102))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
@@ -256,10 +296,13 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(botonAsiganar)
-                        .addComponent(botonCambitar)
-                        .addComponent(botonMover)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(botonEliminar)
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(botonAsiganar)
+                            .addComponent(botonCambitar)
+                            .addComponent(botonMover))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(laberSelecion)
@@ -281,12 +324,12 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
         jLabel1.setText("PUNTO DE CONTROL SELECCIONADO");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 710, -1, -1));
 
-        jLabel2.setText("Nombre:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 750, -1, -1));
+        l2.setText("ID");
+        getContentPane().add(l2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 750, -1, -1));
 
         jLabel3.setText("Nombre:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 750, -1, -1));
-        getContentPane().add(labeln1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 750, 170, 20));
+        getContentPane().add(cajaNE, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 750, 170, 20));
         getContentPane().add(labeln2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 750, 170, 20));
 
         jLabel6.setText("PUNTO DE CONTROL SELECCIONADO");
@@ -295,9 +338,9 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
         labelCambiar.setText("Cambiar");
         getContentPane().add(labelCambiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 780, -1, -1));
 
-        labelNombre2.setText("Nombre:");
-        getContentPane().add(labelNombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 810, -1, -1));
-        getContentPane().add(labeln3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 810, 150, 20));
+        l3.setText("ID");
+        getContentPane().add(l3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 810, -1, -1));
+        getContentPane().add(cajaNM, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 810, 150, 20));
 
         botonListo.setText("Listo");
         getContentPane().add(botonListo, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 740, 90, -1));
@@ -331,27 +374,79 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_botonAsiganarMouseClicked
 
+    private void tablaPCAsignMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPCAsignMouseClicked
+        int fila=tablaPCAsign.getSelectedRow();
+        System.out.println("fila: "+fila);
+        if(eliminar==false){
+            
+            eliminar=true;
+            mover=false;
+            cajaNE.setVisible(true);
+            cajaNM.setVisible(false);
+            l3.setVisible(false);
+            labelCambiar.setText("Eliminar");
+            cajaNE.setText(tablaPCAsign.getValueAt(fila, 0).toString());
+            idSelEl = Integer.parseInt(tablaPCAsign.getValueAt(fila, 0).toString());
+            idApuntador = Integer.parseInt(tablaPCAsign.getValueAt(fila, 3).toString());
+            
+            idcambio1 = tablaPCAsign.getValueAt(fila, 3).toString();
+        }else{
+            eliminar=false;
+            mover=true;
+            cajaNE.setVisible(true);
+            cajaNM.setVisible(true);
+            l3.setVisible(true);
+            
+            idcambio2 = tablaPCAsign.getValueAt(fila, 3).toString();
+            labelCambiar.setText("Cambiar");
+            idSelEl2 = Integer.parseInt(tablaPCAsign.getValueAt(fila, 0).toString());
+            cajaNM.setText(tablaPCAsign.getValueAt(fila, 2).toString());
+        }  
+    }//GEN-LAST:event_tablaPCAsignMouseClicked
+
+    private void botonEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarMouseClicked
+        // TODO add your handling code here:
+        if(eliminar){
+            enviarEliminar(idSelEl, idApuntador);
+            eliminar = false;
+        }
+        
+        
+    }//GEN-LAST:event_botonEliminarMouseClicked
+
+    private void botonCambitarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonCambitarMouseClicked
+        // TODO add your handling code here:
+        if(mover){
+            try {
+                enviarCambiar(idSelEl, idSelEl2, idcambio1, idcambio2);
+            } catch (SQLException ex) {
+                System.out.println("Falllllllllllllllllllo");
+            }
+        }
+    }//GEN-LAST:event_botonCambitarMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAsiganar;
     private javax.swing.JButton botonCambitar;
+    private javax.swing.JButton botonEliminar;
     private javax.swing.JButton botonListo;
     private javax.swing.JButton botonMover;
+    private javax.swing.JLabel cajaNE;
+    private javax.swing.JLabel cajaNM;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel l2;
+    private javax.swing.JLabel l3;
     private javax.swing.JLabel laabelPCdispo;
     private javax.swing.JLabel labelCambiar;
-    private javax.swing.JLabel labelNombre2;
     private javax.swing.JLabel labelPCAsig;
-    private javax.swing.JLabel labeln1;
     private javax.swing.JLabel labeln2;
-    private javax.swing.JLabel labeln3;
     private javax.swing.JLabel labelrutas;
     private javax.swing.JLabel laberSelecion;
     private javax.swing.JTable tablaPCAsign;

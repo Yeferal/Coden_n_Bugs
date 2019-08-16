@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -12,10 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author LENOVO-PC
- */
+
 public class Ventana_Login extends javax.swing.JInternalFrame {
     Conector conect = new Conector();
     Usuario usuarioLogin;
@@ -80,7 +73,7 @@ System.out.println("falla 2");
                 break;
             case 3:
                 //Abre ventana recepcionista
-                
+                marco.vReceptor.show();
                 break;
                 default:
                     
@@ -197,12 +190,13 @@ System.out.println("falla 2");
     }//GEN-LAST:event_IniciarUserActionPerformed
 
     private void cajaPasswirdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cajaPasswirdKeyTyped
-        char cajaCodigo = evt.getKeyChar();
+        char c = evt.getKeyChar();
 
-        if(cajaCodigo==KeyEvent.VK_ENTER){
+        if(c==KeyEvent.VK_ENTER){
 
             IniciarUser.doClick();
         }
+        
 
     }//GEN-LAST:event_cajaPasswirdKeyTyped
 

@@ -135,14 +135,10 @@ System.out.println("falla 2");
         }
     }
     public boolean buscarPcenRuta(int rutaID){
-         System.out.println("entro a esto");
-             //Statement stmt1;
-             //ResultSet res1;
         try {
             stmt = conexion.createStatement();
             res = stmt.executeQuery(punto);
             existe=false;
-            System.out.println("entro a esto 1");
             while (res.next()) {
                 int nu=0;
                 if(res.getString(7)!=null){
@@ -150,11 +146,9 @@ System.out.println("falla 2");
                 }
                 
                 if(nu==rutaID){
-                    System.out.println("entro a esto siiiii");
                     existe=true;
                     break;
                 }
-                System.out.println("entro a esto nooooo");
                 
             }  
         } catch (SQLException e) {
@@ -220,5 +214,123 @@ System.out.println("falla 2");
             }
         }
 
+    }
+    private int apuntadorPC(int idPCsele){
+        int idP=0;
+        try {
+            stmt = conexion.createStatement();
+            res = stmt.executeQuery(punto);
+            
+            while (res.next()) {                
+                    int idPP=0;
+                if(res.getString(8)!=null){
+                    idPP=Integer.parseInt(res.getString(8));
+                }
+                    //String idSig=res.getString(8);
+                if(idPP==idPCsele ){
+                    idP=Integer.parseInt(res.getString(1));
+                    break;
+                }
+
+            }  
+        } catch (SQLException e) { 
+            System.out.println("Fallo en retorno de id");
+            e.getMessage();
+            e.printStackTrace();
+        }
+
+        return idP;
+    }
+    
+    public boolean buscarPcsinAputador(int pcID){
+        try {
+            stmt = conexion.createStatement();
+            res = stmt.executeQuery(punto);
+            existe=false;
+            while (res.next()) {
+                int nu=Integer.parseInt(res.getString(1));
+                if(nu==pcID){                    
+                    if(res.getString(8)==null){
+                        existe=false;
+                        break;
+                    }else{
+                        existe=true;
+                        break;
+                    }
+                }    
+            }  
+        } catch (SQLException e) {
+            System.out.println("Fallo en el retorno de existente");
+            e.getMessage();
+            e.printStackTrace();
+        }
+        return existe;
+    }
+    
+    public void eliminarPCdeRuta(int idPCdelet, int idsig){
+        
+        if(buscarPcsinAputador(idPCdelet)){
+            try {
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+idsig+" WHERE id_pc="+apuntadorPC(idPCdelet));
+                insercion.executeUpdate();
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente= NULL WHERE id_pc="+idPCdelet);
+                insercion.executeUpdate();
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET ruta= NULL WHERE id_pc="+idPCdelet);
+                insercion.executeUpdate();
+            } catch (SQLException ex) {
+                ex.getMessage();
+            ex.printStackTrace();
+            }
+            
+        }else{
+            try {
+                insercion = conexion.prepareStatement("DELETE FROM punto_de_control WHERE id_pc="+idPCdelet);
+                insercion.executeUpdate();
+            } catch (SQLException ex) {
+                ex.getMessage();
+            ex.printStackTrace();
+            }
+                
+        }
+    }
+    
+    public void cambiarPCs(int idsele1, int idsele2, String sig1 , String sig2) throws SQLException{
+        
+        if(sig1==null){
+            if(sig2==null){
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=NULL WHERE id_pc="+idsele1);
+                insercion.executeUpdate();
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=NULL WHERE id_pc="+idsele2);
+                insercion.executeUpdate();
+            }else{
+                int numero = Integer.parseInt(sig2);
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+numero+" WHERE id_pc="+idsele1);
+                insercion.executeUpdate();
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=NULL WHERE id_pc="+idsele2);
+                insercion.executeUpdate();
+            }
+            
+        }else if(sig2==null){
+            if(sig1==null){
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=NULL WHERE id_pc="+idsele1);
+                insercion.executeUpdate();
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=NULL WHERE id_pc="+idsele2);
+                insercion.executeUpdate();
+            }else{
+                int numero = Integer.parseInt(sig1);
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=Null WHERE id_pc="+idsele1);
+                insercion.executeUpdate();
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+numero+" WHERE id_pc="+idsele2);
+                insercion.executeUpdate();
+            }
+        }else{
+            int numero2 = Integer.parseInt(sig2);
+            int numero1 = Integer.parseInt(sig1);
+            insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+numero2+" WHERE id_pc="+idsele1);
+            insercion.executeUpdate();
+            
+            insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+numero1+" WHERE id_pc="+idsele2);
+            insercion.executeUpdate();
+        }
     }
 }

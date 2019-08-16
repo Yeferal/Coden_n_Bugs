@@ -8,9 +8,10 @@ import javax.swing.table.DefaultTableModel;
 
 public class Ventana_Admin extends javax.swing.JInternalFrame {
     
-    String usuarios="SELECT * FROM usuario";
-    String punto = "SELECT * FROM punto_de_control";
-    String rutaS = "SELECT * FROM ruta";
+    String usuarios="SELECT * FROM usuario;";
+    String punto = "SELECT * FROM punto_de_control;";
+    String rutaS = "SELECT * FROM ruta;";
+    String destinos = "SELECT * FROM destinos;";
     Marco marco;
     Ventana_Nuevo_Usuario vnuevoUsuario = new Ventana_Nuevo_Usuario(this);
     Editar_Usuario editarUsuario = new Editar_Usuario(this);
@@ -527,6 +528,11 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     private void botonNuevaRutaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonNuevaRutaMouseClicked
         marco.PanelEscritorio.add(vNuevaRuta);
         vNuevaRuta.show();
+        try {
+            vNuevaRuta.llenarcombos();
+        } catch (SQLException ex) {
+            System.out.println("no agrego");
+        }
         
     }//GEN-LAST:event_botonNuevaRutaMouseClicked
 

@@ -31,6 +31,18 @@ public class Ventana_Nueva_Ruta extends javax.swing.JInternalFrame {
         
         
     }
+    
+    public void llenarcombos() throws SQLException{
+        comboDestino.removeAllItems();
+        comboInicio.removeAllItems();
+            vadmin.marco.vLogin.conect.stmt = vadmin.marco.vLogin.conect.conexion.createStatement();
+            vadmin.marco.vLogin.conect.res = vadmin.marco.vLogin.conect.stmt.executeQuery(vadmin.destinos);
+            
+            while (vadmin.marco.vLogin.conect.res.next()) {                
+                comboDestino.addItem(vadmin.marco.vLogin.conect.res.getString(1));
+                comboInicio.addItem(vadmin.marco.vLogin.conect.res.getString(1));      
+            }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -53,10 +65,6 @@ public class Ventana_Nueva_Ruta extends javax.swing.JInternalFrame {
         labelDestino.setText("Destino:");
 
         labelCuota.setText("Cuota de Destino:");
-
-        comboInicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        comboDestino.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         cajaCuota.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         cajaCuota.addKeyListener(new java.awt.event.KeyAdapter() {
