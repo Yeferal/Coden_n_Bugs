@@ -387,9 +387,14 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
             labelCambiar.setText("Eliminar");
             cajaNE.setText(tablaPCAsign.getValueAt(fila, 0).toString());
             idSelEl = Integer.parseInt(tablaPCAsign.getValueAt(fila, 0).toString());
-            idApuntador = Integer.parseInt(tablaPCAsign.getValueAt(fila, 3).toString());
+            System.out.println("lol"+tablaPCAsign.getValueAt(fila, 3)+"lol");
+            if(tablaPCAsign.getValueAt(fila, 3)==null){
+                idApuntador = 0;
+            }else{
+                idApuntador = Integer.parseInt((String) tablaPCAsign.getValueAt(fila, 3));
+            }
             
-            idcambio1 = tablaPCAsign.getValueAt(fila, 3).toString();
+            idcambio1 = (String) tablaPCAsign.getValueAt(fila, 3);
         }else{
             eliminar=false;
             mover=true;
@@ -397,7 +402,7 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
             cajaNM.setVisible(true);
             l3.setVisible(true);
             
-            idcambio2 = tablaPCAsign.getValueAt(fila, 3).toString();
+            idcambio2 = (String) tablaPCAsign.getValueAt(fila, 3);
             labelCambiar.setText("Cambiar");
             idSelEl2 = Integer.parseInt(tablaPCAsign.getValueAt(fila, 0).toString());
             cajaNM.setText(tablaPCAsign.getValueAt(fila, 2).toString());

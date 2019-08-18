@@ -1,16 +1,50 @@
 
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 
 public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
 
     Marco marco;
-
+    String clientes = "SELECT * FROM cliente;";
     public Ventana_Recepcionista(Marco marco) {
         initComponents();
         this.marco=marco;
     }
 
+    private boolean verificarTamanio(String nitS){
+        
+        if(nitS.length()==8 || nitS.length()<=3){
+            return true;
+        }
+        return false;
+    }
+    public void enviarConsumindor(){
+        
+    }
+    public void buscarNit( int nitEx){
+        try {
+            marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
+            marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(clientes);
+            
+            while (marco.vLogin.conect.res.next()) {
+                int nitver = Integer.parseInt(marco.vLogin.conect.res.getString(2));
+                if(nitver==nitEx){
+
+                }else{
+                    System.out.println("No agrego");
+                }  
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ventana_Recepcionista.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -155,6 +189,11 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         });
 
         botonBuscar.setText("Buscar");
+        botonBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonBuscarMouseClicked(evt);
+            }
+        });
 
         jLabel1.setText("Nombre: ");
 
@@ -192,7 +231,7 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
 
         jLabel11.setText("Total =");
 
-        jButton2.setText("Agregar Paquete");
+        jButton2.setText("Confirmar Paquete");
 
         jButton3.setText("Finalizar Registro");
 
@@ -228,34 +267,37 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                         .addGroup(panelRegistrarLayout.createSequentialGroup()
                             .addContainerGap()
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(33, 33, 33)
-                            .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(panelRegistrarLayout.createSequentialGroup()
-                                    .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel7)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jLabel8)
-                                        .addComponent(jLabel9)
-                                        .addComponent(jLabel10))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGap(33, 33, 33)
                                     .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistrarLayout.createSequentialGroup()
-                                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                                        .addGroup(panelRegistrarLayout.createSequentialGroup()
+                                            .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel7)
+                                                .addComponent(jLabel4)
+                                                .addComponent(jLabel6)
+                                                .addComponent(jLabel8)
+                                                .addComponent(jLabel9)
+                                                .addComponent(jLabel10))
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jLabel5))
-                                        .addComponent(jTextField4)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextField5)
-                                        .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jTextField6)))
+                                            .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistrarLayout.createSequentialGroup()
+                                                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(jLabel5))
+                                                .addComponent(jTextField4)
+                                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jTextField5)
+                                                .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jTextField6)))
+                                        .addGroup(panelRegistrarLayout.createSequentialGroup()
+                                            .addGap(21, 21, 21)
+                                            .addComponent(jLabel11)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jTextField7))))
                                 .addGroup(panelRegistrarLayout.createSequentialGroup()
-                                    .addGap(21, 21, 21)
-                                    .addComponent(jLabel11)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jButton2)
-                                        .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)))))))
+                                    .addGap(83, 83, 83)
+                                    .addComponent(jButton2))))))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
         panelRegistrarLayout.setVerticalGroup(
@@ -270,9 +312,9 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                             .addComponent(botonBuscar))
                         .addGap(18, 18, 18)
                         .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabel2))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel1))
                             .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -281,7 +323,11 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelRegistrarLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                        .addComponent(jButton3)
+                        .addGap(51, 51, 51))
                     .addGroup(panelRegistrarLayout.createSequentialGroup()
                         .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -311,11 +357,9 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                         .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(35, 35, 35)
-                        .addComponent(jButton2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addGap(51, 51, 51))
+                        .addGap(38, 38, 38)
+                        .addComponent(jButton2)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         tabbeReceotor.addTab("Registrar", panelRegistrar);
@@ -345,13 +389,32 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
 
             botonBuscar.doClick();
         }
-        if(c<'0' || c>'9') evt.consume();
+        //if(c<'0' || c>'9') evt.consume();
         if (cajaNIT.getText().length()== 8) {
 
          evt.consume(); 
     }
         
     }//GEN-LAST:event_cajaNITKeyTyped
+
+    private void botonBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonBuscarMouseClicked
+        // TODO add your handling code here:
+        
+        if(verificarTamanio(cajaNIT.getText())){
+            if(cajaNIT.getText().equalsIgnoreCase("c/f")){
+                
+            }else{
+                
+            }
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "El NIT debe de tener Ocho numeros");
+        }
+        
+        
+        
+        
+    }//GEN-LAST:event_botonBuscarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

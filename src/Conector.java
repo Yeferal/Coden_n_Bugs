@@ -205,8 +205,13 @@ System.out.println("falla 2");
             
         }else{
             try {
+                System.out.println("primeor");
                 insercion = conexion.prepareStatement("UPDATE punto_de_control SET ruta="+idR+" WHERE id_pc="+idPc);
                 insercion.executeUpdate();
+                System.out.println("segudo");
+                insercion = conexion.prepareStatement("UPDATE ruta SET pc_inicio="+idPc+" WHERE id_ruta="+idR);
+                insercion.executeUpdate();
+                System.out.println("logrado");
             } catch (Exception ex) {
                 System.out.println("Fallo en no existente");
             ex.getMessage();
@@ -284,7 +289,7 @@ System.out.println("falla 2");
             
         }else{
             try {
-                insercion = conexion.prepareStatement("DELETE FROM punto_de_control WHERE id_pc="+idPCdelet);
+                insercion = conexion.prepareStatement("UPDATE punto_de_control SET ruta= NULL WHERE id_pc="+idPCdelet);
                 insercion.executeUpdate();
             } catch (SQLException ex) {
                 ex.getMessage();
@@ -331,6 +336,16 @@ System.out.println("falla 2");
             
             insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+numero1+" WHERE id_pc="+idsele2);
             insercion.executeUpdate();
+        }
+    }
+    
+    public void crearNuevoCliente(int nit,String nombre, String direccion){
+        
+        try {
+            insercion = conexion.prepareStatement("INSERT INTO cliente (nit,nombre_cliente,direccion) VALUES ("+nit+",'"+nombre+"',"+direccion+");");
+            insercion.executeUpdate();
+        } catch (SQLException ex) {
+            //Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
