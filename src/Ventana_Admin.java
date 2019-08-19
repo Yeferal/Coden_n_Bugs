@@ -244,6 +244,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         botonEliminarPC = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaPC = new javax.swing.JTable();
+        panelDatos = new javax.swing.JPanel();
 
         setIconifiable(true);
         setRequestFocusEnabled(false);
@@ -291,17 +292,17 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         Panel_UsuariosLayout.setHorizontalGroup(
             Panel_UsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_UsuariosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 887, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(Panel_UsuariosLayout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(botonNuevoUsusario, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(63, 63, 63)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(89, 89, 89))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_UsuariosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         Panel_UsuariosLayout.setVerticalGroup(
             Panel_UsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -458,7 +459,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 .addComponent(botonEditarPC, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(83, 83, 83)
                 .addComponent(botonEliminarPC, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
             .addGroup(Panel_PuntosLayout.createSequentialGroup()
                 .addComponent(jScrollPane2)
                 .addContainerGap())
@@ -478,7 +479,20 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Puntos de Control", Panel_Puntos);
 
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 660));
+        javax.swing.GroupLayout panelDatosLayout = new javax.swing.GroupLayout(panelDatos);
+        panelDatos.setLayout(panelDatosLayout);
+        panelDatosLayout.setHorizontalGroup(
+            panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 898, Short.MAX_VALUE)
+        );
+        panelDatosLayout.setVerticalGroup(
+            panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 634, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Datos", panelDatos);
+
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 900, 660));
         jTabbedPane1.getAccessibleContext().setAccessibleDescription("");
 
         pack();
@@ -589,6 +603,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel panelDatos;
     private javax.swing.JScrollPane scrollTPc;
     private javax.swing.JScrollPane scrollTRutas;
     private javax.swing.JTable tablaPC;

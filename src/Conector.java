@@ -340,12 +340,34 @@ System.out.println("falla 2");
     }
     
     public void crearNuevoCliente(int nit,String nombre, String direccion){
+        try {
+            insercion = conexion.prepareStatement("INSERT INTO cliente (nit,nombre_cliente,direccion) VALUES ("+nit+",'"+nombre+"','"+direccion+"');");
+            insercion.executeUpdate();
+            System.out.println("Listo creo");
+        } catch (SQLException ex) {
+           ex.getMessage();
+            ex.printStackTrace();
+        }
+    }
+    
+    public void actualzarCliente (int nit, String nombre , String direccion){
+        try {
+            insercion = conexion.prepareStatement("UPDATE cliente SET nombre_cliente='"+nombre+"', direccion='"+direccion+"' WHERE nit="+nit+";");
+            insercion.executeUpdate();
+            System.out.println("Listo actualizo");
+        } catch (SQLException ex) {
+            ex.getMessage();
+            ex.printStackTrace();        }
+    }
+    public void crearPaquete(int peso, int nitR, int priori, double tarifa, String destino, int cuota){
+        
         
         try {
-            insercion = conexion.prepareStatement("INSERT INTO cliente (nit,nombre_cliente,direccion) VALUES ("+nit+",'"+nombre+"',"+direccion+");");
+            insercion = conexion.prepareStatement("INSERT INTO paquete (peso,nit_remitente,priorizacion,tarifa_pq,destino_pq,cuota) VALUES ("+peso+","+nitR+","+priori+","+tarifa+",'"+destino+"',"+cuota+");");
             insercion.executeUpdate();
+            //Crear espacion en bodega
         } catch (SQLException ex) {
-            //Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
