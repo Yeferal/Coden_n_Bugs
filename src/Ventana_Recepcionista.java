@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
@@ -16,13 +17,20 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
     int nitActual;
     int idActualClinete;
     boolean clienteExiste;
-    File factura = new File("Factura.html");
+    
     Factura html;
     double total;
+    DefaultTableModel modelo1 = new DefaultTableModel();
     
     public Ventana_Recepcionista(Marco marco) {
         initComponents();
         this.marco=marco;
+        modelo1.addColumn("Destino");
+        modelo1.addColumn("Peso");
+        modelo1.addColumn("Priorizacion");
+        modelo1.addColumn("Cuota");
+        modelo1.addColumn("Acumulado");
+        tablaPaquetes.setModel(modelo1);
     }
 
     private boolean verificarTamanio(String nitS){
@@ -51,6 +59,9 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         String destinoS = comboDesstinos.getSelectedItem().toString();
         double couta = Double.parseDouble(textoCuota.getText());
         double total= Double.parseDouble(textototal.getText());
+        
+        marco.vLogin.conect.crearPaquete(peso, nitC, priorizdo, total, destinoS, couta);
+        agregarFila();
     }
     
     public boolean buscarNit( int nitEx){
@@ -80,7 +91,8 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         return false;
     }
     
-    private void generarFactura(){
+    private void generarFactura(String Nombre){
+        File factura = new File(Nombre+".html");
         html =  new Factura();
         try {
             FileWriter jugadores= new FileWriter(factura);
@@ -91,7 +103,7 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
             bw.newLine();
             
             for (int i = 0; i < tablaPaquetes.getRowCount(); i++) {
-                html.generarFilaHTML(Double.parseDouble((String) tablaPaquetes.getValueAt(i, 0)),Double.parseDouble((String) tablaPaquetes.getValueAt(i, 1)), Double.parseDouble((String) tablaPaquetes.getValueAt(i, 2)), Double.parseDouble((String) tablaPaquetes.getValueAt(i, 3)),Double.parseDouble((String) tablaPaquetes.getValueAt(i, 4)));
+                html.generarFilaHTML(tablaPaquetes.getValueAt(i, 0).toString(),Double.parseDouble((String) tablaPaquetes.getValueAt(i, 1)), Double.parseDouble((String) tablaPaquetes.getValueAt(i, 2)), Double.parseDouble((String) tablaPaquetes.getValueAt(i, 3)),Double.parseDouble((String) tablaPaquetes.getValueAt(i, 4)));
                 bw.write(html.filaText);
                 bw.newLine();
             }
@@ -104,6 +116,22 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         } catch (Exception e) {
         }
 
+    }
+    private void agregarFila(){
+        String datos[]= new String[5];
+        
+        datos[0] = comboDesstinos.getSelectedItem().toString();
+        datos[1] = textoPeso.getText();
+        if(comboPriori.getSelectedIndex()==0){
+            datos[2] = "0";
+        }else{
+            datos[2] = "125";
+        }
+        datos[3] = "200";
+        datos[4] = textototal.getText();
+        
+        modelo1.addRow(datos);
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -305,6 +333,11 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         labelTotal.setText("Total =");
 
         botonConfirmar.setText("Confirmar Paquete");
+        botonConfirmar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonConfirmarMouseClicked(evt);
+            }
+        });
 
         botonFinalizar.setText("Finalizar Registro");
         botonFinalizar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -344,10 +377,10 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                             .addComponent(labelExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 631, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(panelRegistrarLayout.createSequentialGroup()
                             .addContainerGap()
-                            .addComponent(scrollTalbapQ, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(scrollTalbapQ, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(panelRegistrarLayout.createSequentialGroup()
-                                    .addGap(33, 33, 33)
+                                    .addGap(19, 19, 19)
                                     .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(panelRegistrarLayout.createSequentialGroup()
                                             .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -374,7 +407,7 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(textototal))))
                                 .addGroup(panelRegistrarLayout.createSequentialGroup()
-                                    .addGap(83, 83, 83)
+                                    .addGap(69, 69, 69)
                                     .addComponent(botonConfirmar))))))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
@@ -402,8 +435,8 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                 .addGap(31, 31, 31)
                 .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelRegistrarLayout.createSequentialGroup()
-                        .addComponent(scrollTalbapQ, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                        .addComponent(scrollTalbapQ, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                         .addComponent(botonFinalizar)
                         .addGap(51, 51, 51))
                     .addGroup(panelRegistrarLayout.createSequentialGroup()
@@ -437,7 +470,7 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                             .addComponent(textototal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(38, 38, 38)
                         .addComponent(botonConfirmar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(127, Short.MAX_VALUE))))
         );
 
         tabbeReceotor.addTab("Registrar", panelRegistrar);
@@ -482,6 +515,8 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
             textotnit.setText(cajaNIT.getText());
             if(cajaNIT.getText().equalsIgnoreCase("c/f")){
                 nitActual = 0;
+                textoNombre.setText("Consuminidor final");
+                textoDireccion.setText(" ----- ");
             }else{
                 nitActual = Integer.parseInt(cajaNIT.getText());
                 if(buscarNit(Integer.parseInt(cajaNIT.getText()))){
@@ -514,14 +549,18 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
     private void textoPesoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoPesoKeyTyped
         
         char c = evt.getKeyChar();
-        if(c<'0' || c>'9') evt.consume();
+        //if(c!='.' || c!='1' || c!='1') evt.consume();
     }//GEN-LAST:event_textoPesoKeyTyped
 
     private void botonFinalizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonFinalizarMouseClicked
         // TODO add your handling code here:
-        System.out.println(comboPriori.getSelectedIndex());
-        System.out.println(comboDesstinos.getSelectedIndex());
+        generarFactura(textoNombre.getText());
     }//GEN-LAST:event_botonFinalizarMouseClicked
+
+    private void botonConfirmarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonConfirmarMouseClicked
+        // TODO add your handling code here:
+        registrar();
+    }//GEN-LAST:event_botonConfirmarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

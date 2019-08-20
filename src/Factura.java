@@ -18,15 +18,15 @@ public class Factura {
     }
 
     public void pestania(){
+        salida+="<td><strong>Destino</strong></td>\n";
         salida+="<td><strong>Peso</strong></td>\n";
         salida+="<td><strong>Priorizacion</strong></td>\n";
-        salida+="<td><strong>Tarifa</strong></td>\n";
         salida+="<td><strong>Cuota de Destino</strong></td>\n";
         salida+="<td><strong>Precio</strong></td>\n";
         salida+="</tr>"; 
     }
 
-    public void generarFilaHTML(double p1,double p2,double p3,double p4, double p5){
+    public void generarFilaHTML(String p1,double p2,double p3,double p4, double p5){
         filaText="";
         filaText="\n<tr>\n";
         filaText+="<td>"+p1+"</td>\n";

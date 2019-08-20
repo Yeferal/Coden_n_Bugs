@@ -359,15 +359,26 @@ System.out.println("falla 2");
             ex.getMessage();
             ex.printStackTrace();        }
     }
-    public void crearPaquete(int peso, int nitR, int priori, double tarifa, String destino, int cuota){
+    public void crearPaquete(double peso, int nitR, int priori, double tarifa, String destino, double cuota){
         
         
         try {
             insercion = conexion.prepareStatement("INSERT INTO paquete (peso,nit_remitente,priorizacion,tarifa_pq,destino_pq,cuota) VALUES ("+peso+","+nitR+","+priori+","+tarifa+",'"+destino+"',"+cuota+");");
             insercion.executeUpdate();
+            stmt = conexion.createStatement();
+            res = stmt.executeQuery("SELECT * FROM paquete");
+            int idPa = 0;
+            while (res.next()) {
+                
+                idPa=  res.getShort(1);
+            }
+            insercion = conexion.prepareStatement("INSERT INTO bodega (destino_pqte,priorizado_pq,id_pqt) VALUES ('"+destino+"',"+priori+","+idPa+");");
+            insercion.executeUpdate();
+            
             //Crear espacion en bodega
         } catch (SQLException ex) {
-            Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
+            ex.getMessage();
+            ex.printStackTrace(); 
         }
     }
 }
