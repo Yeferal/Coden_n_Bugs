@@ -1,12 +1,11 @@
-
-
+package Codenbugs;
 
 public class Marco extends javax.swing.JFrame {
     
-    Inicio_Sesion sesion = new Inicio_Sesion();
     Ventana_Admin vadministrador = new Ventana_Admin(this);
     Ventana_Login vLogin = new Ventana_Login(this);
     Ventana_Recepcionista vReceptor = new Ventana_Recepcionista(this);
+    Ventana_Operator vOperador = new Ventana_Operator(this,vLogin.usuarioLogin);
     
     
     public Marco() {
@@ -15,6 +14,7 @@ public class Marco extends javax.swing.JFrame {
         this.PanelEscritorio.add(vadministrador);
         this.PanelEscritorio.add(vLogin);
         this.PanelEscritorio.add(vReceptor);
+        this.PanelEscritorio.add(vOperador);
         vLogin.show();
         //vadministrador.show();
     }

@@ -1,3 +1,4 @@
+package Codenbugs;
 
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
@@ -8,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
 
 public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
 
@@ -228,13 +228,10 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
 
         tablaArrivados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         scrollArrivados.setViewportView(tablaArrivados);
