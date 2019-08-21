@@ -139,17 +139,17 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         panelRecepcionista = new javax.swing.JPanel();
-        tabbeReceotor = new javax.swing.JTabbedPane();
+        subRecepcionista = new javax.swing.JTabbedPane();
         panelConsulta = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        labelNitR = new javax.swing.JLabel();
+        labelIdPa = new javax.swing.JLabel();
+        cajaNitRe = new javax.swing.JTextField();
+        cajaIDP = new javax.swing.JTextField();
+        botonConsulataBuscar = new javax.swing.JButton();
         panelArrivos = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
+        scrollArrivados = new javax.swing.JScrollPane();
+        tablaArrivados = new javax.swing.JTable();
+        botonEntregas = new javax.swing.JButton();
         panelRegistrar = new javax.swing.JPanel();
         labelNit = new javax.swing.JLabel();
         cajaNIT = new javax.swing.JTextField();
@@ -182,11 +182,11 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel12.setText("NIT Remintente:");
+        labelNitR.setText("NIT Remintente:");
 
-        jLabel13.setText("ID Paquete: ");
+        labelIdPa.setText("ID Paquete: ");
 
-        jButton4.setText("Buscar");
+        botonConsulataBuscar.setText("Buscar");
 
         javax.swing.GroupLayout panelConsultaLayout = new javax.swing.GroupLayout(panelConsulta);
         panelConsulta.setLayout(panelConsultaLayout);
@@ -195,14 +195,14 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
             .addGroup(panelConsultaLayout.createSequentialGroup()
                 .addGap(166, 166, 166)
                 .addGroup(panelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel13))
+                    .addComponent(labelNitR)
+                    .addComponent(labelIdPa))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                    .addComponent(jTextField9))
+                    .addComponent(cajaNitRe, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                    .addComponent(cajaIDP))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(botonConsulataBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(343, 343, 343))
         );
         panelConsultaLayout.setVerticalGroup(
@@ -211,22 +211,22 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                 .addGroup(panelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelConsultaLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(botonConsulataBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelConsultaLayout.createSequentialGroup()
                         .addGap(101, 101, 101)
                         .addGroup(panelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel12)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(labelNitR)
+                            .addComponent(cajaNitRe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(38, 38, 38)
                         .addGroup(panelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(labelIdPa)
+                            .addComponent(cajaIDP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(527, Short.MAX_VALUE))
         );
 
-        tabbeReceotor.addTab("Consultas", panelConsulta);
+        subRecepcionista.addTab("Consultas", panelConsulta);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaArrivados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -237,33 +237,33 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        scrollArrivados.setViewportView(tablaArrivados);
 
-        jButton5.setText("Entregar");
+        botonEntregas.setText("Entregar");
 
         javax.swing.GroupLayout panelArrivosLayout = new javax.swing.GroupLayout(panelArrivos);
         panelArrivos.setLayout(panelArrivosLayout);
         panelArrivosLayout.setHorizontalGroup(
             panelArrivosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelArrivosLayout.createSequentialGroup()
-                .addComponent(jScrollPane2)
+                .addComponent(scrollArrivados)
                 .addContainerGap())
             .addGroup(panelArrivosLayout.createSequentialGroup()
                 .addGap(466, 466, 466)
-                .addComponent(jButton5)
+                .addComponent(botonEntregas)
                 .addContainerGap(507, Short.MAX_VALUE))
         );
         panelArrivosLayout.setVerticalGroup(
             panelArrivosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelArrivosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollArrivados, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
-                .addComponent(jButton5)
+                .addComponent(botonEntregas)
                 .addGap(55, 55, 55))
         );
 
-        tabbeReceotor.addTab("Paquetes Arrivados", panelArrivos);
+        subRecepcionista.addTab("Paquetes Arrivados", panelArrivos);
 
         labelNit.setText("NIT:");
 
@@ -473,19 +473,19 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                         .addContainerGap(127, Short.MAX_VALUE))))
         );
 
-        tabbeReceotor.addTab("Registrar", panelRegistrar);
+        subRecepcionista.addTab("Registrar", panelRegistrar);
 
         javax.swing.GroupLayout panelRecepcionistaLayout = new javax.swing.GroupLayout(panelRecepcionista);
         panelRecepcionista.setLayout(panelRecepcionistaLayout);
         panelRecepcionistaLayout.setHorizontalGroup(
             panelRecepcionistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabbeReceotor)
+            .addComponent(subRecepcionista)
         );
         panelRecepcionistaLayout.setVerticalGroup(
             panelRecepcionistaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRecepcionistaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tabbeReceotor))
+                .addComponent(subRecepcionista))
         );
 
         getContentPane().add(panelRecepcionista, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -566,25 +566,23 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuscar;
     private javax.swing.JButton botonConfirmar;
+    private javax.swing.JButton botonConsulataBuscar;
     private javax.swing.JButton botonCrearMidificar;
+    private javax.swing.JButton botonEntregas;
     private javax.swing.JButton botonFinalizar;
+    private javax.swing.JTextField cajaIDP;
     private javax.swing.JTextField cajaNIT;
+    private javax.swing.JTextField cajaNitRe;
     private javax.swing.JComboBox<String> comboDesstinos;
     private javax.swing.JComboBox<String> comboPriori;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel labelCuata;
     private javax.swing.JLabel labelDestino;
     private javax.swing.JLabel labelDirreccion;
     private javax.swing.JLabel labelExistencia;
+    private javax.swing.JLabel labelIdPa;
     private javax.swing.JLabel labelNItcli;
     private javax.swing.JLabel labelNit;
+    private javax.swing.JLabel labelNitR;
     private javax.swing.JLabel labelNombre;
     private javax.swing.JLabel labelPeso;
     private javax.swing.JLabel labelProri;
@@ -595,8 +593,10 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
     private javax.swing.JPanel panelConsulta;
     private javax.swing.JPanel panelRecepcionista;
     private javax.swing.JPanel panelRegistrar;
+    private javax.swing.JScrollPane scrollArrivados;
     private javax.swing.JScrollPane scrollTalbapQ;
-    private javax.swing.JTabbedPane tabbeReceotor;
+    private javax.swing.JTabbedPane subRecepcionista;
+    private javax.swing.JTable tablaArrivados;
     private javax.swing.JTable tablaPaquetes;
     private javax.swing.JTextField textoCuota;
     private javax.swing.JTextField textoDireccion;

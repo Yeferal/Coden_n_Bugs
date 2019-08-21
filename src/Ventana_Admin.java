@@ -67,7 +67,9 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 datos[4] = marco.vLogin.conect.res.getString(5);
                 modelo1.addRow(datos);      
             }  
-        } catch (Exception e) {    
+        } catch (Exception e) {  
+            e.getMessage();
+            e.printStackTrace();
         }
     }
     
@@ -101,7 +103,9 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 datos[7]=marco.vLogin.conect.res.getString(8);
                 modelo1.addRow(datos);      
             }  
-        } catch (Exception e) {    
+        } catch (Exception e) { 
+            e.getMessage();
+            e.printStackTrace();
         }
     }
     
@@ -146,7 +150,9 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 datos[9]=marco.vLogin.conect.res.getString(10);
                 modelo1.addRow(datos);      
             }  
-        } catch (Exception e) {    
+        } catch (Exception e) { 
+            e.getMessage();
+            e.printStackTrace();
         }
     }
 
@@ -175,7 +181,9 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 datos[7]=marco.vLogin.conect.res.getString(8);
                 modelo1.addRow(datos);      
             }  
-        } catch (Exception e) {    
+        } catch (Exception e) {   
+            e.getMessage();
+            e.printStackTrace();
         }
     }
     private void tablaPCDisponible(){
