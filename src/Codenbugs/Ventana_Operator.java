@@ -27,8 +27,7 @@ public class Ventana_Operator extends javax.swing.JInternalFrame {
         } catch (Exception ex) {
             ex.getMessage();
             ex.printStackTrace();
-        }
-            
+        }  
     }
     
     public int idPc(String nombre){

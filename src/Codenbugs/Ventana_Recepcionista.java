@@ -17,6 +17,7 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
     int nitActual;
     int idActualClinete;
     boolean clienteExiste;
+    Ventana_Consulta vConsulta = new Ventana_Consulta(this);
     
     Factura html;
     double total;
@@ -164,10 +165,8 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                 datos[2] = marco.vLogin.conect.res.getString(9);
                 datos[3] = marco.vLogin.conect.res.getString(7);
                 datos[4] = marco.vLogin.conect.res.getString(3);
-                
                 modelo1.addRow(datos);
             }
-            
         } catch (SQLException ex) {
             ex.getMessage();
             ex.printStackTrace();
@@ -225,6 +224,8 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         botonConfirmar = new javax.swing.JButton();
         botonFinalizar = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelNitR.setText("NIT Remintente:");
@@ -232,6 +233,11 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         labelIdPa.setText("ID Paquete: ");
 
         botonConsulataBuscar.setText("Buscar");
+        botonConsulataBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonConsulataBuscarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelConsultaLayout = new javax.swing.GroupLayout(panelConsulta);
         panelConsulta.setLayout(panelConsultaLayout);
@@ -669,6 +675,17 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         txtNit.setText("");
         actualizarArribados();
     }//GEN-LAST:event_botonEntregasMouseClicked
+
+    private void botonConsulataBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonConsulataBuscarMouseClicked
+        
+        if(!cajaNitRe.getText().equals("")){
+            marco.PanelEscritorio.add(vConsulta);
+            vConsulta.show();
+            vConsulta.llenart(cajaNitRe.getText(), cajaIDP.getText());
+        }
+        
+        
+    }//GEN-LAST:event_botonConsulataBuscarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

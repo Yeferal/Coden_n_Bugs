@@ -22,10 +22,7 @@ public class Ventana_Login extends javax.swing.JInternalFrame {
     public Ventana_Login(Marco marco) {
         initComponents();
         this.marco=marco;
-        
-        
     }
-    
     private void buscar(){
         System.out.println("entra");
         
@@ -45,17 +42,14 @@ public class Ventana_Login extends javax.swing.JInternalFrame {
                         System.out.println("falla 1");
                     }
                 }
-                        System.out.println("falla 2");
-                
-            }
-            
+                        System.out.println("falla 2");  
+            }    
         } catch (Exception e) {
             
         }
     }
     
     public void sesionUsusario(String id, String Nombre, String codigo, String tipo, String passw){
-        
         usuarioLogin=new Usuario();
         usuarioLogin.setDatos(Nombre, codigo, Integer.parseInt(tipo), passw);
         usuarioLogin.setId(Integer.parseInt(id));
@@ -65,9 +59,7 @@ public class Ventana_Login extends javax.swing.JInternalFrame {
                 marco.vadministrador.tablaPC();
                 marco.vadministrador.tablaRuta();
                 marco.vadministrador.show();
-                
                 break;
-                
             case 2:
                 //Abre ventana operador
                 marco.vOperador.show();
@@ -77,20 +69,9 @@ public class Ventana_Login extends javax.swing.JInternalFrame {
                 //Abre ventana recepcionista
                 marco.vReceptor.show();
                 break;
-                default:
-                    
-        }
-        
+                default:     
+        }  
     }
-    
-    
-    private void conectar() throws SQLException{
-        Usuario usert = new Usuario();
-        //usert.setDatos("Jose", "qwer1234", 2, "estoesmysql");
-        conect.insertarUsuario(usert);
-        
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -173,30 +154,20 @@ public class Ventana_Login extends javax.swing.JInternalFrame {
     private void CajaCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CajaCodigoKeyTyped
         char cajaCodigo = evt.getKeyChar();
         if(cajaCodigo==KeyEvent.VK_ENTER){
-
             cajaPasswird.requestFocus();;
         }
-
     }//GEN-LAST:event_CajaCodigoKeyTyped
 
     private void IniciarUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarUserActionPerformed
-        //marco.vadministrador.show();
-        //conectar();
         buscar();
-        //this.setVisible(false);
     }//GEN-LAST:event_IniciarUserActionPerformed
 
     private void cajaPasswirdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cajaPasswirdKeyTyped
         char c = evt.getKeyChar();
-
         if(c==KeyEvent.VK_ENTER){
-
             IniciarUser.doClick();
         }
-        
-
     }//GEN-LAST:event_cajaPasswirdKeyTyped
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CajaCodigo;

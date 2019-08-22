@@ -24,9 +24,6 @@ public class Conector {
         try {
             conexion = DriverManager.getConnection(servidor, user, password);
             System.out.println("Se conecto XD: "+conexion.getCatalog());
-            
-            
-            
         } catch (SQLException e) {
             System.out.println("NO SE CONECTO");
             e.getMessage();
@@ -35,40 +32,14 @@ public class Conector {
     }
     
     public void insertarUsuario(Usuario use) throws SQLException{
-        
         insercion = conexion.prepareStatement("INSERT INTO usuario (nombre,codigo_usuario,tipo,pass) VALUES ('"+use.getNombre()+"','"+use.getCodigo()+"',"+use.gettipo()+",'"+use.getPassword()+"');");
-//        insercion = conexion.prepareStatement("INSERT INTO Usuario (Nombre,Codigo_Usuario,Tipo,Pass)"+" VALUES(?,?,?,?)");
-//        insercion.setString(2, use.getNombre());
-//        insercion.setString(3, use.getCodigo());
-//        insercion.setInt(4, use.gettipo());
-//        insercion.setString(5, use.getPassword());
         insercion.executeUpdate();
     }
-/**    
-    public boolean buscar (String codigo, String pasword ){
-        
-            while (marco.vLogin.conect.res.next()) {                
-                if(CajaCodigo.getText().equals(marco.vLogin.conect.res.getString(3))){
-                    if(cajaPasswird.getText().equals(marco.vLogin.conect.res.getString(5))){
-                        sesionUsusario(marco.vLogin.conect.res.getString(1), marco.vLogin.conect.res.getString(2), marco.vLogin.conect.res.getString(3), marco.vLogin.conect.res.getString(4), marco.vLogin.conect.res.getString(5));
-                        System.out.println("funciono");
-                        this.dispose();
-                        break;
-                    }else{
-                        System.out.println("falla 1");
-                    }
-                }
-System.out.println("falla 2");
-                
-            }
-    }
-    **/
     
     public boolean buscar(String codigo, String passw){
                 try {
             stmt = conexion.createStatement();
             res = stmt.executeQuery("SELECT * FROM usuario");
-            
             while (res.next()) {                
                 if(codigo.equals(res.getString(3)) || passw.equals(res.getString(5))){
                     existe=true;
@@ -77,38 +48,39 @@ System.out.println("falla 2");
                     existe=false;
                 }    
             }     
-        } catch (Exception e) {      
-        } 
+        } catch (Exception e) {} 
         return existe;
+    }
+    public String obtenertime() throws SQLException{
+        stmt = conexion.createStatement();
+        res = stmt.executeQuery("select now();");
+        while(res.next()){
+            return res.getString(1);
+        }
+        return res.getString(1);
     }
     
     public void editarUsuario(int id, String Nombre, String codigo, int tipo, String contrasena) throws SQLException{
-        
         insercion = conexion.prepareStatement("UPDATE usuario SET nombre='"+Nombre+"', codigo_usuario='"+codigo+"', tipo="+tipo+",pass='"+contrasena+"' WHERE id_usuario="+id);
-        insercion.executeUpdate();
-        
+        insercion.executeUpdate(); 
     }
     public void eliminarUsuario(int id){
         try {
             insercion = conexion.prepareStatement("DELETE FROM usuario WHERE id_usuario="+id);
             insercion.executeUpdate();
         } catch (SQLException ex) {
-            //Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void insertarPC(Punto_de_Control pc) throws SQLException{
         
         insercion = conexion.prepareStatement("INSERT INTO punto_de_control (nombre_pc,tarifa,capacidad,operador_asignado) VALUES ('"+pc.getNombre()+"','"+pc.getTarifa()+"',"+pc.getCapacidad()+",'"+pc.getOperadorAsig()+"');");
-
         insercion.executeUpdate();
     }
     
     public void editarPC(int id, String Nombre, double tarifa, int capacidad, int operador_Asig) throws SQLException{
-        
         insercion = conexion.prepareStatement("UPDATE punto_de_control SET nombre_pc='"+Nombre+"', tarifa='"+tarifa+"', capacidad="+capacidad+",operador_asignado='"+operador_Asig+"' WHERE id_pc="+id);
-        insercion.executeUpdate();
-        
+        insercion.executeUpdate();    
     }
     
     public void eliminarPC(int id){
@@ -116,14 +88,11 @@ System.out.println("falla 2");
             insercion = conexion.prepareStatement("DELETE FROM punto_de_control WHERE id_pc="+id);
             insercion.executeUpdate();
         } catch (SQLException ex) {
-            //Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void insertarRuta(String inicio, String destino, double  cuota) throws SQLException{
-        
         insercion = conexion.prepareStatement("INSERT INTO ruta (inicio,destino,estado_ruta,cuota_destino) VALUES ('"+inicio+"','"+destino+"',"+0+","+cuota+");");
-
         insercion.executeUpdate();
     }
     
@@ -132,7 +101,6 @@ System.out.println("falla 2");
             insercion = conexion.prepareStatement("DELETE FROM ruta WHERE id_ruta="+id);
             insercion.executeUpdate();
         } catch (SQLException ex) {
-            //Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     public boolean buscarPcenRuta(int rutaID){
@@ -145,12 +113,10 @@ System.out.println("falla 2");
                 if(res.getString(7)!=null){
                     nu=Integer.parseInt(res.getString(7));
                 }
-                
                 if(nu==rutaID){
                     existe=true;
                     break;
                 }
-                
             }  
         } catch (SQLException e) {
             System.out.println("Fallo en el retorno de existente");
@@ -165,7 +131,6 @@ System.out.println("falla 2");
         try {
             stmt = conexion.createStatement();
             res = stmt.executeQuery(punto);
-            
             while (res.next()) {                
                     int idPP=0;
                 if(res.getString(7)!=null){
@@ -176,21 +141,16 @@ System.out.println("falla 2");
                     idP=Integer.parseInt(res.getString(1));
                     break;
                 }
-
             }  
         } catch (SQLException e) { 
             System.out.println("Fallo en retorno de id");
             e.getMessage();
             e.printStackTrace();
         }
-        
-        
         return idP;
     }
     
     public void agregarPC(int idR, int idPc){
-        
-
         if(buscarPcenRuta(idR)){
             try {
                 int sig = idRutaAnte(idR);
@@ -203,7 +163,6 @@ System.out.println("falla 2");
                 ex.getMessage();
                 ex.printStackTrace();
             }
-            
         }else{
             try {
                 System.out.println("primeor");
@@ -219,32 +178,27 @@ System.out.println("falla 2");
             ex.printStackTrace();
             }
         }
-
     }
     private int apuntadorPC(int idPCsele){
         int idP=0;
         try {
             stmt = conexion.createStatement();
             res = stmt.executeQuery(punto);
-            
             while (res.next()) {                
                     int idPP=0;
                 if(res.getString(8)!=null){
                     idPP=Integer.parseInt(res.getString(8));
                 }
-                    //String idSig=res.getString(8);
                 if(idPP==idPCsele ){
                     idP=Integer.parseInt(res.getString(1));
                     break;
                 }
-
             }  
         } catch (SQLException e) { 
             System.out.println("Fallo en retorno de id");
             e.getMessage();
             e.printStackTrace();
         }
-
         return idP;
     }
     
@@ -274,7 +228,6 @@ System.out.println("falla 2");
     }
     
     public void eliminarPCdeRuta(int idPCdelet, int idsig){
-        
         if(buscarPcsinAputador(idPCdelet)){
             try {
                 insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+idsig+" WHERE id_pc="+apuntadorPC(idPCdelet));
@@ -287,7 +240,6 @@ System.out.println("falla 2");
                 ex.getMessage();
             ex.printStackTrace();
             }
-            
         }else{
             try {
                 insercion = conexion.prepareStatement("UPDATE punto_de_control SET ruta= NULL WHERE id_pc="+idPCdelet);
@@ -295,46 +247,28 @@ System.out.println("falla 2");
             } catch (SQLException ex) {
                 ex.getMessage();
             ex.printStackTrace();
-            }
-                
+            }    
         }
     }
     
     public void cambiarPCs(int idsele1, int idsele2, String sig1 , String sig2) throws SQLException{
-        
         if(sig1==null){
-            if(sig2==null){
-                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=NULL WHERE id_pc="+idsele1);
-                insercion.executeUpdate();
-                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=NULL WHERE id_pc="+idsele2);
-                insercion.executeUpdate();
-            }else{
                 int numero = Integer.parseInt(sig2);
                 insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+numero+" WHERE id_pc="+idsele1);
                 insercion.executeUpdate();
                 insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=NULL WHERE id_pc="+idsele2);
                 insercion.executeUpdate();
-            }
-            
         }else if(sig2==null){
-            if(sig1==null){
-                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=NULL WHERE id_pc="+idsele1);
-                insercion.executeUpdate();
-                insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=NULL WHERE id_pc="+idsele2);
-                insercion.executeUpdate();
-            }else{
                 int numero = Integer.parseInt(sig1);
                 insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente=Null WHERE id_pc="+idsele1);
                 insercion.executeUpdate();
                 insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+numero+" WHERE id_pc="+idsele2);
                 insercion.executeUpdate();
-            }
         }else{
             int numero2 = Integer.parseInt(sig2);
             int numero1 = Integer.parseInt(sig1);
             insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+numero2+" WHERE id_pc="+idsele1);
             insercion.executeUpdate();
-            
             insercion = conexion.prepareStatement("UPDATE punto_de_control SET id_siguiente="+numero1+" WHERE id_pc="+idsele2);
             insercion.executeUpdate();
         }
@@ -347,7 +281,7 @@ System.out.println("falla 2");
             System.out.println("Listo creo");
         } catch (SQLException ex) {
            ex.getMessage();
-            ex.printStackTrace();
+           ex.printStackTrace();
         }
     }
     
@@ -361,8 +295,6 @@ System.out.println("falla 2");
             ex.printStackTrace();        }
     }
     public void crearPaquete(double peso, int nitR, int priori, double tarifa, String destino, double cuota){
-        
-        
         try {
             insercion = conexion.prepareStatement("INSERT INTO paquete (peso,nit_remitente,priorizacion,tarifa_pq,destino_pq,cuota) VALUES ("+peso+","+nitR+","+priori+","+tarifa+",'"+destino+"',"+cuota+");");
             insercion.executeUpdate();
@@ -375,22 +307,24 @@ System.out.println("falla 2");
             }
             insercion = conexion.prepareStatement("INSERT INTO bodega (destino_pqte,priorizado_pq,id_pqt) VALUES ('"+destino+"',"+priori+","+idPa+");");
             insercion.executeUpdate();
-            
             //Crear espacion en bodega
         } catch (SQLException ex) {
             ex.getMessage();
             ex.printStackTrace(); 
         }
     }
-    
     public void eliminarPaquete(String id){
         try {
             insercion = conexion.prepareStatement("DELETE FROM paquete WHERE id_paquete="+id+";");
             insercion.executeUpdate();
-            
         } catch (SQLException ex) {
             ex.getMessage();
             ex.printStackTrace(); 
         }
+    }
+    
+    public void setDataTime(String id) throws SQLException{
+        insercion = conexion.prepareStatement("UPDATE paquete SET tiempo_pc='"+obtenertime()+"' WHERE id_paquete="+id+";");
+        insercion.executeUpdate();
     }
 }

@@ -93,7 +93,6 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(punto);
             
             while (marco.vLogin.conect.res.next()) {                
-                //System.out.println(marco.vLogin.conect.res.getString(1));
                 datos[0]=marco.vLogin.conect.res.getString(1);
                 datos[1]=marco.vLogin.conect.res.getString(2);
                 datos[2]=marco.vLogin.conect.res.getString(3);
@@ -131,18 +130,14 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(rutaS);
             
             while (marco.vLogin.conect.res.next()) {                
-                //System.out.println(marco.vLogin.conect.res.getString(1));
                 datos[0]=marco.vLogin.conect.res.getString(1);
                 datos[1]=marco.vLogin.conect.res.getString(2);
                 datos[2]=marco.vLogin.conect.res.getString(3);
-                
-                //datos[3]=marco.vLogin.conect.res.getString(4);
                 if(marco.vLogin.conect.res.getString(4).equals("1")){
                     datos[3]="Activo";
                 }else{
                     datos[3]="Desactivado";
                 }
-                
                 datos[4]=marco.vLogin.conect.res.getString(5);
                 datos[5]=marco.vLogin.conect.res.getString(6);
                 datos[6]=marco.vLogin.conect.res.getString(7);
@@ -156,20 +151,16 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
-
     public void tablaPCenRuta(){
         DefaultTableModel modelo1 = new DefaultTableModel();
-        
         modelo1.addColumn("Nombre");
         modelo1.addColumn("Capacidad");
         modelo1.addColumn("PC Siguiente");
-
         tablaPCRutas.setModel(modelo1);
         String datos[]= new String[8];
         try {
             marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
             marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(punto);
-            
             while (marco.vLogin.conect.res.next()) {                
                 //System.out.println(marco.vLogin.conect.res.getString(1));
                 datos[0]=marco.vLogin.conect.res.getString(1);
@@ -189,17 +180,14 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     }
     private void tablaPCDisponible(){
         DefaultTableModel modelo1 = new DefaultTableModel();
-        
         modelo1.addColumn("ID");
         modelo1.addColumn("Nombre");
         modelo1.addColumn("Capacidad");
-        
         tablaPCRutas.setModel(modelo1);
         String datos[]= new String[3];
         try {
             marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
             marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(punto);
-            
             while (marco.vLogin.conect.res.next()) {                
                     String nu=marco.vLogin.conect.res.getString(7);
                 if(nu==null){
@@ -209,8 +197,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                     modelo1.addRow(datos);
                 }else{
                     System.out.println("No agrego");
-                }  
-                
+                } 
             }  
         } catch (Exception e) {  
             e.getMessage();
@@ -224,7 +211,6 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         tablaRuta();
         tablaUser();
     }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -513,7 +499,6 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_botonNuevoUsusarioMouseClicked
 
     private void jButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseClicked
-        // TODO add your handling code here:
         marco.PanelEscritorio.add(vEliminar);
         vEliminar.show();
         vEliminar.tablaUser();
@@ -521,7 +506,6 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton8MouseClicked
 
     private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
-        // TODO add your handling code here:
         marco.PanelEscritorio.add(editarUsuario);
         editarUsuario.show();
         editarUsuario.tablaUser();
@@ -535,14 +519,12 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_botonNuevoPCMouseClicked
 
     private void botonEditarPCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEditarPCMouseClicked
-        // TODO add your handling code here:
         marco.PanelEscritorio.add(vEditarPC);
         vEditarPC.show();
         vEditarPC.tablaPc();
     }//GEN-LAST:event_botonEditarPCMouseClicked
 
     private void botonEliminarPCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarPCMouseClicked
-        // TODO add your handling code here:
         marco.PanelEscritorio.add(vEliminarPC);
         vEliminarPC.show();
         vEliminarPC.tablaPc();
@@ -555,28 +537,21 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             vNuevaRuta.llenarcombos();
         } catch (SQLException ex) {
             System.out.println("no agrego");
-        }
-        
+        } 
     }//GEN-LAST:event_botonNuevaRutaMouseClicked
 
     private void botonEliminarRutaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarRutaMouseClicked
-        
         marco.PanelEscritorio.add(vEliminarRuta);
         vEliminarRuta.show();
         vEliminarRuta.tablaRuta();
     }//GEN-LAST:event_botonEliminarRutaMouseClicked
 
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
-        // TODO add your handling code here:
-        
-        actualizarTablas();
-        
-        
+        actualizarTablas(); 
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     private void botonAsignatPCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonAsignatPCMouseClicked
         try {
-            // TODO add your handling code here:
             marco.vLogin.conect.insercion =  marco.vLogin.conect.conexion.prepareStatement("UPDATE punto_de_control SET ruta=null WHERE id_pc="+6);
             marco.vLogin.conect.insercion.executeUpdate();
             marco.vLogin.conect.insercion =  marco.vLogin.conect.conexion.prepareStatement("UPDATE punto_de_control SET ruta=null WHERE id_pc="+7);
@@ -584,7 +559,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             System.out.println("Falo");
             ex.getMessage();
-                ex.printStackTrace();
+            ex.printStackTrace();
         }
          marco.PanelEscritorio.add(vAsigPc);
          vAsigPc.show();

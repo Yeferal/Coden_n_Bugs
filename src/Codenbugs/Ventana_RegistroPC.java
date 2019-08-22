@@ -49,7 +49,6 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
     
     
     private void registrarPaquete(int idPaque){
-        
         try {
             if(termina){
                 marco.vLogin.conect.insercion = marco.vLogin.conect.conexion.prepareStatement("UPDATE paquete SET id_pc="+0+", entrega=1 WHERE id_paquete="+idPaque+";");
@@ -75,15 +74,12 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
                 return false;
             }  
             };
-            
             modelo1.addColumn("ID");
             modelo1.addColumn("Peso");
             modelo1.addColumn("Destino");
             modelo1.addColumn("Hora Llegada");
-            
             tablaPaquetes.setModel(modelo1);
             String datos[]= new String[4];
-            
             marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
             marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery("SELECT * FROM paquete WHERE id_pc="+id+";");
             while(marco.vLogin.conect.res.next()){
@@ -93,12 +89,10 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
                 datos[3] = marco.vLogin.conect.res.getString(7);
                 modelo1.addRow(datos);
             }
-            
         } catch (SQLException ex) {
             ex.getMessage();
             ex.printStackTrace();
-        }
-            
+        }      
     }
 
     @SuppressWarnings("unchecked")
@@ -318,24 +312,16 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
 
     private void botonActualziarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonActualziarMouseClicked
         actualizarTablaP();
-
     }//GEN-LAST:event_botonActualziarMouseClicked
 
     private void tablaPaquetesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPaquetesMouseClicked
         int fila=tablaPaquetes.getSelectedRow();
-        
-        txtId.setText(tablaPaquetes.getValueAt(fila, 0).toString());
-        
-        
+        txtId.setText(tablaPaquetes.getValueAt(fila, 0).toString());   
     }//GEN-LAST:event_tablaPaquetesMouseClicked
 
     private void botonRegisrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonRegisrarMouseClicked
-        
         registrarPaquete(Integer.parseInt(txtId.getText()));
-        
-        
     }//GEN-LAST:event_botonRegisrarMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonActualziar;
