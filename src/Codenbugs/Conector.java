@@ -382,4 +382,15 @@ System.out.println("falla 2");
             ex.printStackTrace(); 
         }
     }
+    
+    public void eliminarPaquete(String id){
+        try {
+            insercion = conexion.prepareStatement("DELETE FROM paquete WHERE id_paquete="+id+";");
+            insercion.executeUpdate();
+            
+        } catch (SQLException ex) {
+            ex.getMessage();
+            ex.printStackTrace(); 
+        }
+    }
 }

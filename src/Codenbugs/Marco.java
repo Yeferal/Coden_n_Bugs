@@ -5,7 +5,7 @@ public class Marco extends javax.swing.JFrame {
     Ventana_Admin vadministrador = new Ventana_Admin(this);
     Ventana_Login vLogin = new Ventana_Login(this);
     Ventana_Recepcionista vReceptor = new Ventana_Recepcionista(this);
-    Ventana_Operator vOperador = new Ventana_Operator(this,vLogin.usuarioLogin);
+    Ventana_Operator vOperador = new Ventana_Operator(this);
     
     
     public Marco() {

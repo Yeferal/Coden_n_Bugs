@@ -48,5 +48,9 @@ public class Usuario {
     public void setPassword(String Pass){
         this.Pass=Pass;
     }
+    public String toString(){
+        
+        return "Id: "+id+" Nombre:"+Nombre+" Tipo: "+tipo;
+    }
     
 }

@@ -37,6 +37,7 @@ public class Ventana_Login extends javax.swing.JInternalFrame {
                 if(CajaCodigo.getText().equals(marco.vLogin.conect.res.getString(3))){
                     if(cajaPasswird.getText().equals(marco.vLogin.conect.res.getString(5))){
                         sesionUsusario(marco.vLogin.conect.res.getString(1), marco.vLogin.conect.res.getString(2), marco.vLogin.conect.res.getString(3), marco.vLogin.conect.res.getString(4), marco.vLogin.conect.res.getString(5));
+                        
                         System.out.println("funciono");
                         this.dispose();
                         break;
@@ -57,7 +58,7 @@ public class Ventana_Login extends javax.swing.JInternalFrame {
         
         usuarioLogin=new Usuario();
         usuarioLogin.setDatos(Nombre, codigo, Integer.parseInt(tipo), passw);
-        
+        usuarioLogin.setId(Integer.parseInt(id));
         switch(usuarioLogin.gettipo()){
             case 1:
                 marco.vadministrador.tablaUser();
@@ -70,7 +71,7 @@ public class Ventana_Login extends javax.swing.JInternalFrame {
             case 2:
                 //Abre ventana operador
                 marco.vOperador.show();
-                marco.vOperador.actualizarLista(usuarioLogin);
+                marco.vOperador.actualizarLista();
                 break;
             case 3:
                 //Abre ventana recepcionista

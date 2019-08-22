@@ -49,7 +49,8 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
                 comboDesstinos.addItem(marco.vLogin.conect.res.getString(1));
             }   
         } catch (SQLException ex) {
-//            Logger.getLogger(Ventana_Recepcionista.class.getName()).log(Level.SEVERE, null, ex);
+            ex.getMessage();
+            ex.printStackTrace();
         }
     }
     public void registrar(){
@@ -86,7 +87,8 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
             }
         } catch (SQLException ex) {
             System.out.println("No existesss");
-            //Logger.getLogger(Ventana_Recepcionista.class.getName()).log(Level.SEVERE, null, ex);
+            ex.getMessage();
+            ex.printStackTrace();
         }
         return false;
     }
@@ -114,6 +116,8 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
             jugadores.close();
             
         } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
         }
 
     }
@@ -133,6 +137,42 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         modelo1.addRow(datos);
         
     }
+    
+    private void actualizarArribados(){
+        DefaultTableModel modelo1 = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }  
+            };
+        
+            modelo1.addColumn("ID");
+            modelo1.addColumn("Peso");
+            modelo1.addColumn("Destino");
+            modelo1.addColumn("Hora Llegada");
+            modelo1.addColumn("NIT");
+        
+            tablaArrivados.setModel(modelo1);
+            String datos[]= new String[5];
+            
+        try {
+            marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
+            marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery("SELECT * FROM paquete WHERE entrega=1;");
+            while(marco.vLogin.conect.res.next()){
+                datos[0] = marco.vLogin.conect.res.getString(1);
+                datos[1] = marco.vLogin.conect.res.getString(2);
+                datos[2] = marco.vLogin.conect.res.getString(9);
+                datos[3] = marco.vLogin.conect.res.getString(7);
+                datos[4] = marco.vLogin.conect.res.getString(3);
+                
+                modelo1.addRow(datos);
+            }
+            
+        } catch (SQLException ex) {
+            ex.getMessage();
+            ex.printStackTrace();
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -150,6 +190,11 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         scrollArrivados = new javax.swing.JScrollPane();
         tablaArrivados = new javax.swing.JTable();
         botonEntregas = new javax.swing.JButton();
+        botonActualiz = new javax.swing.JButton();
+        labelIdeAri = new javax.swing.JLabel();
+        labelnitArri = new javax.swing.JLabel();
+        txtIDPa = new javax.swing.JLabel();
+        txtNit = new javax.swing.JLabel();
         panelRegistrar = new javax.swing.JPanel();
         labelNit = new javax.swing.JLabel();
         cajaNIT = new javax.swing.JTextField();
@@ -234,30 +279,74 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
 
             }
         ));
+        tablaArrivados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaArrivadosMouseClicked(evt);
+            }
+        });
         scrollArrivados.setViewportView(tablaArrivados);
 
         botonEntregas.setText("Entregar");
+        botonEntregas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonEntregasMouseClicked(evt);
+            }
+        });
+
+        botonActualiz.setText("Actualizar");
+        botonActualiz.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonActualizMouseClicked(evt);
+            }
+        });
+
+        labelIdeAri.setText("ID Paquete:");
+
+        labelnitArri.setText("NIT:");
 
         javax.swing.GroupLayout panelArrivosLayout = new javax.swing.GroupLayout(panelArrivos);
         panelArrivos.setLayout(panelArrivosLayout);
         panelArrivosLayout.setHorizontalGroup(
             panelArrivosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelArrivosLayout.createSequentialGroup()
-                .addComponent(scrollArrivados)
+                .addComponent(scrollArrivados, javax.swing.GroupLayout.DEFAULT_SIZE, 1046, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelArrivosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonActualiz)
+                .addGap(23, 23, 23))
             .addGroup(panelArrivosLayout.createSequentialGroup()
-                .addGap(466, 466, 466)
-                .addComponent(botonEntregas)
-                .addContainerGap(507, Short.MAX_VALUE))
+                .addGroup(panelArrivosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelArrivosLayout.createSequentialGroup()
+                        .addGap(461, 461, 461)
+                        .addComponent(botonEntregas))
+                    .addGroup(panelArrivosLayout.createSequentialGroup()
+                        .addGap(259, 259, 259)
+                        .addComponent(labelIdeAri)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtIDPa, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(102, 102, 102)
+                        .addComponent(labelnitArri)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNit, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelArrivosLayout.setVerticalGroup(
             panelArrivosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelArrivosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(scrollArrivados, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGroup(panelArrivosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelIdeAri)
+                    .addComponent(labelnitArri)
+                    .addComponent(txtIDPa, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNit, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
                 .addComponent(botonEntregas)
-                .addGap(55, 55, 55))
+                .addGap(52, 52, 52)
+                .addComponent(botonActualiz)
+                .addGap(19, 19, 19))
         );
 
         subRecepcionista.addTab("Paquetes Arrivados", panelArrivos);
@@ -559,8 +648,31 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         registrar();
     }//GEN-LAST:event_botonConfirmarMouseClicked
 
+    private void botonActualizMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonActualizMouseClicked
+        actualizarArribados();
+    }//GEN-LAST:event_botonActualizMouseClicked
+
+    private void tablaArrivadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaArrivadosMouseClicked
+        int fila=tablaArrivados.getSelectedRow();
+        
+        txtIDPa.setText(tablaArrivados.getValueAt(fila, 0).toString());
+        txtNit.setText(tablaArrivados.getValueAt(fila, 4).toString());
+        
+        
+    }//GEN-LAST:event_tablaArrivadosMouseClicked
+
+    private void botonEntregasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEntregasMouseClicked
+        if(!txtIDPa.getText().equals("")){
+            marco.vLogin.conect.eliminarPaquete(txtIDPa.getText());
+        }
+        txtIDPa.setText("");
+        txtNit.setText("");
+        actualizarArribados();
+    }//GEN-LAST:event_botonEntregasMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonActualiz;
     private javax.swing.JButton botonBuscar;
     private javax.swing.JButton botonConfirmar;
     private javax.swing.JButton botonConsulataBuscar;
@@ -577,6 +689,7 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelDirreccion;
     private javax.swing.JLabel labelExistencia;
     private javax.swing.JLabel labelIdPa;
+    private javax.swing.JLabel labelIdeAri;
     private javax.swing.JLabel labelNItcli;
     private javax.swing.JLabel labelNit;
     private javax.swing.JLabel labelNitR;
@@ -585,6 +698,7 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelProri;
     private javax.swing.JLabel labelTotal;
     private javax.swing.JLabel labellibrs;
+    private javax.swing.JLabel labelnitArri;
     private javax.swing.JLabel lableTarifa;
     private javax.swing.JPanel panelArrivos;
     private javax.swing.JPanel panelConsulta;
@@ -602,5 +716,7 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
     private javax.swing.JTextField textoTaria;
     private javax.swing.JTextField textotnit;
     private javax.swing.JTextField textototal;
+    private javax.swing.JLabel txtIDPa;
+    private javax.swing.JLabel txtNit;
     // End of variables declaration//GEN-END:variables
 }
