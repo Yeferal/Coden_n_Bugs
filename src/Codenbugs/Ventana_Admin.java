@@ -23,16 +23,18 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     Ventana_Nueva_Ruta vNuevaRuta = new Ventana_Nueva_Ruta(this);
     Ventana_Eliminar_Ruta vEliminarRuta = new Ventana_Eliminar_Ruta(this);
     Ventana_AsigPC vAsigPc = new Ventana_AsigPC(this);
+    Ventana_Destino vDestino = new Ventana_Destino(this);
+    Ventana_Nuevo_Destino vNuevoDestino =  new Ventana_Nuevo_Destino(this);
+    Ventana_EstadoRuta vEstadoRuta = new Ventana_EstadoRuta(this);
     
     public Ventana_Admin(Marco marco) {
         initComponents();
-        this.marco=marco;
-        //tablaUser();   
+        this.marco=marco;  
     }
     
     public void tablaUser(){
         DefaultTableModel modelo1 = new DefaultTableModel();
-        
+
         modelo1.addColumn("ID");
         modelo1.addColumn("Nombre");
         modelo1.addColumn("Codigo");
@@ -50,8 +52,6 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 datos[0] = marco.vLogin.conect.res.getString(1);
                 datos[1] = marco.vLogin.conect.res.getString(2);
                 datos[2] = marco.vLogin.conect.res.getString(3);
-                
-                //datos[3] = marco.vLogin.conect.res.getString(4);
                 switch(marco.vLogin.conect.res.getString(4)){
                     case "1":
                          datos[3] = "Administrador";
@@ -63,7 +63,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                         datos[3] = "Recepcionista";
                         break;
                         default:
-                            datos[3] = "Desactivado";
+                        datos[3] = "Desactivado";
                 }
                 datos[4] = marco.vLogin.conect.res.getString(5);
                 modelo1.addRow(datos);      
@@ -151,62 +151,9 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
-    public void tablaPCenRuta(){
-        DefaultTableModel modelo1 = new DefaultTableModel();
-        modelo1.addColumn("Nombre");
-        modelo1.addColumn("Capacidad");
-        modelo1.addColumn("PC Siguiente");
-        tablaPCRutas.setModel(modelo1);
-        String datos[]= new String[8];
-        try {
-            marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
-            marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(punto);
-            while (marco.vLogin.conect.res.next()) {                
-                //System.out.println(marco.vLogin.conect.res.getString(1));
-                datos[0]=marco.vLogin.conect.res.getString(1);
-                datos[1]=marco.vLogin.conect.res.getString(2);
-                datos[2]=marco.vLogin.conect.res.getString(3);
-                datos[3]=marco.vLogin.conect.res.getString(4);
-                datos[4]=marco.vLogin.conect.res.getString(5);
-                datos[5]=marco.vLogin.conect.res.getString(6);
-                datos[6]=marco.vLogin.conect.res.getString(7);
-                datos[7]=marco.vLogin.conect.res.getString(8);
-                modelo1.addRow(datos);      
-            }  
-        } catch (Exception e) {   
-            e.getMessage();
-            e.printStackTrace();
-        }
-    }
-    private void tablaPCDisponible(){
-        DefaultTableModel modelo1 = new DefaultTableModel();
-        modelo1.addColumn("ID");
-        modelo1.addColumn("Nombre");
-        modelo1.addColumn("Capacidad");
-        tablaPCRutas.setModel(modelo1);
-        String datos[]= new String[3];
-        try {
-            marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
-            marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(punto);
-            while (marco.vLogin.conect.res.next()) {                
-                    String nu=marco.vLogin.conect.res.getString(7);
-                if(nu==null){
-                    datos[0]=marco.vLogin.conect.res.getString(1);
-                    datos[1]=marco.vLogin.conect.res.getString(2);
-                    datos[2]=marco.vLogin.conect.res.getString(5);
-                    modelo1.addRow(datos);
-                }else{
-                    System.out.println("No agrego");
-                } 
-            }  
-        } catch (Exception e) {  
-            e.getMessage();
-            e.printStackTrace();
-        }
-    }
+
     public void actualizarTablas(){
         tablaPC();
-        tablaPCDisponible();
         //tablaPCenRuta();
         tablaRuta();
         tablaUser();
@@ -225,14 +172,10 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         Panel_Rutas = new javax.swing.JPanel();
         scrollTRutas = new javax.swing.JScrollPane();
         tablaRutas = new javax.swing.JTable();
-        scrollTPc = new javax.swing.JScrollPane();
-        tablaPCRutas = new javax.swing.JTable();
         botonNuevaRuta = new javax.swing.JButton();
-        botonEditar = new javax.swing.JButton();
         botonEliminarRuta = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         botonAsignatPC = new javax.swing.JButton();
-        botonquitatPC = new javax.swing.JButton();
+        botonEstosRuta = new javax.swing.JButton();
         Panel_Puntos = new javax.swing.JPanel();
         botonNuevoPC = new javax.swing.JButton();
         botonEditarPC = new javax.swing.JButton();
@@ -240,6 +183,10 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaPC = new javax.swing.JTable();
         panelDatos = new javax.swing.JPanel();
+        botonEstablecer = new javax.swing.JButton();
+        txtTarifa = new javax.swing.JLabel();
+        botonDestinos = new javax.swing.JButton();
+        botonNuevoDestino = new javax.swing.JButton();
 
         setIconifiable(true);
         setRequestFocusEnabled(false);
@@ -324,24 +271,12 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         ));
         scrollTRutas.setViewportView(tablaRutas);
 
-        tablaPCRutas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        scrollTPc.setViewportView(tablaPCRutas);
-
         botonNuevaRuta.setText("Nueva Ruta");
         botonNuevaRuta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botonNuevaRutaMouseClicked(evt);
             }
         });
-
-        botonEditar.setText("Editar Ruta");
 
         botonEliminarRuta.setText("Eliminar Ruta");
         botonEliminarRuta.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -350,64 +285,52 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton4.setText("jButton4");
-
-        botonAsignatPC.setText("Asignar punto de control a Ruta");
+        botonAsignatPC.setText("Editar Rutas");
         botonAsignatPC.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botonAsignatPCMouseClicked(evt);
             }
         });
 
-        botonquitatPC.setText("Quitar punto de control a Ruta");
+        botonEstosRuta.setText("Descativar / Activar");
+        botonEstosRuta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonEstosRutaMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout Panel_RutasLayout = new javax.swing.GroupLayout(Panel_Rutas);
         Panel_Rutas.setLayout(Panel_RutasLayout);
         Panel_RutasLayout.setHorizontalGroup(
             Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_RutasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrollTRutas))
+            .addGroup(Panel_RutasLayout.createSequentialGroup()
+                .addGap(128, 128, 128)
+                .addComponent(botonNuevaRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(91, 91, 91)
                 .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonEstosRuta)
                     .addGroup(Panel_RutasLayout.createSequentialGroup()
+                        .addComponent(botonAsignatPC, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(90, 90, 90)
-                        .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(botonNuevaRuta)
-                            .addComponent(botonEditar))
-                        .addGap(149, 149, 149)
-                        .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(botonAsignatPC)
-                            .addComponent(botonquitatPC)))
-                    .addGroup(Panel_RutasLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(scrollTRutas, javax.swing.GroupLayout.PREFERRED_SIZE, 582, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Panel_RutasLayout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(botonEliminarRuta)
-                            .addComponent(jButton4)))
-                    .addGroup(Panel_RutasLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(scrollTPc, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(botonEliminarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
         Panel_RutasLayout.setVerticalGroup(
             Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_RutasLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
+                .addComponent(botonEstosRuta)
+                .addGap(29, 29, 29)
                 .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonNuevaRuta)
+                    .addComponent(botonAsignatPC)
                     .addComponent(botonEliminarRuta)
-                    .addComponent(botonAsignatPC))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonEditar)
-                    .addComponent(jButton4)
-                    .addComponent(botonquitatPC))
-                .addGap(47, 47, 47)
-                .addGroup(Panel_RutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(scrollTRutas, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
-                    .addComponent(scrollTPc))
-                .addGap(34, 34, 34))
+                    .addComponent(botonNuevaRuta))
+                .addGap(18, 18, 18)
+                .addComponent(scrollTRutas, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Rutas", Panel_Rutas);
@@ -474,15 +397,48 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Puntos de Control", Panel_Puntos);
 
+        botonEstablecer.setText("Establece Tarifa Global");
+
+        botonDestinos.setText("Destinos");
+        botonDestinos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonDestinosMouseClicked(evt);
+            }
+        });
+
+        botonNuevoDestino.setText("Nuevo Destino");
+        botonNuevoDestino.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonNuevoDestinoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelDatosLayout = new javax.swing.GroupLayout(panelDatos);
         panelDatos.setLayout(panelDatosLayout);
         panelDatosLayout.setHorizontalGroup(
             panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 898, Short.MAX_VALUE)
+            .addGroup(panelDatosLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(txtTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(156, 156, 156)
+                .addGroup(panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(botonNuevoDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonDestinos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonEstablecer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(375, Short.MAX_VALUE))
         );
         panelDatosLayout.setVerticalGroup(
             panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 634, Short.MAX_VALUE)
+            .addGroup(panelDatosLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonEstablecer)
+                    .addComponent(txtTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(63, 63, 63)
+                .addComponent(botonDestinos)
+                .addGap(18, 18, 18)
+                .addComponent(botonNuevoDestino)
+                .addContainerGap(434, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Datos", panelDatos);
@@ -567,32 +523,48 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
          vAsigPc.tablaPCDisponible();
     }//GEN-LAST:event_botonAsignatPCMouseClicked
 
+    private void botonDestinosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonDestinosMouseClicked
+        marco.PanelEscritorio.add(vDestino);
+        vDestino.show();
+    }//GEN-LAST:event_botonDestinosMouseClicked
+
+    private void botonNuevoDestinoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonNuevoDestinoMouseClicked
+        marco.PanelEscritorio.add(vNuevoDestino);
+        vNuevoDestino.show();
+    }//GEN-LAST:event_botonNuevoDestinoMouseClicked
+
+    private void botonEstosRutaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEstosRutaMouseClicked
+         marco.PanelEscritorio.add(vEstadoRuta);
+        vEstadoRuta.show();
+        vEstadoRuta.llenarTabla();
+    }//GEN-LAST:event_botonEstosRutaMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel_Puntos;
     private javax.swing.JPanel Panel_Rutas;
     private javax.swing.JPanel Panel_Usuarios;
     private javax.swing.JButton botonAsignatPC;
-    private javax.swing.JButton botonEditar;
+    private javax.swing.JButton botonDestinos;
     private javax.swing.JButton botonEditarPC;
     private javax.swing.JButton botonEliminarPC;
     private javax.swing.JButton botonEliminarRuta;
+    private javax.swing.JButton botonEstablecer;
+    private javax.swing.JButton botonEstosRuta;
     private javax.swing.JButton botonNuevaRuta;
+    private javax.swing.JButton botonNuevoDestino;
     private javax.swing.JButton botonNuevoPC;
     private javax.swing.JButton botonNuevoUsusario;
-    private javax.swing.JButton botonquitatPC;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel panelDatos;
-    private javax.swing.JScrollPane scrollTPc;
     private javax.swing.JScrollPane scrollTRutas;
     private javax.swing.JTable tablaPC;
-    private javax.swing.JTable tablaPCRutas;
     private javax.swing.JTable tablaRutas;
     private javax.swing.JTable tablaUsusarios;
+    private javax.swing.JLabel txtTarifa;
     // End of variables declaration//GEN-END:variables
 }

@@ -16,7 +16,7 @@ public class Ventana_Eliminar_Ruta extends javax.swing.JInternalFrame {
     }
 
     public void enviarRuta(int ids){
-        vadmin.marco.vLogin.conect.eliminarRuta(ids);
+        vadmin.marco.vLogin.conect.rutaC.eliminarRuta(ids);
         seleccionado=false;
         limpiar();
         tablaRuta();

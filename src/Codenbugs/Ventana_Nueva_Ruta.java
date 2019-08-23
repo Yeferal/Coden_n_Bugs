@@ -19,7 +19,7 @@ public class Ventana_Nueva_Ruta extends javax.swing.JInternalFrame {
         if(!cajaCuota.getText().equals("")){
             
             try {
-                vadmin.marco.vLogin.conect.insertarRuta(inicio, destino, cuota);
+                vadmin.marco.vLogin.conect.rutaC.insertarRuta(inicio, destino, cuota);
                 System.out.println("Creo");
                 cajaCuota.setText("");
                 vadmin.tablaRuta();

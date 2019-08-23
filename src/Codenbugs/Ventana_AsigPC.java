@@ -116,17 +116,17 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
     public void enviarPcAgregar(int idR, int idPc){
         System.out.println("id Ruta: "+idR);
         System.out.println("id Punto: "+idPc);
-        vadmin.marco.vLogin.conect.agregarPC(idR, idPc);
+        vadmin.marco.vLogin.conect.rutaC.agregarPC(idR, idPc);
         actualizarTabla();
     }
     public void enviarEliminar(int idPCdelet, int idsig){
-        vadmin.marco.vLogin.conect.eliminarPCdeRuta(idPCdelet, idsig);
+        vadmin.marco.vLogin.conect.rutaC.eliminarPCdeRuta(idPCdelet, idsig);
         actualizarTabla();
     }
     
     public void enviarCambiar(int idsele1, int idsele2, String sig1 , String sig2) throws SQLException{
         
-        vadmin.marco.vLogin.conect.cambiarPCs(idsele1, idsele2, sig1, sig2);
+        vadmin.marco.vLogin.conect.rutaC.cambiarPCs(idsele1, idsele2, sig1, sig2);
         actualizarTabla();
     }
     
