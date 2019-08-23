@@ -68,7 +68,7 @@ public class Ventana_NuevoPC extends javax.swing.JInternalFrame {
 
         textoUsuerAsign.setText("Operador Asignado (ID):");
 
-        jLabel1.setText("El operador asignado puede omitirlo no es Obligatorio");
+        jLabel1.setText("Todos los Campos son Obligatorio");
 
         botonUCrear.setText("Crear");
         botonUCrear.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -92,11 +92,13 @@ public class Ventana_NuevoPC extends javax.swing.JInternalFrame {
                 .addGroup(panelNuevoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(botonUCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelNuevoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel1)
                         .addComponent(cajaNombre)
                         .addComponent(cajaTrifa, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
                         .addComponent(cajauserasig)
-                        .addComponent(cajaCapacidad)))
+                        .addComponent(cajaCapacidad)
+                        .addGroup(panelNuevoUsuarioLayout.createSequentialGroup()
+                            .addGap(57, 57, 57)
+                            .addComponent(jLabel1))))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         panelNuevoUsuarioLayout.setVerticalGroup(

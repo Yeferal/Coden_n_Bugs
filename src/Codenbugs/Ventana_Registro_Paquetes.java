@@ -6,8 +6,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.sql.SQLException;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.bind.ParseConversionEvent;
 
 public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
     
@@ -18,6 +20,7 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
     boolean clienteExiste;
     Factura html;
     double total;
+    double totalAcumulado;
     DefaultTableModel modelo1 = new DefaultTableModel();
     
     public Ventana_Registro_Paquetes(Ventana_Recepcionista vRecep) {
@@ -82,7 +85,12 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
     
     public void registrar(){
         double peso = Double.parseDouble(textoPeso.getText());
-        int nitC = Integer.parseInt(textotnit.getText());
+        int nitC;
+        if(textotnit.getText().equalsIgnoreCase("c/f")){
+            nitC = 0;
+        }else{
+            nitC = Integer.parseInt(textotnit.getText());
+        }
         int priorizdo = comboPriori.getSelectedIndex();
         String destinoS = comboDesstinos.getSelectedItem().toString();
         double couta = Double.parseDouble(textoCuota.getText());
@@ -100,21 +108,23 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
         if(comboPriori.getSelectedIndex()==0){
             datos[2] = "0";
         }else{
-            datos[2] = "125";
+            datos[2] = Integer.toString((int) vRecep.marco.vLogin.conect.pcConeC.priorizacionP);
         }
-        datos[3] = "200";
+        datos[3] = Integer.toString((int) vRecep.marco.vLogin.conect.pcConeC.cuotaDestino);
         datos[4] = textototal.getText();
         
         modelo1.addRow(datos);
         
     }
     private void generarFactura(String Nombre){
-        File factura = new File(Nombre+".html");
+        Date fecha = new Date();
+        String fechaS = fecha.getYear()+""+fecha.getMonth()+""+fecha.getDay()+""+fecha.getHours()+""+fecha.getMinutes();
+        File factura = new File("Facturas/"+Nombre+" "+fechaS+".html");
         html =  new Factura();
         try {
             FileWriter jugadores= new FileWriter(factura);
             BufferedWriter bw = new BufferedWriter(jugadores);
-            html.generarEncabezado(textoNombre.getText(), Integer.parseInt(cajaNIT.getText()), textoDireccion.getText());
+            html.generarEncabezado(textoNombre.getText(), Integer.parseInt(textotnit.getText()), textoDireccion.getText());
             html.pestania();
             bw.write(html.salida);
             bw.newLine();
@@ -124,7 +134,7 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
                 bw.write(html.filaText);
                 bw.newLine();
             }
-            html.generarcola(total);
+            html.generarcola(totalAcumulado);
             bw.write(html.cola);
             bw.newLine();
             bw.close();
@@ -135,6 +145,42 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
 
+    }
+    private void verificarNt(){
+        if(verificarTamanio(cajaNIT.getText())){
+            
+            if(cajaNIT.getText().equalsIgnoreCase("c/f")){
+                nitActual = 0;
+                textoNombre.setText("Consuminidor final");
+                textoDireccion.setText(" ----- ");
+                textotnit.setText("0");
+            }else{
+                textotnit.setText(cajaNIT.getText());
+                nitActual = Integer.parseInt(cajaNIT.getText());
+                if(buscarNit(Integer.parseInt(cajaNIT.getText()))){
+
+                }else{
+                    botonCrearMidificar.setText("Crear");
+                    labelExistencia.setText("El cliente NO existe, ingrese sus dato y Cree al cliente");
+                    clienteExiste = false;
+                }
+            }
+
+        }else{
+            JOptionPane.showMessageDialog(null, "El NIT debe de tener Ocho numeros");
+        }
+    }
+    private void totales(){
+        if(!textoPeso.getText().equals("")){
+            total = (Integer.parseInt(textoPeso.getText()))*(vRecep.marco.vLogin.conect.pcConeC.precioLibra);
+        
+        if(comboPriori.getSelectedIndex()==0){
+            total = total + (vRecep.marco.vLogin.conect.pcConeC.cuotaDestino);
+        }else{
+            total = total + (vRecep.marco.vLogin.conect.pcConeC.cuotaDestino)+ (vRecep.marco.vLogin.conect.pcConeC.priorizacionP);
+        }
+        textototal.setText(Double.toString(total));
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -170,7 +216,11 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
         textototal = new javax.swing.JTextField();
         botonConfirmar = new javax.swing.JButton();
         botonFinalizar = new javax.swing.JButton();
+        txtAcumulado = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
+        setClosable(true);
+        setIconifiable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelNit.setText("NIT:");
@@ -236,9 +286,19 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
 
         labelDestino.setText("Destino: ");
 
+        comboDesstinos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboDesstinosActionPerformed(evt);
+            }
+        });
+
         labelCuata.setText("Cuota:");
 
+        textoCuota.setEditable(false);
+
         labelTotal.setText("Total =");
+
+        textototal.setEditable(false);
 
         botonConfirmar.setText("Confirmar Paquete");
         botonConfirmar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -254,15 +314,21 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setText("Factura");
+
         javax.swing.GroupLayout panelRegistrarLayout = new javax.swing.GroupLayout(panelRegistrar);
         panelRegistrar.setLayout(panelRegistrarLayout);
         panelRegistrarLayout.setHorizontalGroup(
             panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRegistrarLayout.createSequentialGroup()
-                .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(botonFinalizar)
-                    .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(panelRegistrarLayout.createSequentialGroup()
+                            .addGap(111, 111, 111)
+                            .addComponent(txtAcumulado, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonFinalizar))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelRegistrarLayout.createSequentialGroup()
                             .addGap(41, 41, 41)
                             .addComponent(labelNombre)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -273,21 +339,21 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
                             .addComponent(textoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(26, 26, 26)
                             .addComponent(botonCrearMidificar))
-                        .addGroup(panelRegistrarLayout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelRegistrarLayout.createSequentialGroup()
                             .addGap(329, 329, 329)
                             .addComponent(labelNit)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(cajaNIT, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panelRegistrarLayout.createSequentialGroup()
-                            .addGap(175, 175, 175)
-                            .addComponent(labelExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 631, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panelRegistrarLayout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelRegistrarLayout.createSequentialGroup()
                             .addContainerGap()
                             .addComponent(scrollTalbapQ, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(panelRegistrarLayout.createSequentialGroup()
+                                    .addGap(69, 69, 69)
+                                    .addComponent(botonConfirmar))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistrarLayout.createSequentialGroup()
                                     .addGap(19, 19, 19)
                                     .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(panelRegistrarLayout.createSequentialGroup()
@@ -295,7 +361,6 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
                                                 .addComponent(labelProri)
                                                 .addComponent(labelPeso)
                                                 .addComponent(labelNItcli)
-                                                .addComponent(lableTarifa)
                                                 .addComponent(labelDestino)
                                                 .addComponent(labelCuata))
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -306,17 +371,26 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
                                                     .addComponent(labellibrs))
                                                 .addComponent(textotnit)
                                                 .addComponent(comboPriori, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(textoTaria)
                                                 .addComponent(comboDesstinos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(textoCuota)))
                                         .addGroup(panelRegistrarLayout.createSequentialGroup()
                                             .addGap(21, 21, 21)
                                             .addComponent(labelTotal)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(textototal))))
-                                .addGroup(panelRegistrarLayout.createSequentialGroup()
-                                    .addGap(69, 69, 69)
-                                    .addComponent(botonConfirmar))))))
+                                            .addComponent(textototal)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(textoTaria, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistrarLayout.createSequentialGroup()
+                                            .addComponent(lableTarifa)
+                                            .addGap(55, 55, 55)))
+                                    .addGap(8, 8, 8))))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelRegistrarLayout.createSequentialGroup()
+                            .addGap(180, 180, 180)
+                            .addComponent(jLabel1)))
+                    .addGroup(panelRegistrarLayout.createSequentialGroup()
+                        .addGap(207, 207, 207)
+                        .addComponent(labelExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 631, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
         panelRegistrarLayout.setVerticalGroup(
@@ -340,45 +414,51 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
                         .addComponent(botonCrearMidificar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addGap(9, 9, 9)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelRegistrarLayout.createSequentialGroup()
-                        .addComponent(scrollTalbapQ, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(textoTaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lableTarifa)
+                        .addGap(178, 178, 178)
                         .addComponent(botonFinalizar)
                         .addGap(51, 51, 51))
                     .addGroup(panelRegistrarLayout.createSequentialGroup()
-                        .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelPeso)
-                            .addComponent(textoPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labellibrs))
-                        .addGap(18, 18, 18)
-                        .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelNItcli)
-                            .addComponent(textotnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
-                        .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelProri)
-                            .addComponent(comboPriori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27)
-                        .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lableTarifa)
-                            .addComponent(textoTaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32)
-                        .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelDestino)
-                            .addComponent(comboDesstinos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
-                        .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelCuata)
-                            .addComponent(textoCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(33, 33, 33)
-                        .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelTotal)
-                            .addComponent(textototal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38)
-                        .addComponent(botonConfirmar)
-                        .addContainerGap(127, Short.MAX_VALUE))))
+                        .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelRegistrarLayout.createSequentialGroup()
+                                .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelPeso)
+                                    .addComponent(textoPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labellibrs))
+                                .addGap(18, 18, 18)
+                                .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelNItcli)
+                                    .addComponent(textotnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(24, 24, 24)
+                                .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelProri)
+                                    .addComponent(comboPriori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(comboDesstinos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelDestino))
+                                .addGap(18, 18, 18)
+                                .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(textoCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelCuata))
+                                .addGap(109, 109, 109)
+                                .addGroup(panelRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelTotal)
+                                    .addComponent(textototal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(38, 38, 38)
+                                .addComponent(botonConfirmar))
+                            .addComponent(scrollTalbapQ, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)
+                        .addComponent(txtAcumulado, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(74, Short.MAX_VALUE))))
         );
 
         getContentPane().add(panelRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 14, -1, -1));
@@ -404,26 +484,8 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
     private void botonBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonBuscarMouseClicked
         // TODO add your handling code here:
         listarDestino();
-        if(verificarTamanio(cajaNIT.getText())){
-            textotnit.setText(cajaNIT.getText());
-            if(cajaNIT.getText().equalsIgnoreCase("c/f")){
-                nitActual = 0;
-                textoNombre.setText("Consuminidor final");
-                textoDireccion.setText(" ----- ");
-            }else{
-                nitActual = Integer.parseInt(cajaNIT.getText());
-                if(buscarNit(Integer.parseInt(cajaNIT.getText()))){
-
-                }else{
-                    botonCrearMidificar.setText("Crear");
-                    labelExistencia.setText("El cliente NO existe, ingrese sus dato y Cree al cliente");
-                    clienteExiste = false;
-                }
-            }
-
-        }else{
-            JOptionPane.showMessageDialog(null, "El NIT debe de tener Ocho numeros");
-        }
+        vRecep.marco.vLogin.conect.pcConeC.actualizarPrecio();
+        verificarNt();
     }//GEN-LAST:event_botonBuscarMouseClicked
 
     private void botonCrearMidificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonCrearMidificarMouseClicked
@@ -446,16 +508,33 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_textoPesoKeyTyped
 
     private void botonConfirmarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonConfirmarMouseClicked
-        // TODO add your handling code here:
+        totalAcumulado = totalAcumulado+total;
+        txtAcumulado.setText("TOTAL FINAL: "+totalAcumulado);
         registrar();
+        textoPeso.setText("");
+        textoCuota.setText("");
+        textototal.setText("");
     }//GEN-LAST:event_botonConfirmarMouseClicked
 
     private void botonFinalizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonFinalizarMouseClicked
-        // TODO add your handling code here:
         generarFactura(textoNombre.getText());
+        textoPeso.setText("");
+        textoCuota.setText("");
+        textototal.setText("");
+        cajaNIT.setText("");
+        tablaPaquetes.clearSelection();
+        for (int i = 0;i<tablaPaquetes.countComponents(); i++) {
+            modelo1.removeRow(i);
+        }
     }//GEN-LAST:event_botonFinalizarMouseClicked
 
-
+    private void comboDesstinosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDesstinosActionPerformed
+        if(!textoPeso.getText().equals("")){
+            String cou = Double.toString(vRecep.marco.vLogin.conect.pcConeC.actualizarCuota((String) comboDesstinos.getSelectedItem()));
+            textoCuota.setText(cou);
+            totales();
+        }
+    }//GEN-LAST:event_comboDesstinosActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuscar;
     private javax.swing.JButton botonConfirmar;
@@ -464,6 +543,7 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
     private javax.swing.JTextField cajaNIT;
     private javax.swing.JComboBox<String> comboDesstinos;
     private javax.swing.JComboBox<String> comboPriori;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelCuata;
     private javax.swing.JLabel labelDestino;
     private javax.swing.JLabel labelDirreccion;
@@ -486,5 +566,6 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
     private javax.swing.JTextField textoTaria;
     private javax.swing.JTextField textotnit;
     private javax.swing.JTextField textototal;
+    private javax.swing.JLabel txtAcumulado;
     // End of variables declaration//GEN-END:variables
 }

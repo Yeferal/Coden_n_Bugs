@@ -40,7 +40,7 @@ public class Factura {
 
     public void generarcola(double total){
         cola="\n</table>\n";
-        cola="<div>                Total"+total+"</div>";
+        cola="<h3>                Total: "+total+"</h3>";
         cola+="</body>\n";
         cola+="</html>\n";
     }

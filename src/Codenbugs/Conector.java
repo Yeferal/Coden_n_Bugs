@@ -22,9 +22,10 @@ public class Conector {
     Ruta rutaC = new Ruta(this);
     Registro registroC = new Registro(this);
     PC_Conect pcConeC = new PC_Conect(this);
+    Arrivados arrivadosC = new Arrivados(this);
     
     public Conector(){
-        try {
+       try {
             conexion = DriverManager.getConnection(servidor, user, password);
             System.out.println("Se conecto XD: "+conexion.getCatalog());
         } catch (SQLException e) {
@@ -138,5 +139,32 @@ public class Conector {
         } catch (SQLException ex) {
             ex.getMessage();
             ex.printStackTrace();        }
+    }
+    public void actualizarTarifa(int tarifa){
+        try {
+            insercion = conexion.prepareStatement("UPDATE registro SET tarifa_global="+tarifa+";");
+            insercion.executeUpdate();
+        } catch (SQLException ex) {
+            ex.getMessage();
+            ex.printStackTrace();
+        }
+    }
+    public void actualizarLibras(int tarifa){
+        try {
+            insercion = conexion.prepareStatement("UPDATE registro SET precio_libra="+tarifa+";");
+            insercion.executeUpdate();
+        } catch (SQLException ex) {
+            ex.getMessage();
+            ex.printStackTrace();
+        }
+    }
+    public void actualizarPriosizacion(int tarifa){
+        try {
+            insercion = conexion.prepareStatement("UPDATE registro SET precio_priorizacion="+tarifa+";");
+            insercion.executeUpdate();
+        } catch (SQLException ex) {
+            ex.getMessage();
+            ex.printStackTrace();
+        }
     }
 }

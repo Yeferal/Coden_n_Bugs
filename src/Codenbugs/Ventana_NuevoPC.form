@@ -47,11 +47,14 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="botonUCrear" min="-2" pref="82" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <Component id="cajaNombre" alignment="0" max="32767" attributes="0"/>
                           <Component id="cajaTrifa" alignment="0" pref="315" max="32767" attributes="0"/>
                           <Component id="cajauserasig" alignment="0" max="32767" attributes="0"/>
                           <Component id="cajaCapacidad" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <EmptySpace pref="25" max="32767" attributes="0"/>
@@ -119,7 +122,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="El operador asignado puede omitirlo no es Obligatorio"/>
+            <Property name="text" type="java.lang.String" value="Todos los Campos son Obligatorio"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="botonUCrear">

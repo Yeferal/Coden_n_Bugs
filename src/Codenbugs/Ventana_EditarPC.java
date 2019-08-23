@@ -180,7 +180,7 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
                         .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(115, 115, 115))))
             .addGroup(panelNuevoUsuarioLayout.createSequentialGroup()
-                .addGap(274, 274, 274)
+                .addGap(276, 276, 276)
                 .addComponent(jLabel1)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -213,8 +213,9 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
                         .addComponent(botonModificar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelDescripcion)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addGap(12, 12, 12))
         );
 
         getContentPane().add(panelNuevoUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 910, 210));

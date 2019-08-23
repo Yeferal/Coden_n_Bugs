@@ -25,12 +25,12 @@
     <Property name="useNullLayout" type="boolean" value="false"/>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+    <Container class="javax.swing.JTabbedPane" name="subAdmin">
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
       </AccessibilityProperties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTabbedPane1MouseClicked"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="subAdminMouseClicked"/>
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -56,9 +56,9 @@
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       <Component id="botonNuevoUsusario" min="-2" pref="197" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
-                      <Component id="jButton8" min="-2" pref="211" max="-2" attributes="0"/>
+                      <Component id="botonQuitarUsuario" min="-2" pref="211" max="-2" attributes="0"/>
                       <EmptySpace pref="77" max="32767" attributes="0"/>
-                      <Component id="jButton9" min="-2" pref="229" max="-2" attributes="0"/>
+                      <Component id="botonEditaUSER" min="-2" pref="229" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -74,8 +74,8 @@
                       <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="botonNuevoUsusario" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
-                          <Component id="jButton8" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
-                          <Component id="jButton9" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                          <Component id="botonQuitarUsuario" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                          <Component id="botonEditaUSER" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="107" max="32767" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="421" max="-2" attributes="0"/>
@@ -93,12 +93,12 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonNuevoUsusarioMouseClicked"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton8">
+            <Component class="javax.swing.JButton" name="botonQuitarUsuario">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Quitar Usuario"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton8MouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonQuitarUsuarioMouseClicked"/>
               </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -117,12 +117,12 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="jButton9">
+            <Component class="javax.swing.JButton" name="botonEditaUSER">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Editar Datos de Usuario"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton9MouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonEditaUSERMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>
@@ -328,14 +328,20 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="txtTarifa" min="-2" pref="182" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="156" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="botonNuevoDestino" max="32767" attributes="0"/>
-                          <Component id="botonDestinos" max="32767" attributes="0"/>
-                          <Component id="botonEstablecer" max="32767" attributes="0"/>
+                          <Component id="txtLibra" max="32767" attributes="0"/>
+                          <Component id="txtPriori" max="32767" attributes="0"/>
+                          <Component id="txtTarifa" pref="182" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="375" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="botonEstablecer" max="32767" attributes="0"/>
+                          <Component id="botonDestinos" alignment="0" max="32767" attributes="0"/>
+                          <Component id="botonPr" alignment="0" pref="567" max="32767" attributes="0"/>
+                          <Component id="botonNuevoDestino" alignment="0" max="32767" attributes="0"/>
+                          <Component id="botonLibra" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -347,11 +353,21 @@
                           <Component id="botonEstablecer" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="txtTarifa" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txtPriori" min="-2" pref="27" max="-2" attributes="0"/>
+                          <Component id="botonPr" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txtLibra" min="-2" pref="31" max="-2" attributes="0"/>
+                          <Component id="botonLibra" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="botonDestinos" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="botonNuevoDestino" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="434" max="32767" attributes="0"/>
+                      <EmptySpace pref="427" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -361,6 +377,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Establece Tarifa Global"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonEstablecerMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="txtTarifa">
             </Component>
@@ -378,6 +397,26 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonNuevoDestinoMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="txtPriori">
+            </Component>
+            <Component class="javax.swing.JButton" name="botonPr">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Establece Precio Priorizacion"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonPrMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="txtLibra">
+            </Component>
+            <Component class="javax.swing.JButton" name="botonLibra">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Establecer Precio Libra"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonLibraMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>

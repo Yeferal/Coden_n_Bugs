@@ -29,7 +29,7 @@ public class Ventana_Destino extends javax.swing.JInternalFrame {
             };
         
             modelo1.addColumn("Destino");
-            modelo1.addColumn("Tarifa Global");
+            modelo1.addColumn("Cuota Destino");
         
             tablaDestinos.setModel(modelo1);
             String datos[]= new String[2];

@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -152,23 +153,29 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         }
     }
 
-    public void actualizarTablas(){
+    public void actualizarTablas() throws SQLException{
         tablaPC();
         //tablaPCenRuta();
         tablaRuta();
         tablaUser();
+        marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
+        marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery("SELECT * FROM registro;");
+        marco.vLogin.conect.res.next();
+        txtTarifa.setText("Tarifa: "+marco.vLogin.conect.res.getString(2));
+        txtPriori.setText("Priorizacion: "+marco.vLogin.conect.res.getString(5));
+        txtLibra.setText("Libra: "+marco.vLogin.conect.res.getString(3));
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        subAdmin = new javax.swing.JTabbedPane();
         Panel_Usuarios = new javax.swing.JPanel();
         botonNuevoUsusario = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        botonQuitarUsuario = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaUsusarios = new javax.swing.JTable();
-        jButton9 = new javax.swing.JButton();
+        botonEditaUSER = new javax.swing.JButton();
         Panel_Rutas = new javax.swing.JPanel();
         scrollTRutas = new javax.swing.JScrollPane();
         tablaRutas = new javax.swing.JTable();
@@ -187,14 +194,18 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         txtTarifa = new javax.swing.JLabel();
         botonDestinos = new javax.swing.JButton();
         botonNuevoDestino = new javax.swing.JButton();
+        txtPriori = new javax.swing.JLabel();
+        botonPr = new javax.swing.JButton();
+        txtLibra = new javax.swing.JLabel();
+        botonLibra = new javax.swing.JButton();
 
         setIconifiable(true);
         setRequestFocusEnabled(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+        subAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTabbedPane1MouseClicked(evt);
+                subAdminMouseClicked(evt);
             }
         });
 
@@ -205,10 +216,10 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton8.setText("Quitar Usuario");
-        jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
+        botonQuitarUsuario.setText("Quitar Usuario");
+        botonQuitarUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton8MouseClicked(evt);
+                botonQuitarUsuarioMouseClicked(evt);
             }
         });
 
@@ -222,10 +233,10 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tablaUsusarios);
 
-        jButton9.setText("Editar Datos de Usuario");
-        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+        botonEditaUSER.setText("Editar Datos de Usuario");
+        botonEditaUSER.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton9MouseClicked(evt);
+                botonEditaUSERMouseClicked(evt);
             }
         });
 
@@ -237,9 +248,9 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 .addGap(32, 32, 32)
                 .addComponent(botonNuevoUsusario, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(63, 63, 63)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(botonQuitarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
-                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(botonEditaUSER, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(89, 89, 89))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_UsuariosLayout.createSequentialGroup()
                 .addContainerGap()
@@ -252,14 +263,14 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 .addGap(50, 50, 50)
                 .addGroup(Panel_UsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonNuevoUsusario, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(botonQuitarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonEditaUSER, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Usuarios", Panel_Usuarios);
+        subAdmin.addTab("Usuarios", Panel_Usuarios);
 
         tablaRutas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -333,7 +344,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Rutas", Panel_Rutas);
+        subAdmin.addTab("Rutas", Panel_Rutas);
 
         botonNuevoPC.setText("Nuevo Punto de Control");
         botonNuevoPC.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -395,9 +406,14 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Puntos de Control", Panel_Puntos);
+        subAdmin.addTab("Puntos de Control", Panel_Puntos);
 
         botonEstablecer.setText("Establece Tarifa Global");
+        botonEstablecer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonEstablecerMouseClicked(evt);
+            }
+        });
 
         botonDestinos.setText("Destinos");
         botonDestinos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -413,19 +429,38 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             }
         });
 
+        botonPr.setText("Establece Precio Priorizacion");
+        botonPr.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonPrMouseClicked(evt);
+            }
+        });
+
+        botonLibra.setText("Establecer Precio Libra");
+        botonLibra.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonLibraMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelDatosLayout = new javax.swing.GroupLayout(panelDatos);
         panelDatos.setLayout(panelDatosLayout);
         panelDatosLayout.setHorizontalGroup(
             panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDatosLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(txtTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(156, 156, 156)
                 .addGroup(panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(botonNuevoDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtLibra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtPriori, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtTarifa, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
+                .addGap(118, 118, 118)
+                .addGroup(panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonEstablecer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(botonDestinos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(botonEstablecer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(375, Short.MAX_VALUE))
+                    .addComponent(botonPr, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
+                    .addComponent(botonNuevoDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonLibra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelDatosLayout.setVerticalGroup(
             panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -434,17 +469,25 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 .addGroup(panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(botonEstablecer)
                     .addComponent(txtTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(63, 63, 63)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPriori, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonPr))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtLibra, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonLibra))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonDestinos)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonNuevoDestino)
-                .addContainerGap(434, Short.MAX_VALUE))
+                .addContainerGap(427, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Datos", panelDatos);
+        subAdmin.addTab("Datos", panelDatos);
 
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 900, 660));
-        jTabbedPane1.getAccessibleContext().setAccessibleDescription("");
+        getContentPane().add(subAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 900, 660));
+        subAdmin.getAccessibleContext().setAccessibleDescription("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -454,18 +497,18 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         vnuevoUsuario.show();    
     }//GEN-LAST:event_botonNuevoUsusarioMouseClicked
 
-    private void jButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseClicked
+    private void botonQuitarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonQuitarUsuarioMouseClicked
         marco.PanelEscritorio.add(vEliminar);
         vEliminar.show();
         vEliminar.tablaUser();
         tablaUser();
-    }//GEN-LAST:event_jButton8MouseClicked
+    }//GEN-LAST:event_botonQuitarUsuarioMouseClicked
 
-    private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
+    private void botonEditaUSERMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEditaUSERMouseClicked
         marco.PanelEscritorio.add(editarUsuario);
         editarUsuario.show();
         editarUsuario.tablaUser();
-    }//GEN-LAST:event_jButton9MouseClicked
+    }//GEN-LAST:event_botonEditaUSERMouseClicked
 
     private void botonNuevoPCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonNuevoPCMouseClicked
         // TODO add your handling code here:
@@ -502,9 +545,13 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         vEliminarRuta.tablaRuta();
     }//GEN-LAST:event_botonEliminarRutaMouseClicked
 
-    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
-        actualizarTablas(); 
-    }//GEN-LAST:event_jTabbedPane1MouseClicked
+    private void subAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subAdminMouseClicked
+        try { 
+            actualizarTablas();
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
+    }//GEN-LAST:event_subAdminMouseClicked
 
     private void botonAsignatPCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonAsignatPCMouseClicked
         try {
@@ -539,6 +586,24 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         vEstadoRuta.llenarTabla();
     }//GEN-LAST:event_botonEstosRutaMouseClicked
 
+    private void botonEstablecerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEstablecerMouseClicked
+        int tarifa = Integer.parseInt(JOptionPane.showInputDialog("Introduzca La Nueva Tarifa"));
+        marco.vLogin.conect.actualizarTarifa(tarifa);
+        txtTarifa.setText("Tarifa: "+tarifa);
+    }//GEN-LAST:event_botonEstablecerMouseClicked
+
+    private void botonPrMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonPrMouseClicked
+        int tarifa = Integer.parseInt(JOptionPane.showInputDialog("Introduzca el Precio de Priorizacion"));
+        marco.vLogin.conect.actualizarPriosizacion(tarifa);
+        txtPriori.setText("Priorizacion: "+tarifa);
+    }//GEN-LAST:event_botonPrMouseClicked
+
+    private void botonLibraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonLibraMouseClicked
+        int tarifa = Integer.parseInt(JOptionPane.showInputDialog("Introduzca el Precio por Libra"));
+        marco.vLogin.conect.actualizarPriosizacion(tarifa);
+        txtLibra.setText("Libra: "+tarifa);
+    }//GEN-LAST:event_botonLibraMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel_Puntos;
@@ -546,25 +611,29 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     private javax.swing.JPanel Panel_Usuarios;
     private javax.swing.JButton botonAsignatPC;
     private javax.swing.JButton botonDestinos;
+    private javax.swing.JButton botonEditaUSER;
     private javax.swing.JButton botonEditarPC;
     private javax.swing.JButton botonEliminarPC;
     private javax.swing.JButton botonEliminarRuta;
     private javax.swing.JButton botonEstablecer;
     private javax.swing.JButton botonEstosRuta;
+    private javax.swing.JButton botonLibra;
     private javax.swing.JButton botonNuevaRuta;
     private javax.swing.JButton botonNuevoDestino;
     private javax.swing.JButton botonNuevoPC;
     private javax.swing.JButton botonNuevoUsusario;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
+    private javax.swing.JButton botonPr;
+    private javax.swing.JButton botonQuitarUsuario;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel panelDatos;
     private javax.swing.JScrollPane scrollTRutas;
+    private javax.swing.JTabbedPane subAdmin;
     private javax.swing.JTable tablaPC;
     private javax.swing.JTable tablaRutas;
     private javax.swing.JTable tablaUsusarios;
+    private javax.swing.JLabel txtLibra;
+    private javax.swing.JLabel txtPriori;
     private javax.swing.JLabel txtTarifa;
     // End of variables declaration//GEN-END:variables
 }

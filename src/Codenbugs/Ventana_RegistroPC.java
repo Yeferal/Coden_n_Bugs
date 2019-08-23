@@ -2,6 +2,8 @@
 package Codenbugs;
 
 import java.sql.SQLException;
+
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -14,7 +16,7 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
     private int aputador;
     private boolean termina;
     private double tarifa;
-    
+    private int ruta;
     
     public Ventana_RegistroPC(Marco marco,int id) {
         initComponents();
@@ -26,7 +28,7 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
             this.marco.vLogin.conect.res = this.marco.vLogin.conect.stmt.executeQuery("SELECT * FROM punto_de_control WHERE id_pc="+this.id+";");
             while(marco.vLogin.conect.res.next()){
             nombrePunto = this.marco.vLogin.conect.res.getString(2);
-            
+            ruta = Integer.parseInt(this.marco.vLogin.conect.res.getString(7));
             if(this.marco.vLogin.conect.res.getString(8)==null){
                 termina=true;
             }else{
@@ -49,13 +51,16 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
     
     
     private void registrarPaquete(int idPaque){
+        enviarFechas();
         try {
             if(termina){
                 marco.vLogin.conect.insercion = marco.vLogin.conect.conexion.prepareStatement("UPDATE paquete SET id_pc="+0+", entrega=1 WHERE id_paquete="+idPaque+";");
                 marco.vLogin.conect.insercion.executeUpdate();
+                marco.vLogin.conect.arrivadosC.setIngreso(Integer.toString(idPaque), Integer.toString(ruta));
+                marco.vLogin.conect.arrivadosC.setEntreegarPaquete(Integer.toString(ruta));
             }else{
                marco.vLogin.conect.insercion = marco.vLogin.conect.conexion.prepareStatement("UPDATE paquete SET id_pc="+aputador+" WHERE id_paquete="+idPaque);
-            marco.vLogin.conect.insercion.executeUpdate(); 
+               marco.vLogin.conect.insercion.executeUpdate(); 
             }
             actualizarTablaP();
             
@@ -63,6 +68,7 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
             ex.getMessage();
             ex.printStackTrace();
         }
+        
     }
     
     
@@ -93,6 +99,28 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
             ex.getMessage();
             ex.printStackTrace();
         }      
+    }
+    private void fecharTxt(){
+        String fechaActual = null;
+        try {
+            fechaActual = marco.vLogin.conect.registroC.obtenertime();
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
+        System.out.println("Date: "+fechaActual);
+        cajaAnio.setText(fechaActual.substring(0, 4));
+        cajaMes.setText(fechaActual.substring(5, 7));
+        cajaDia.setText(fechaActual.substring(8, 10));
+        cajaHora.setText(fechaActual.substring(11, 13));
+        labelMinutos.setText(fechaActual.substring(14, 19));
+    
+    }
+    public void enviarFechas(){
+        if(!cajaAnio.getText().equals("") && !cajaMes.getText().equals("") && !cajaDia.getText().equals("") && !cajaHora.getText().equals("") ){
+            String fechaNueva = cajaAnio.getText()+"-"+cajaMes.getText()+"-"+cajaDia.getText()+" "+cajaHora.getText()+":"+labelMinutos.getText();
+            System.out.println("Fechas: "+fechaNueva);
+            marco.vLogin.conect.pcConeC.setCostos(txtHora.getText(), Integer.toString(ruta), fechaNueva, Integer.toString(id));
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -180,9 +208,9 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
 
         labelMinuto.setText("Minuto");
 
-        linea.setText("/");
+        linea.setText("-");
 
-        linea2.setText("/");
+        linea2.setText("-");
 
         puntos.setText(":");
 
@@ -197,7 +225,7 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
                         .addGap(39, 39, 39)
                         .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(labelNombre)
-                            .addComponent(labeldia))
+                            .addComponent(labelAnio))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -213,20 +241,18 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
                                     .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(panelRegitroLayout.createSequentialGroup()
                                             .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(panelRegitroLayout.createSequentialGroup()
-                                                    .addComponent(labelMes)
-                                                    .addGap(55, 55, 55)
-                                                    .addComponent(labelAnio))
+                                                .addComponent(labelMes)
                                                 .addComponent(titulopAQUETE))
-                                            .addGap(14, 14, 14)
-                                            .addComponent(laberDatHora))
+                                            .addGap(47, 47, 47))
                                         .addGroup(panelRegitroLayout.createSequentialGroup()
                                             .addComponent(labeId)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(33, 33, 33)
-                                            .addComponent(labelHora)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(labeldia)
+                                                .addComponent(labelHora))
+                                            .addGap(21, 21, 21)))
                                     .addComponent(txtHora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addContainerGap()))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegitroLayout.createSequentialGroup()
@@ -236,11 +262,13 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
                                         .addComponent(botonRegisrar)
                                         .addGap(183, 183, 183))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegitroLayout.createSequentialGroup()
-                                        .addComponent(labelMinuto)
-                                        .addGap(54, 54, 54))))))
-                    .addGroup(panelRegitroLayout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(cajaDia, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(labelMinutos, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(labelMinuto))
+                                        .addGap(145, 145, 145))))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegitroLayout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(cajaAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(linea, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -248,14 +276,15 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(linea2, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cajaAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                        .addComponent(cajaHora, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(puntos, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(labelMinutos, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(56, 56, 56))))
+                        .addComponent(cajaDia, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                        .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(laberDatHora)
+                            .addGroup(panelRegitroLayout.createSequentialGroup()
+                                .addComponent(cajaHora, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(puntos, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(182, 182, 182))))
             .addGroup(panelRegitroLayout.createSequentialGroup()
                 .addGap(171, 171, 171)
                 .addComponent(botonActualziar)
@@ -280,21 +309,22 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
                     .addComponent(txtHora, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labeldia)
                     .addComponent(labelMes)
                     .addComponent(labelAnio)
                     .addComponent(laberDatHora)
-                    .addComponent(labelMinuto))
+                    .addComponent(labelMinuto)
+                    .addComponent(labeldia))
                 .addGap(18, 18, 18)
-                .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cajaDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cajaMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cajaAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cajaHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelMinutos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(linea)
-                    .addComponent(linea2)
-                    .addComponent(puntos))
+                    .addGroup(panelRegitroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cajaDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cajaMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cajaHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(linea)
+                        .addComponent(linea2)
+                        .addComponent(puntos)
+                        .addComponent(cajaAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(128, 128, 128)
                 .addComponent(botonRegisrar)
                 .addGap(51, 51, 51))
@@ -316,11 +346,15 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
 
     private void tablaPaquetesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPaquetesMouseClicked
         int fila=tablaPaquetes.getSelectedRow();
-        txtId.setText(tablaPaquetes.getValueAt(fila, 0).toString());   
+        txtId.setText(tablaPaquetes.getValueAt(fila, 0).toString()); 
+        txtHora.setText(marco.vLogin.conect.pcConeC.fechar(tablaPaquetes.getValueAt(fila, 0).toString()));
+        fecharTxt();
     }//GEN-LAST:event_tablaPaquetesMouseClicked
 
     private void botonRegisrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonRegisrarMouseClicked
-        registrarPaquete(Integer.parseInt(txtId.getText()));
+        if(!txtId.getText().equals("")){
+            registrarPaquete(Integer.parseInt(txtId.getText()));
+        }
     }//GEN-LAST:event_botonRegisrarMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
