@@ -1,7 +1,9 @@
 
 package Codenbugs;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -75,10 +77,13 @@ public class PC_Conect {
         return fechaEntrega;
     }
     
-    public void setCostos(String fecha, String idRP, String fechaActual, String idPc){
+    public void setCostos(String fecha, String idRP, String fechaActual, String idPc , String idPq){
         double costo = getCosto(idRP)+(numeroHoras(fecha, fechaActual))*(getTarifaPc(idPc));
+        double costoPaquete = getCostoPaquete(idPq)+(numeroHoras(fecha, fechaActual))*(getTarifaPc(idPc));
         try {
             conex.insercion = conex.conexion.prepareStatement("UPDATE ruta SET costo_ruta="+costo+"WHERE id_ruta="+idRP+";");
+            conex.insercion.executeUpdate();
+            conex.insercion = conex.conexion.prepareStatement("UPDATE paquete SET costo_pc="+costoPaquete+"WHERE id_ruta="+idPq+";");
             conex.insercion.executeUpdate();
         } catch (SQLException ex) {
             ex.getMessage();
@@ -143,5 +148,46 @@ public class PC_Conect {
             
         }
            return tarifaG;
+    }
+    
+    public double getCostoPaquete(String idPq){
+        double costoP = 0;
+        
+        try {
+            conex.stmt = conex.conexion.createStatement();
+            conex.res = conex.stmt.executeQuery("SELECT * FROM paquete WHERE id_paquete="+idPq+";");
+            conex.res.next();
+            if(conex.res.getString(8)==null){
+                costoP=0;
+            }else{
+                costoP=Double.parseDouble(conex.res.getString(8));
+            }
+        } catch (SQLException ex) {
+            
+        }
+        return costoP;
+    }
+    
+    public String getRutaPaquete(String puntoControl){
+        String ruta=null;
+        Statement stamt;
+        ResultSet resu;
+        try {
+            stamt = conex.conexion.createStatement();
+            resu = stamt.executeQuery("SELECT * FROM punto_de_control WHERE id_pc="+puntoControl+";");
+            resu.next();
+            ruta= resu.getString(7);
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
+        return ruta;
+    }
+    public void actulizarGananias(){
+        try {
+            conex.insercion = conex.conexion.prepareStatement("UPDATE entregas SET ganancia=cuota-costo;");
+            conex.insercion.executeUpdate();
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
     }
 }

@@ -86,13 +86,18 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         txtIDPa = new javax.swing.JLabel();
         txtNit = new javax.swing.JLabel();
 
-        setClosable(true);
         setIconifiable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelNitR.setText("NIT Remintente:");
 
         labelIdPa.setText("ID Paquete: ");
+
+        cajaNitRe.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cajaNitReKeyTyped(evt);
+            }
+        });
 
         botonConsulataBuscar.setText("Buscar");
         botonConsulataBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -265,6 +270,8 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
 
     private void botonEntregasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEntregasMouseClicked
         if(!txtIDPa.getText().equals("")){
+            marco.vLogin.conect.arrivadosC.setEntregasFinal(txtIDPa.getText());
+            marco.vLogin.conect.arrivadosC.entregarPaque(txtNit.getText());
             marco.vLogin.conect.registroC.eliminarPaquete(txtIDPa.getText());
         }
         txtIDPa.setText("");
@@ -288,6 +295,15 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         vNuevoPaquete.show();
         
     }//GEN-LAST:event_botonIngresoMouseClicked
+
+    private void cajaNitReKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cajaNitReKeyTyped
+        char c = evt.getKeyChar();
+        if(c<'0' || c>'9') evt.consume();
+        if (cajaNitRe.getText().length()== 8) {
+
+            evt.consume();
+        }
+    }//GEN-LAST:event_cajaNitReKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

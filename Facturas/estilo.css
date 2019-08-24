@@ -1,0 +1,27 @@
+body{
+    background: #395d6e;
+  }
+  header{
+    color:white;
+    text-align: center;
+    align-content: center;
+    text-shadow: 1px 1px 0px;
+  }
+
+table td{
+    text-align: center;
+    border: 1px solid #000;
+  }
+  table{
+    text-align: center;
+    border: 1px solid #000;
+  
+  }
+
+  table th{
+    text-align: center;
+    border: 1px solid #000;
+  }
+  table tr:hover{
+    background: #cff;
+  }

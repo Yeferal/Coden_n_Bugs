@@ -21,10 +21,12 @@ public class Ventana_Consulta extends javax.swing.JInternalFrame {
         modelo1.addColumn("Peso");
         modelo1.addColumn("NIT");
         modelo1.addColumn("Localizacion");
+        modelo1.addColumn("Dias en Ruta");
        
         tablaDeConsulta.setModel(modelo1);
-        String datos[]= new String[4];
+        String datos[]= new String[5];
         try {
+            setNits(nit);
             vRecepcionista.marco.vLogin.conect.stmt = vRecepcionista.marco.vLogin.conect.conexion.createStatement();
             vRecepcionista.marco.vLogin.conect.res = vRecepcionista.marco.vLogin.conect.stmt.executeQuery("SELECT * FROM paquete WHERE nit_Remitente="+nit+";");
             
@@ -40,13 +42,33 @@ public class Ventana_Consulta extends javax.swing.JInternalFrame {
                 }else{
                     datos[3]=vRecepcionista.marco.vLogin.conect.res.getString(4);
                 }
-
+                datos[4]=vRecepcionista.marco.vLogin.conect.res.getString(13);
                 modelo1.addRow(datos);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Ventana_Consulta.class.getName()).log(Level.SEVERE, null, ex);
+            ex.getMessage();
+            ex.printStackTrace();
         }
 
+    }
+    private void setNits(String nit){
+        
+        try {
+            vRecepcionista.marco.vLogin.conect.stmt = vRecepcionista.marco.vLogin.conect.conexion.createStatement();
+            vRecepcionista.marco.vLogin.conect.res = vRecepcionista.marco.vLogin.conect.stmt.executeQuery("SELECT * FROM paquete WHERE nit_Remitente="+nit+";");
+            while(vRecepcionista.marco.vLogin.conect.res.next()){
+                setDias(vRecepcionista.marco.vLogin.conect.res.getString(3),vRecepcionista.marco.vLogin.conect.res.getString(12));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void setDias(String nit, String fecha){
+        if(fecha!=null){
+            vRecepcionista.marco.vLogin.conect.arrivadosC.setTiempo(nit,fecha);
+        }
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -74,8 +96,8 @@ public class Ventana_Consulta extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(

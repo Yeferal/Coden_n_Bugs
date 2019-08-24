@@ -27,6 +27,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     Ventana_Destino vDestino = new Ventana_Destino(this);
     Ventana_Nuevo_Destino vNuevoDestino =  new Ventana_Nuevo_Destino(this);
     Ventana_EstadoRuta vEstadoRuta = new Ventana_EstadoRuta(this);
+    Ventana_Reportes vReportes = new Ventana_Reportes(this);
     
     public Ventana_Admin(Marco marco) {
         initComponents();
@@ -198,6 +199,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         botonPr = new javax.swing.JButton();
         txtLibra = new javax.swing.JLabel();
         botonLibra = new javax.swing.JButton();
+        botonReportes = new javax.swing.JButton();
 
         setIconifiable(true);
         setRequestFocusEnabled(false);
@@ -443,6 +445,13 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             }
         });
 
+        botonReportes.setText("Reportes");
+        botonReportes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonReportesMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelDatosLayout = new javax.swing.GroupLayout(panelDatos);
         panelDatos.setLayout(panelDatosLayout);
         panelDatosLayout.setHorizontalGroup(
@@ -459,7 +468,8 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                     .addComponent(botonDestinos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(botonPr, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
                     .addComponent(botonNuevoDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(botonLibra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(botonLibra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonReportes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelDatosLayout.setVerticalGroup(
@@ -481,7 +491,9 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 .addComponent(botonDestinos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonNuevoDestino)
-                .addContainerGap(427, Short.MAX_VALUE))
+                .addGap(49, 49, 49)
+                .addComponent(botonReportes)
+                .addContainerGap(346, Short.MAX_VALUE))
         );
 
         subAdmin.addTab("Datos", panelDatos);
@@ -514,6 +526,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         marco.PanelEscritorio.add(vNuevoPC);
         vNuevoPC.show();
+        
         
     }//GEN-LAST:event_botonNuevoPCMouseClicked
 
@@ -604,6 +617,12 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         txtLibra.setText("Libra: "+tarifa);
     }//GEN-LAST:event_botonLibraMouseClicked
 
+    private void botonReportesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonReportesMouseClicked
+        marco.PanelEscritorio.add(vReportes);
+        vReportes.show();
+        vReportes.ocultar();
+    }//GEN-LAST:event_botonReportesMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel_Puntos;
@@ -624,6 +643,7 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
     private javax.swing.JButton botonNuevoUsusario;
     private javax.swing.JButton botonPr;
     private javax.swing.JButton botonQuitarUsuario;
+    private javax.swing.JButton botonReportes;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel panelDatos;

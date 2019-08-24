@@ -17,6 +17,7 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
     private boolean termina;
     private double tarifa;
     private int ruta;
+    String destino;
     
     public Ventana_RegistroPC(Marco marco,int id) {
         initComponents();
@@ -58,12 +59,13 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
                 marco.vLogin.conect.insercion.executeUpdate();
                 marco.vLogin.conect.arrivadosC.setIngreso(Integer.toString(idPaque), Integer.toString(ruta));
                 marco.vLogin.conect.arrivadosC.setEntreegarPaquete(Integer.toString(ruta));
+                marco.vLogin.conect.arrivadosC.entregarPaqueteNuevo(Integer.toString(idPaque), Integer.toString(ruta),destino);
             }else{
                marco.vLogin.conect.insercion = marco.vLogin.conect.conexion.prepareStatement("UPDATE paquete SET id_pc="+aputador+" WHERE id_paquete="+idPaque);
                marco.vLogin.conect.insercion.executeUpdate(); 
             }
             actualizarTablaP();
-            
+            limpiar();
         } catch (SQLException ex) {
             ex.getMessage();
             ex.printStackTrace();
@@ -119,8 +121,16 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
         if(!cajaAnio.getText().equals("") && !cajaMes.getText().equals("") && !cajaDia.getText().equals("") && !cajaHora.getText().equals("") ){
             String fechaNueva = cajaAnio.getText()+"-"+cajaMes.getText()+"-"+cajaDia.getText()+" "+cajaHora.getText()+":"+labelMinutos.getText();
             System.out.println("Fechas: "+fechaNueva);
-            marco.vLogin.conect.pcConeC.setCostos(txtHora.getText(), Integer.toString(ruta), fechaNueva, Integer.toString(id));
+            marco.vLogin.conect.pcConeC.setCostos(txtHora.getText(), Integer.toString(ruta), fechaNueva, Integer.toString(id), txtId.getText());
         }
+    }
+    private void limpiar(){
+        cajaAnio.setText("");
+        cajaMes.setText("");
+        cajaDia.setText("");
+        cajaHora.setText("");
+        txtId.setText("");
+        txtHora.setText("");
     }
 
     @SuppressWarnings("unchecked")
@@ -348,6 +358,7 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
         int fila=tablaPaquetes.getSelectedRow();
         txtId.setText(tablaPaquetes.getValueAt(fila, 0).toString()); 
         txtHora.setText(marco.vLogin.conect.pcConeC.fechar(tablaPaquetes.getValueAt(fila, 0).toString()));
+        destino = tablaPaquetes.getValueAt(fila, 2).toString();
         fecharTxt();
     }//GEN-LAST:event_tablaPaquetesMouseClicked
 
