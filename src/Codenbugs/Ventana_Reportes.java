@@ -1,7 +1,10 @@
 
 package Codenbugs;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -9,13 +12,18 @@ import javax.swing.table.DefaultTableModel;
 public class Ventana_Reportes extends javax.swing.JInternalFrame {
     Ventana_Admin vadmin;
     DefaultTableModel modelo1 = null;
+    Statement stamet;
+    ResultSet resultado;
     String fecha1;
     String fecha2;
     String tipo;
     String repoTitulo;
     String estV;
     
+    ArrayList<int[]> cantidad = new ArrayList<int[]>();
+    
     public Ventana_Reportes(Ventana_Admin vadmin) {
+        ArrayList<String> nombreArrayList = new ArrayList<String>();
         initComponents();
         this.vadmin=vadmin;
     }
@@ -71,13 +79,10 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         tabla1.setModel(modelo1);
         
     }
-    private void tablaMejpres() throws SQLException{
+    private void tablaMejores() throws SQLException{
         modelo();
-        modelo1.addColumn("ID paquete");
         modelo1.addColumn("ID Ruta");
-        modelo1.addColumn("Destino");
-        modelo1.addColumn("NIT");
-        modelo1.addColumn("Fecha Entrega");
+        modelo1.addColumn("No. Paquetes");
         tabla1.setModel(modelo1);
         
     }
@@ -153,6 +158,50 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
                 modelo1.addRow(datos);
             }
     }
+    private void setLista(String fecha1,String fecha2) throws SQLException{
+        String idRutaActual = null;
+        cantidad.clear();
+        vadmin.marco.vLogin.conect.stmt = vadmin.marco.vLogin.conect.conexion.createStatement();
+        vadmin.marco.vLogin.conect.res = vadmin.marco.vLogin.conect.stmt.executeQuery("SELECT id_ruta FROM ruta;");
+        while (vadmin.marco.vLogin.conect.res.next()) {
+            int numero [] = new int[2];            
+            idRutaActual=vadmin.marco.vLogin.conect.res.getString(1);
+            numero[0]=Integer.parseInt(idRutaActual);
+            
+            stamet = vadmin.marco.vLogin.conect.conexion.createStatement();
+            resultado = stamet.executeQuery("SELECT count(id_paquete) FROM entregas WHERE (TIMESTAMPDIFF(DAY,'"+fecha2+"',fecha_entrega)>=0) AND (TIMESTAMPDIFF(DAY,fecha_entrega,'"+fecha1+"')>=0) AND (id_ruta="+idRutaActual+");");
+            resultado.next();
+             if(resultado.getString(1)!=null){
+                 numero[1]=Integer.parseInt(resultado.getString(1));
+             }else{
+                 numero[1]=0;
+             }   
+            cantidad.add(numero);
+        }
+        
+    }
+    
+    
+    private void agregarFilaRutasMejores(){
+         String datos[]= new String[2];
+         int aux [];
+         for (int i = 0; i < (cantidad.size()-1); i++) {
+             for (int j = 0; j < (cantidad.size()-1); j++) {
+                 if(cantidad.get(j)[1]<cantidad.get(j+1)[1]){
+                     aux = cantidad.get(j);
+                     cantidad.set(j, cantidad.get(j+1));
+                     cantidad.set(j+1, aux);
+                 }
+             }
+        } 
+         for (int i = 0; i < 3; i++) {
+            datos[0]=Integer.toString(cantidad.get(i)[0]);
+            datos[1]=Integer.toString(cantidad.get(i)[1]); 
+            modelo1.addRow(datos);
+        }
+    }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -176,8 +225,9 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         labelAnio = new javax.swing.JLabel();
         labelMes = new javax.swing.JLabel();
         labelDia = new javax.swing.JLabel();
-        botonFiltarGanancias = new javax.swing.JButton();
         labelMayor = new javax.swing.JLabel();
+        botonFiltarGanancias = new javax.swing.JButton();
+        lavelintervalo = new javax.swing.JLabel();
         panelGanancias2 = new javax.swing.JPanel();
         comboAnio1 = new javax.swing.JComboBox<>();
         comboMes1 = new javax.swing.JComboBox<>();
@@ -186,11 +236,11 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         labelMes1 = new javax.swing.JLabel();
         labelDia1 = new javax.swing.JLabel();
         labelMenor = new javax.swing.JLabel();
+        botonFiltrarRutas = new javax.swing.JButton();
         panelClientes = new javax.swing.JPanel();
         labelNit = new javax.swing.JLabel();
         cajaNit = new javax.swing.JTextField();
         botonFiltrar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -307,17 +357,28 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
 
         getContentPane().add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        panelGanancias1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         comboAnio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2019", "2014", "2015", "2016", "2017", "2018", "2019", "2020", " " }));
+        panelGanancias1.add(comboAnio, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 50, -1, -1));
 
         comboMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", " " }));
+        panelGanancias1.add(comboMes, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 50, -1, -1));
 
         comboDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", " " }));
+        panelGanancias1.add(comboDia, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 50, -1, -1));
 
         labelAnio.setText("Año");
+        panelGanancias1.add(labelAnio, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 28, -1, -1));
 
         labelMes.setText("Mes");
+        panelGanancias1.add(labelMes, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 28, -1, -1));
 
         labelDia.setText("Dia");
+        panelGanancias1.add(labelDia, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 28, -1, -1));
+
+        labelMayor.setText("MAYOR");
+        panelGanancias1.add(labelMayor, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 0, -1, -1));
 
         botonFiltarGanancias.setText("Filtrar");
         botonFiltarGanancias.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -325,110 +386,45 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
                 botonFiltarGananciasMouseClicked(evt);
             }
         });
+        panelGanancias1.add(botonFiltarGanancias, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 80, -1, -1));
 
-        labelMayor.setText("MAYOR");
+        lavelintervalo.setText("Intervalo");
+        panelGanancias1.add(lavelintervalo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, -1, -1));
 
-        javax.swing.GroupLayout panelGanancias1Layout = new javax.swing.GroupLayout(panelGanancias1);
-        panelGanancias1.setLayout(panelGanancias1Layout);
-        panelGanancias1Layout.setHorizontalGroup(
-            panelGanancias1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelGanancias1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(panelGanancias1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelGanancias1Layout.createSequentialGroup()
-                        .addGroup(panelGanancias1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelAnio))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelGanancias1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelMes)))
-                    .addComponent(botonFiltarGanancias, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelGanancias1Layout.createSequentialGroup()
-                        .addComponent(labelMayor)
-                        .addGap(20, 20, 20)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelGanancias1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelDia)
-                    .addComponent(comboDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panelGanancias1Layout.setVerticalGroup(
-            panelGanancias1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelGanancias1Layout.createSequentialGroup()
-                .addComponent(labelMayor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelGanancias1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelAnio)
-                    .addComponent(labelMes)
-                    .addComponent(labelDia))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelGanancias1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
-                .addComponent(botonFiltarGanancias))
-        );
+        getContentPane().add(panelGanancias1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, 250, 120));
 
-        getContentPane().add(panelGanancias1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, -1, 110));
+        panelGanancias2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         comboAnio1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2019", "2014", "2015", "2016", "2017", "2018", "2019", "2020", " " }));
+        panelGanancias2.add(comboAnio1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 44, -1, -1));
 
         comboMes1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", " " }));
+        panelGanancias2.add(comboMes1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 44, -1, -1));
 
         comboDia1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", " " }));
+        panelGanancias2.add(comboDia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(114, 44, -1, -1));
 
         labelAnio1.setText("Año");
+        panelGanancias2.add(labelAnio1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 22, -1, -1));
 
         labelMes1.setText("Mes");
+        panelGanancias2.add(labelMes1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 22, -1, -1));
 
         labelDia1.setText("Dia");
+        panelGanancias2.add(labelDia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(114, 22, -1, -1));
 
         labelMenor.setText("MENOR");
+        panelGanancias2.add(labelMenor, new org.netbeans.lib.awtextra.AbsoluteConstraints(52, 0, -1, -1));
 
-        javax.swing.GroupLayout panelGanancias2Layout = new javax.swing.GroupLayout(panelGanancias2);
-        panelGanancias2.setLayout(panelGanancias2Layout);
-        panelGanancias2Layout.setHorizontalGroup(
-            panelGanancias2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelGanancias2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelGanancias2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelGanancias2Layout.createSequentialGroup()
-                        .addGroup(panelGanancias2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboAnio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelAnio1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelGanancias2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboMes1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelMes1)))
-                    .addGroup(panelGanancias2Layout.createSequentialGroup()
-                        .addComponent(labelMenor)
-                        .addGap(20, 20, 20)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelGanancias2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelDia1)
-                    .addComponent(comboDia1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panelGanancias2Layout.setVerticalGroup(
-            panelGanancias2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelGanancias2Layout.createSequentialGroup()
-                .addComponent(labelMenor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelGanancias2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelAnio1)
-                    .addComponent(labelMes1)
-                    .addComponent(labelDia1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelGanancias2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboAnio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboMes1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboDia1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
-        );
+        botonFiltrarRutas.setText("Filtrar");
+        botonFiltrarRutas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonFiltrarRutasMouseClicked(evt);
+            }
+        });
+        panelGanancias2.add(botonFiltrarRutas, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
 
-        getContentPane().add(panelGanancias2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 50, 170, 110));
+        getContentPane().add(panelGanancias2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 50, 170, 120));
 
         labelNit.setText("NIT:");
 
@@ -467,9 +463,6 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
 
         getContentPane().add(panelClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 60, -1, -1));
 
-        jLabel1.setText("Intervalo");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, -1, -1));
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -481,7 +474,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
             tablaRutasPaquete();
             agregarFilaRutaActivos();
             agregarFilaRutaInativos();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             ex.getMessage();
         }   
     }//GEN-LAST:event_botonPaquetesMouseClicked
@@ -492,13 +485,17 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             
         }
-        if(comboEstado.getSelectedIndex()==0){
-            agregarFilaRutaActivos();
-            agregarFilaRutaInativos();
-        }else if(comboEstado.getSelectedIndex()==1){
-            agregarFilaRutaActivos();
-        }else{
-            agregarFilaRutaInativos();
+        switch (comboEstado.getSelectedIndex()) {
+            case 0:
+                agregarFilaRutaActivos();
+                agregarFilaRutaInativos();
+                break;
+            case 1:
+                agregarFilaRutaActivos();
+                break;
+            default:
+                agregarFilaRutaInativos();
+                break;
         }
         
     }//GEN-LAST:event_comboEstadoActionPerformed
@@ -518,7 +515,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
 
     private void botonFiltrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonFiltrarMouseClicked
         try {
-            tablaRutasPaquete();
+            tablaGanancias();
         } catch (SQLException ex) {}
         try {
             agregarFilasClientes(cajaNit.getText());
@@ -529,6 +526,8 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         ocultar();
         panelGanancias1.setVisible(true);
         panelGanancias2.setVisible(true);
+        botonFiltrarRutas.setVisible(false);
+        botonFiltarGanancias.setVisible(true);
         tipo = "Ganacias";
         try {
             tablaGanancias();
@@ -543,6 +542,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
     private void botonFiltarGananciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonFiltarGananciasMouseClicked
         fecha1 = comboAnio.getSelectedItem()+"-"+comboMes.getSelectedItem()+"-"+comboDia.getSelectedItem()+" 00:00:00";
         fecha2 = comboAnio1.getSelectedItem()+"-"+comboMes1.getSelectedItem()+"-"+comboDia1.getSelectedItem()+" 00:00:00";
+        
         try {
             tablaGanancias();
             agregarFilasGanancias(fecha1, fecha2);
@@ -565,8 +565,27 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         ocultar();
         panelGanancias1.setVisible(true);
         panelGanancias2.setVisible(true);
+        botonFiltarGanancias.setVisible(false);
+        botonFiltrarRutas.setVisible(true);
         tipo = "Rutas";
+        try {
+            tablaMejores();
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
     }//GEN-LAST:event_botonMejoresMouseClicked
+
+    private void botonFiltrarRutasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonFiltrarRutasMouseClicked
+        fecha1 = comboAnio.getSelectedItem()+"-"+comboMes.getSelectedItem()+"-"+comboDia.getSelectedItem()+" 00:00:00";
+        fecha2 = comboAnio1.getSelectedItem()+"-"+comboMes1.getSelectedItem()+"-"+comboDia1.getSelectedItem()+" 00:00:00";
+        try {
+            tablaMejores();
+            setLista(fecha1, fecha2);
+            agregarFilaRutasMejores();
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
+    }//GEN-LAST:event_botonFiltrarRutasMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -574,6 +593,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
     private javax.swing.JButton botonExportar;
     private javax.swing.JButton botonFiltarGanancias;
     private javax.swing.JButton botonFiltrar;
+    private javax.swing.JButton botonFiltrarRutas;
     private javax.swing.JButton botonGanancias;
     private javax.swing.JButton botonMejores;
     private javax.swing.JButton botonPaquetes;
@@ -585,7 +605,6 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> comboEstado;
     private javax.swing.JComboBox<String> comboMes;
     private javax.swing.JComboBox<String> comboMes1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelAnio;
     private javax.swing.JLabel labelAnio1;
     private javax.swing.JLabel labelDia;
@@ -596,6 +615,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelMes1;
     private javax.swing.JLabel labelNit;
     private javax.swing.JLabel labelPaquete;
+    private javax.swing.JLabel lavelintervalo;
     private javax.swing.JPanel panelBotones;
     private javax.swing.JPanel panelClientes;
     private javax.swing.JPanel panelGanancias1;
