@@ -65,7 +65,11 @@ public class Conector {
             stmt = conexion.createStatement();
             res = stmt.executeQuery("SELECT * FROM ruta WHERE id_ruta="+idRuta+";");
             res.next();
-            destinoP = Integer.parseInt(res.getString(10));
+            if(res.getString(10)==null){
+                destinoP = 0;
+            }else{
+                destinoP = Integer.parseInt(res.getString(10));
+            }
         } catch (SQLException ex) {
             ex.getMessage();
             ex.printStackTrace();
