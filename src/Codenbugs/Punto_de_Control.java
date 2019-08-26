@@ -13,7 +13,7 @@ public class Punto_de_Control {
     public Punto_de_Control(){
         
     }
-    
+    /**le da valores a las variables**/
     public void setDatos(String Nombre, double tarifa, int capacidad, int operadorAsig){
         this.Nombre = Nombre;
         this.tarifa = tarifa;

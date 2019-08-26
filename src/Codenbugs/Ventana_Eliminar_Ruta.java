@@ -14,7 +14,7 @@ public class Ventana_Eliminar_Ruta extends javax.swing.JInternalFrame {
         initComponents();
         this.vadmin=vadmin;
     }
-
+    /**envia los datos de la ruta para ser eliminada**/
     public void enviarRuta(int ids){
         vadmin.marco.vLogin.conect.rutaC.eliminarRuta(ids);
         seleccionado=false;
@@ -22,12 +22,13 @@ public class Ventana_Eliminar_Ruta extends javax.swing.JInternalFrame {
         tablaRuta();
         vadmin.tablaRuta();
     }
-    
+    /**limpia los textos**/
     private void limpiar(){
         textoDestino.setText("");
         textoId.setText("");
         textoInicio.setText("");  
     }
+    /**agrega el modelo y los registros a la tabla**/
     public void tablaRuta(){
         DefaultTableModel modelo1 = new DefaultTableModel();
         modelo1.addColumn("ID");

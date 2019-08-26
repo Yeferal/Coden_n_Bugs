@@ -7,16 +7,14 @@ public class Marco extends javax.swing.JFrame {
     Ventana_Recepcionista vReceptor = new Ventana_Recepcionista(this);
     Ventana_Operator vOperador = new Ventana_Operator(this);
     
-    
+    /**se gragan las ventana desde el incio del contructor**/
     public Marco() {
         initComponents();
-        
         this.PanelEscritorio.add(vadministrador);
         this.PanelEscritorio.add(vLogin);
         this.PanelEscritorio.add(vReceptor);
         this.PanelEscritorio.add(vOperador);
         vLogin.show();
-        //vadministrador.show();
     }
 
     @SuppressWarnings("unchecked")

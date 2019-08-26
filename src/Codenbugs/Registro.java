@@ -21,6 +21,7 @@ public class Registro {
     public Registro(Conector conex){
         this.conex = conex;
     }
+    /**retorna el tiempo actual que tiene la base de datos**/
     public String obtenertime() throws SQLException{
         conex.stmt = conex.conexion.createStatement();
         conex.res = conex.stmt.executeQuery("select now();");
@@ -29,7 +30,15 @@ public class Registro {
         }
         return conex.res.getString(1);
     }
-    
+    /**crea un paquete nuevo con sus parametros correspondientes
+     * 
+     * @param peso
+     * @param nitR
+     * @param priori
+     * @param tarifa
+     * @param destino
+     * @param cuota 
+     */
     public void crearPaquete(double peso, int nitR, int priori, double tarifa, String destino, double cuota){
         try {
             conex.insercion = conex.conexion.prepareStatement("INSERT INTO paquete (peso,nit_remitente,priorizacion,tarifa_pq,destino_pq,cuota) VALUES ("+peso+","+nitR+","+priori+","+tarifa+",'"+destino+"',"+cuota+");");
@@ -49,6 +58,7 @@ public class Registro {
             ex.printStackTrace(); 
         }
     }
+    /**elimina paquetes**/
     public void eliminarPaquete(String id){
         try {
             conex.insercion = conex.conexion.prepareStatement("DELETE FROM paquete WHERE id_paquete="+id+";");
@@ -58,27 +68,9 @@ public class Registro {
             ex.printStackTrace(); 
         }
     }
-    
+    /**actualiza la fecha de un paquete**/
     public void setDataTime(String id) throws SQLException{
         conex.insercion = conex.conexion.prepareStatement("UPDATE paquete SET tiempo_pc='"+obtenertime()+"' WHERE id_paquete="+id+";");
         conex.insercion.executeUpdate();
     }
-
-    private int numeroHoras(String fecha){
-        int horas = 0;
-        //String datTime=
-        try {
-            conex.stmt = conex.conexion.createStatement();
-            conex.res = conex.stmt.executeQuery("SELECT TIMESTAMPDIFF(HOUR, NOW(), '"+fecha+"');");
-            conex.res.next();
-            horas = Integer.parseInt(conex.res.getString(1));
-            System.out.println("horas:"+horas);
-        } catch (SQLException ex) {
-            ex.getMessage();
-            ex.printStackTrace();
-        }
-        return horas;
-    }
-    
-    
 }

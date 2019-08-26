@@ -12,6 +12,8 @@ public class Ventana_Nuevo_Destino extends javax.swing.JInternalFrame {
         this.vAdmin = vAdmin;
     }
 
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -13,7 +13,7 @@ public class Ventana_Nueva_Ruta extends javax.swing.JInternalFrame {
         initComponents();
         this.vadmin=vadmin;
     }
-
+    /**envia los datos de las ruta nueva la metodo que crea rutas**/
     private void enviarRuta(String inicio, String destino, double cuota){
         
         if(!cajaCuota.getText().equals("")){
@@ -24,15 +24,11 @@ public class Ventana_Nueva_Ruta extends javax.swing.JInternalFrame {
                 cajaCuota.setText("");
                 vadmin.tablaRuta();
             } catch (SQLException ex) {
-                System.out.println("Fallo");
-                ex.getMessage();
-            ex.printStackTrace();
+                ex.printStackTrace();
             }
-        }
-        
-        
+        }  
     }
-    
+    /**limpia los combos y luego los llena con los destino existentes**/
     public void llenarcombos() throws SQLException{
         comboDestino.removeAllItems();
         comboInicio.removeAllItems();

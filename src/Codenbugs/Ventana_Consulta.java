@@ -13,7 +13,11 @@ public class Ventana_Consulta extends javax.swing.JInternalFrame {
         initComponents();
         this.vRecepcionista = vRecepcionista;
     }
-    
+    /**agrega el modelo de la tabla
+     * y agrega los registros de la base de datos
+     * @param nit
+     * @param id 
+     */
     public void llenart(String nit, String id){
         DefaultTableModel modelo1 = new DefaultTableModel();
         
@@ -51,6 +55,7 @@ public class Ventana_Consulta extends javax.swing.JInternalFrame {
         }
 
     }
+    /**actualiza los datos de los dias que lleva en ruta un paque con los parametros del nit**/
     private void setNits(String nit){
         
         try {
@@ -63,12 +68,11 @@ public class Ventana_Consulta extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }
     }
-    
+    /**actualiza los dias del paquete**/
     private void setDias(String nit, String fecha){
         if(fecha!=null){
             vRecepcionista.marco.vLogin.conect.arrivadosC.setTiempo(nit,fecha);
         }
-        
     }
 
     @SuppressWarnings("unchecked")

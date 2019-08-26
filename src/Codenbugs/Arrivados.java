@@ -15,10 +15,8 @@ public class Arrivados {
     
     public Arrivados(Conector conex){
         this.conex = conex;
-        
     }
-
-    
+    /**realiza un ajuste de los ingresos en la ruta especifica**/
     public void setIngreso(String idPaquete, String idRuta){
         double ingresoNuevo = getIngreso(idRuta)+getTarifaPaquete(idPaquete);
         try {
@@ -28,8 +26,7 @@ public class Arrivados {
             ex.getMessage();
         }
     }
-    
-    
+    /**muestra los igresos actuales de una ruta**/
     public double getIngreso(String idRuta){
         double ingresoActual = 0;
         try {
@@ -43,6 +40,7 @@ public class Arrivados {
         }
         return ingresoActual;
     }
+    /**retorna la tarifi actual de un paquete**/
     private double getTarifaPaquete(String idPaquete){
         double tarifapaq = 0;
         try {
@@ -57,6 +55,7 @@ public class Arrivados {
         
         return tarifapaq;
     }
+    /**modifica en numero de entrega de los paquete en una ruta**/
     public void setEntreegarPaquete(String idRuta){
         int entreganueva = getEntreegarPaq(idRuta)+1;
         int endestinoNuevo = getEnDestinoPaq(idRuta)-1;
@@ -68,8 +67,7 @@ public class Arrivados {
             ex.getMessage();
         }
     }
-    
-    
+    /**retorna el numero de entregas actuales de una ruta**/
     private int getEntreegarPaq(String idRuta){
         int ingresP= 0;
         try {
@@ -83,6 +81,7 @@ public class Arrivados {
         }
         return ingresP;
     }
+    /**retorna el destino que tiene una ruta**/
     private int getEnDestinoPaq(String idRuta){
         int destinoP= 0;
         try {
@@ -96,7 +95,7 @@ public class Arrivados {
         }
         return destinoP;
     }
-    
+    /**realiza una moidificacion del numero de paquetes que a tenido un cliente**/
     public void entregarPaque(String nit){
         try {
             conex.insercion = conex.conexion.prepareStatement("UPDATE cliente SET numero_paquetes=numero_paquetes+1 WHERE nit="+nit+";");
@@ -105,7 +104,7 @@ public class Arrivados {
             ex.getMessage();
         }
     }
-    
+    /** modifica el tiempo que lleva un paquete en ruta**/
     public void setTiempo(String nit, String fecha){
         try {
             conex.insercion = conex.conexion.prepareStatement("UPDATE paquete SET tiempo_ruta="+numeroDias(fecha)+" WHERE nit_Remitente="+nit+";");
@@ -114,7 +113,7 @@ public class Arrivados {
             Logger.getLogger(Arrivados.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-        
+    /**retona la dierencia de dia entre eldia actual y una fecha**/    
     private int numeroDias(String fecha){
         int dias = 0;
         try {
@@ -129,8 +128,7 @@ public class Arrivados {
         }
         return dias;
     }
-    
-    
+    /**crea un registro de ntregas de paquetes con los datos de la ruta, cliente y paquete**/
     public void entregarPaqueteNuevo(String idp,String idR,String destino){
         int nit = getNIT(idp);
         double cuota = getCuota(idp);
@@ -142,7 +140,7 @@ public class Arrivados {
             ex.printStackTrace();
         }
     }
-    
+    /**retorna la cuota que tiene un paquete**/
     private double getCuota(String idp){
         double cuota = 0;
         try {
@@ -155,6 +153,7 @@ public class Arrivados {
         }
         return cuota;
     }
+    /**retorna el nit de remitende de un paquete**/
     private int getNIT(String idp){
         int nit = 0;
         try {
@@ -167,6 +166,7 @@ public class Arrivados {
         }
         return nit;
     }
+    /**midifica una entrega, modifica la fecha que fue retirada por el cliente**/
     public void setEntregasFinal(String idp){
         try {
             conex.insercion = conex.conexion.prepareStatement("UPDATE entregas SET fecha_entrega='"+conex.obtenertime()+"' WHERE id_paquete="+idp+";");

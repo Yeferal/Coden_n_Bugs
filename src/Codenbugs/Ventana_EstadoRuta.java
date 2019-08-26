@@ -8,13 +8,14 @@ import javax.swing.table.DefaultTableModel;
 public class Ventana_EstadoRuta extends javax.swing.JInternalFrame {
 
     Ventana_Admin vAdmin;
-    String id;
-    boolean seleccion;
+    private String id;
+    private boolean seleccion;
     
     public Ventana_EstadoRuta(Ventana_Admin vAdmin) {
         initComponents();
         this.vAdmin = vAdmin;
     }
+    /**agrega el modelo y los registros a la tabla**/
     public void llenarTabla(){
         DefaultTableModel modelo1 = new DefaultTableModel(){
             @Override
@@ -47,6 +48,7 @@ public class Ventana_EstadoRuta extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }
     }
+    /**limpi los textos y actualiza la tabla**/
     private void resetearDatos(){
         txtNombre.setText("");
             seleccion=false;
@@ -67,6 +69,8 @@ public class Ventana_EstadoRuta extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaRutas = new javax.swing.JTable();
 
+        setClosable(true);
+        setIconifiable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         botonAct.setText("Activar");
@@ -96,11 +100,13 @@ public class Ventana_EstadoRuta extends javax.swing.JInternalFrame {
         panelEstado.setLayout(panelEstadoLayout);
         panelEstadoLayout.setHorizontalGroup(
             panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(botonAct, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panelEstadoLayout.createSequentialGroup()
+                .addComponent(botonDes, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(panelEstadoLayout.createSequentialGroup()
                 .addGroup(panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonAct, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelEstadoLayout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(labelNombre))
@@ -108,9 +114,6 @@ public class Ventana_EstadoRuta extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addComponent(botonActualizar)))
                 .addContainerGap(17, Short.MAX_VALUE))
-            .addGroup(panelEstadoLayout.createSequentialGroup()
-                .addComponent(botonDes, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         panelEstadoLayout.setVerticalGroup(
             panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -10,16 +10,16 @@ import javax.swing.table.DefaultTableModel;
 public class Ventana_Destino extends javax.swing.JInternalFrame {
     
     Ventana_Admin vRecep;
-    String destino;
-    boolean seleccion;
+    private String destino;
+    private boolean seleccion;
     
     public Ventana_Destino(Ventana_Admin vRecep) {
         initComponents();
         this.vRecep = vRecep;
-        
     }
-
-    
+    /**establece el modelo de la tabla correspondietne
+     * agerga los registrso de destno
+     */
     public void llenarTabla(){
         DefaultTableModel modelo1 = new DefaultTableModel(){
             @Override
@@ -30,10 +30,8 @@ public class Ventana_Destino extends javax.swing.JInternalFrame {
         
             modelo1.addColumn("Destino");
             modelo1.addColumn("Cuota Destino");
-        
             tablaDestinos.setModel(modelo1);
             String datos[]= new String[2];
-            
         try {
             vRecep.marco.vLogin.conect.stmt = vRecep.marco.vLogin.conect.conexion.createStatement();
             vRecep.marco.vLogin.conect.res = vRecep.marco.vLogin.conect.stmt.executeQuery("SELECT * FROM destinos;");
@@ -47,6 +45,7 @@ public class Ventana_Destino extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }
     }
+    /**actualiza los datos y la tabla**/
     public void resetearCajas(){
         cajaDestino.setText("");
         cajatarifa.setText("");

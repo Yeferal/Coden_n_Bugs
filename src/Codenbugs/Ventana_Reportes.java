@@ -10,30 +10,31 @@ import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 public class Ventana_Reportes extends javax.swing.JInternalFrame {
-    Ventana_Admin vadmin;
-    DefaultTableModel modelo1 = null;
-    Statement stamet;
-    ResultSet resultado;
-    String fecha1;
-    String fecha2;
-    String tipo;
-    String repoTitulo;
-    String estV;
+    private Ventana_Admin vadmin;
+    private DefaultTableModel modelo1 = null;
+    private Statement stamet;
+    private ResultSet resultado;
+    private String fecha1;
+    private String fecha2;
+    private String tipo;
+    private String repoTitulo;
+    private String estV;
     
-    ArrayList<int[]> cantidad = new ArrayList<int[]>();
+    private ArrayList<int[]> cantidad = new ArrayList<int[]>();
     
     public Ventana_Reportes(Ventana_Admin vadmin) {
         ArrayList<String> nombreArrayList = new ArrayList<String>();
         initComponents();
         this.vadmin=vadmin;
     }
+    /**Oculta todos los paneles**/
     public void ocultar(){
         panelPa.setVisible(false);
         panelGanancias1.setVisible(false);
         panelClientes.setVisible(false);
         panelGanancias2.setVisible(false);
     }
-    
+    /**Añade el modelo para los paquetes en la tabla**/
     private void tablaRutasPaquete() throws SQLException{
         modelo1 = new DefaultTableModel(){
             @Override
@@ -49,6 +50,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         tabla1.setModel(modelo1);
         
     }
+    /**crea el modelo y lo hace no editable**/
     private void modelo(){
     modelo1 = new DefaultTableModel(){
             @Override
@@ -56,8 +58,8 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
                 return false;
             }  
         };
-
     }
+    /**establece las columnas de la tabla**/
     private void tablaGanancias() throws SQLException{
         modelo();
         modelo1.addColumn("Ruta");
@@ -66,8 +68,8 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         modelo1.addColumn("Ingreso");
         modelo1.addColumn("Ganancia");
         tabla1.setModel(modelo1);
-        
     }
+    /**establece las columnas de la tabla**/
     private void tablaClientes() throws SQLException{
         modelo();
         modelo1.addColumn("NIT");
@@ -77,15 +79,15 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         modelo1.addColumn("Ingreso");
         modelo1.addColumn("Ganancia");
         tabla1.setModel(modelo1);
-        
     }
+    /**establece las columnas de la tabla**/
     private void tablaMejores() throws SQLException{
         modelo();
         modelo1.addColumn("ID Ruta");
         modelo1.addColumn("No. Paquetes");
         tabla1.setModel(modelo1);
-        
     }
+    /**agrega las filas de paquetes que estan en ruta**/
     private void agregarFilaRutaActivos(){
         try {
             String datos[]= new String[5];
@@ -103,6 +105,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
             ex.getMessage();
         }
     }
+    /**agrega las filas de paquetes que no estan en ruta**/
     private void agregarFilaRutaInativos(){
         try {
             String datos[]= new String[5];
@@ -120,6 +123,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
             ex.getMessage();
         }
     }
+    /**agrega las filas de los clientes**/
     private void agregarFilasClientes(String nit) throws SQLException{
         String datos[]= new String[6];
         if(nit.equals("")){
@@ -139,6 +143,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
                 modelo1.addRow(datos);
             }
     }
+    /**agrega las filas de ganancias**/
     private void agregarFilasGanancias(String fecha1,String fecha2) throws SQLException{
         String datos[]= new String[5];
         vadmin.marco.vLogin.conect.pcConeC.actulizarGananias();
@@ -158,6 +163,13 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
                 modelo1.addRow(datos);
             }
     }
+    /**Primero lee todas las ruta existentes luego busca el id de esa ruta en la tabla de entregas
+     * lo busca con el intervalo de tiempo y cuenta el numerod e regisros y lo agrega al al arraylist
+     * para luego agregar a la tabla los que tiene el arraylist
+     * @param fecha1
+     * @param fecha2
+     * @throws SQLException 
+     */
     private void setLista(String fecha1,String fecha2) throws SQLException{
         String idRutaActual = null;
         cantidad.clear();
@@ -178,10 +190,10 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
              }   
             cantidad.add(numero);
         }
-        
     }
-    
-    
+    /**primero ordena los datos del arraylist
+     * luego agrega los primeros tres datos a la tabla
+     */
     private void agregarFilaRutasMejores(){
          String datos[]= new String[2];
          int aux [];
@@ -200,9 +212,6 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
             modelo1.addRow(datos);
         }
     }
-    
-    
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -241,6 +250,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         labelNit = new javax.swing.JLabel();
         cajaNit = new javax.swing.JTextField();
         botonFiltrar = new javax.swing.JButton();
+        tetoLabel = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -462,6 +472,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         );
 
         getContentPane().add(panelClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 60, -1, -1));
+        getContentPane().add(tetoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 80, 170, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -474,6 +485,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
             tablaRutasPaquete();
             agregarFilaRutaActivos();
             agregarFilaRutaInativos();
+            tetoLabel.setText(tipo);
         } catch (SQLException ex) {
             ex.getMessage();
         }   
@@ -507,6 +519,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         try {
             tablaClientes();
             agregarFilasClientes("");
+            tetoLabel.setText(tipo);
         } catch (SQLException ex) {
             
         }
@@ -534,6 +547,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
             panelGanancias1.setVisible(true);
             panelGanancias2.setVisible(true);
             agregarFilasGanancias("","");
+            tetoLabel.setText(tipo);
         } catch (SQLException ex) {
             ex.getMessage();
                 }
@@ -570,6 +584,7 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
         tipo = "Rutas";
         try {
             tablaMejores();
+            tetoLabel.setText(tipo);
         } catch (SQLException ex) {
             ex.getMessage();
         }
@@ -623,5 +638,6 @@ public class Ventana_Reportes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel panelPa;
     private javax.swing.JScrollPane scrollTabla;
     private javax.swing.JTable tabla1;
+    private javax.swing.JLabel tetoLabel;
     // End of variables declaration//GEN-END:variables
 }

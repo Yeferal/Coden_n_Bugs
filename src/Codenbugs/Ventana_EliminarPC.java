@@ -15,7 +15,7 @@ public class Ventana_EliminarPC extends javax.swing.JInternalFrame {
         this.vadmin=vadmin;
     }
 
-        
+    /**agrega el modelo  y los registro a la tabla**/    
     public void tablaPc(){
         DefaultTableModel modelo1 = new DefaultTableModel();
         
@@ -32,7 +32,6 @@ public class Ventana_EliminarPC extends javax.swing.JInternalFrame {
             vadmin.marco.vLogin.conect.res = vadmin.marco.vLogin.conect.stmt.executeQuery(vadmin.punto);
             
             while (vadmin.marco.vLogin.conect.res.next()) {                
-                //System.out.println(marco.vLogin.conect.res.getString(1));
                 datos[0]=vadmin.marco.vLogin.conect.res.getString(1);
                 datos[1]=vadmin.marco.vLogin.conect.res.getString(2);
                 datos[2]=vadmin.marco.vLogin.conect.res.getString(4);
@@ -44,13 +43,14 @@ public class Ventana_EliminarPC extends javax.swing.JInternalFrame {
         } catch (Exception e) {    
         }
     }
-    
+    /**limpia los textos**/
     private void limpiar(){
         labeId.setText("");
         labelname.setText("");
         labelTarifa.setText("");
         labelCapacidad.setText("");
     }
+    /**envia la los datos para eliminar el punto**/
     public void enviarPc(int id){
         
         vadmin.marco.vLogin.conect.eliminarPC(id);

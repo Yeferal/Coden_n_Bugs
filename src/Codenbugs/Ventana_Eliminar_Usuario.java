@@ -6,14 +6,14 @@ import javax.swing.table.DefaultTableModel;
 public class Ventana_Eliminar_Usuario extends javax.swing.JInternalFrame {
 
     Ventana_Admin vadmin;
-    int ids;
-    boolean seleccionado;
+    private int ids;
+    private boolean seleccionado;
             
     public Ventana_Eliminar_Usuario(Ventana_Admin vadmin) {
         initComponents();
         this.vadmin=vadmin;
     }
-
+    /**agrega el modelo y los registros a la tabla**/
     public void tablaUser(){
         DefaultTableModel modelo1 = new DefaultTableModel();
         
@@ -30,7 +30,6 @@ public class Ventana_Eliminar_Usuario extends javax.swing.JInternalFrame {
             vadmin.marco.vLogin.conect.res = vadmin.marco.vLogin.conect.stmt.executeQuery(vadmin.usuarios);
             
             while (vadmin.marco.vLogin.conect.res.next()) {                
-                //System.out.println(marco.vLogin.conect.res.getString(1));
                 datos[0]=vadmin.marco.vLogin.conect.res.getString(1);
                 datos[1]=vadmin.marco.vLogin.conect.res.getString(2);
                 datos[2]=vadmin.marco.vLogin.conect.res.getString(3);
@@ -55,26 +54,22 @@ public class Ventana_Eliminar_Usuario extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             
         }
-        
-        
     }
+    /**limpia los textos**/
     private void limpiar(){
         labeId.setText("");
         labelname.setText("");
         labbelCodigo.setText("");
         labelPass.setText("");
     }
-    
+    /**envia los datos del usuario para se eliminado**/
     public void enviarUsuario(int id){
-        
         vadmin.marco.vLogin.conect.eliminarUsuario(id);
         seleccionado=false;
         limpiar();
         tablaUser();
         vadmin.tablaUser();
-        
     }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

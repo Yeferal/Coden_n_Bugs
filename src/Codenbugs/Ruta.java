@@ -14,7 +14,7 @@ public class Ruta {
     public Ruta(Conector conex){
         this.conex = conex;
     }
-    
+    /**desactiva una ruta**/
     public void desactivar(String idR){
         try {
             conex.insercion = conex.conexion.prepareStatement("UPDATE ruta SET estado_ruta="+0+" WHERE id_ruta="+idR); 
@@ -23,6 +23,7 @@ public class Ruta {
             ex.getMessage();
         }
     }
+    /**activa una ruta**/
     public void activar(String idR){
         try { 
             conex.insercion = conex.conexion.prepareStatement("UPDATE ruta SET estado_ruta="+1+" WHERE id_ruta="+idR);
@@ -45,6 +46,11 @@ public class Ruta {
         } catch (SQLException ex) {
         }
     }
+    /**busca un punto de control que tenga la misma ruta que el parametro
+     * retorna la existencia del punto
+     * @param rutaID
+     * @return 
+     */
     public boolean buscarPcenRuta(int rutaID){
         try {
             conex.stmt = conex.conexion.createStatement();
@@ -67,7 +73,11 @@ public class Ruta {
         }
         return conex.existe;
     }
-    
+    /**retorna el id del punto de control anterior a un punto asignado a una ruta para agregarle 
+     * el apuntador correspondiente a es ruta
+     * @param idR
+     * @return 
+     */
     public int idRutaAnte(int idR){
         int idP=0;
         try {
@@ -91,7 +101,7 @@ public class Ruta {
         }
         return idP;
     }
-    
+    /**agrega un punto de control a una ruta correspondiente**/
     public void agregarPC(int idR, int idPc){
         if(buscarPcenRuta(idR)){
             try {
@@ -102,25 +112,21 @@ public class Ruta {
                 conex.insercion.executeUpdate();
             } catch (Exception ex) {
                 System.out.println("Fallo en existente");
-                ex.getMessage();
                 ex.printStackTrace();
             }
         }else{
             try {
-                System.out.println("primeor");
                 conex.insercion = conex.conexion.prepareStatement("UPDATE punto_de_control SET ruta="+idR+" WHERE id_pc="+idPc);
                 conex.insercion.executeUpdate();
-                System.out.println("segudo");
                 conex.insercion = conex.conexion.prepareStatement("UPDATE ruta SET pc_inicio="+idPc+" WHERE id_ruta="+idR);
                 conex.insercion.executeUpdate();
-                System.out.println("logrado");
             } catch (Exception ex) {
                 System.out.println("Fallo en no existente");
-            ex.getMessage();
-            ex.printStackTrace();
+                ex.printStackTrace();
             }
         }
     }
+    /**retorna el apuntador que tiene un punto de control**/
     private int apuntadorPC(int idPCsele){
         int idP=0;
         try {
@@ -138,12 +144,11 @@ public class Ruta {
             }  
         } catch (SQLException e) { 
             System.out.println("Fallo en retorno de id");
-            e.getMessage();
             e.printStackTrace();
         }
         return idP;
     }
-    
+    /**busca un punto de control que no tenga punto de control**/
     public boolean buscarPcsinAputador(int pcID){
         try {
             conex.stmt = conex.conexion.createStatement();
@@ -163,12 +168,12 @@ public class Ruta {
             }  
         } catch (SQLException e) {
             System.out.println("Fallo en el retorno de existente");
-            e.getMessage();
             e.printStackTrace();
         }
         return conex.existe;
     }
     
+    /**eliminar un puntod e control de una ruta es decir le quita el atributo de ruta al punto de control**/
     public void eliminarPCdeRuta(int idPCdelet, int idsig){
         if(buscarPcsinAputador(idPCdelet) && !conex.pcConeC.validarPaquetesPC(Integer.toString(idPCdelet))){
             try {
@@ -179,20 +184,25 @@ public class Ruta {
                 conex.insercion = conex.conexion.prepareStatement("UPDATE punto_de_control SET ruta= NULL WHERE id_pc="+idPCdelet);
                 conex.insercion.executeUpdate();
             } catch (SQLException ex) {
-                ex.getMessage();
-            ex.printStackTrace();
+                ex.printStackTrace();
             }
-        }else{
+        }else if(!conex.pcConeC.validarPaquetesPC(Integer.toString(idPCdelet))){
             try {
                 conex.insercion = conex.conexion.prepareStatement("UPDATE punto_de_control SET ruta= NULL WHERE id_pc="+idPCdelet);
                 conex.insercion.executeUpdate();
             } catch (SQLException ex) {
-                ex.getMessage();
-            ex.printStackTrace();
+                ex.printStackTrace();
             }    
         }
     }
-    
+    /**cambia los datos de apuntador entre dos puntos de control que ya tiene asignada la ruta a la que pertenecen
+     * envalua la pisibles conbinaciones de rutas a cambiar
+     * @param idsele1
+     * @param idsele2
+     * @param sig1
+     * @param sig2
+     * @throws SQLException 
+     */
     public void cambiarPCs(int idsele1, int idsele2, String sig1 , String sig2) throws SQLException{
         if(sig1==null){
                 int numero = Integer.parseInt(sig2);

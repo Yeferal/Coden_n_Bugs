@@ -12,43 +12,45 @@ import javax.swing.JOptionPane;
 public class Ventana_Login extends javax.swing.JInternalFrame {
     Conector conect = new Conector();
     Usuario usuarioLogin;
-    //Connection conexion =  null;
-    String user = "root";
-    String password = "123-abc";
-    String servidor = "jdbc:mysql://localhost:3306/codenbugs";
     Marco marco;
     String usuarios="SELECT * FROM usuario";
+    boolean existe;
     
     public Ventana_Login(Marco marco) {
         initComponents();
         this.marco=marco;
     }
+    /**busca la existencia del usuario con sus datos capoturado de los textos**/
     private void buscar(){
-        System.out.println("entra");
-        
         try {
             marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();
             marco.vLogin.conect.res = marco.vLogin.conect.stmt.executeQuery(usuarios);
             
             while (marco.vLogin.conect.res.next()) {                
                 if(CajaCodigo.getText().equals(marco.vLogin.conect.res.getString(3))){
+                    existe =true;
                     if(cajaPasswird.getText().equals(marco.vLogin.conect.res.getString(5))){
                         sesionUsusario(marco.vLogin.conect.res.getString(1), marco.vLogin.conect.res.getString(2), marco.vLogin.conect.res.getString(3), marco.vLogin.conect.res.getString(4), marco.vLogin.conect.res.getString(5));
-                        
-                        System.out.println("funciono");
+                        existe =true; 
                         this.dispose();
                         break;
                     }else{
-                        System.out.println("falla 1");
+                        existe =false;
+                        break;
                     }
+                }else{
+                    existe =false;   
                 }
-                        System.out.println("falla 2");  
-            }    
+            }
+            if(!existe){
+                JOptionPane.showMessageDialog(null, "La contraseña o Codigo son incorrectos");
+            }
+            
         } catch (Exception e) {
             
         }
     }
-    
+    /**abre la ventan correspondite al tipo usuario**/
     public void sesionUsusario(String id, String Nombre, String codigo, String tipo, String passw){
         usuarioLogin=new Usuario();
         usuarioLogin.setDatos(Nombre, codigo, Integer.parseInt(tipo), passw);
@@ -69,7 +71,8 @@ public class Ventana_Login extends javax.swing.JInternalFrame {
                 //Abre ventana recepcionista
                 marco.vReceptor.show();
                 break;
-                default:     
+                default:
+                    
         }  
     }
     @SuppressWarnings("unchecked")

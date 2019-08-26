@@ -14,16 +14,16 @@ public class Conector {
     PreparedStatement insercion;
     Statement stmt;
     ResultSet res;
-    String user = "root";
-    String password = "123-abc";
-    String servidor = "jdbc:mysql://localhost:3306/codenbugs";
+    private String user = "root";
+    private String password = "123-abc";
+    private String servidor = "jdbc:mysql://localhost:3306/codenbugs";
     boolean existe;
     String punto = "SELECT * FROM punto_de_control";
     Ruta rutaC = new Ruta(this);
     Registro registroC = new Registro(this);
     PC_Conect pcConeC = new PC_Conect(this);
     Arrivados arrivadosC = new Arrivados(this);
-    
+    /**se conecta a la base datos**/
     public Conector(){
        try {
             conexion = DriverManager.getConnection(servidor, user, password);
@@ -85,21 +85,23 @@ public class Conector {
     }
     //setea los atributos de un ponto de control en especifico
     public void editarPC(int id, String Nombre, double tarifa, int capacidad, int operador_Asig) throws SQLException{
+         if(!pcConeC.validarPaquetesPC(Integer.toString(id))){
         insercion = conexion.prepareStatement("UPDATE punto_de_control SET nombre_pc='"+Nombre+"', tarifa='"+tarifa+"', capacidad="+capacidad+",operador_asignado='"+operador_Asig+"' WHERE id_pc="+id);
-        insercion.executeUpdate();    
+        insercion.executeUpdate();
+         }
     }
     //Elimina un punto de control de la tabla
     public void eliminarPC(int id){
         try {
             if(!pcConeC.validarPaquetesPC(Integer.toString(id))){
                 insercion = conexion.prepareStatement("DELETE FROM punto_de_control WHERE id_pc="+id);
-            insercion.executeUpdate();
+                insercion.executeUpdate();
             }
             
         } catch (SQLException ex) {
         }
     }
-    
+    /**crea un nunevo destino**/
     public void nuevoDestino(String destino, String tarifa){
         try {
             insercion = conexion.prepareStatement("INSERT INTO destinos (nombre,cuota_destino) VALUES ('"+destino+"',"+tarifa+");");
@@ -109,28 +111,28 @@ public class Conector {
             ex.printStackTrace();
         }
     }
-    
+    /**modifica un destino con sus nuevos atributos**/
     public void modificarDestnio(String destinoActual, String destino, String tarifa) throws SQLException{
         
         insercion = conexion.prepareStatement("UPDATE destinos SET nombre='"+destino+"',cuota_destino="+tarifa+" WHERE nombre='"+destinoActual+"';");
         insercion.executeUpdate();
     }
+    /**elimina un destino**/
     public void eliminarDestino(String destino) throws SQLException{
         insercion = conexion.prepareStatement("DELETE FROM destinos WHERE nombre='"+destino+"';");
             insercion.executeUpdate();
     }
-
+    /**crea un nuevo cliente **/
     public void crearNuevoCliente(int nit,String nombre, String direccion){
         try {
             insercion = conexion.prepareStatement("INSERT INTO cliente (nit,nombre_cliente,direccion) VALUES ("+nit+",'"+nombre+"','"+direccion+"');");
             insercion.executeUpdate();
             System.out.println("Listo creo");
         } catch (SQLException ex) {
-           ex.getMessage();
            ex.printStackTrace();
         }
     }
-    
+    /**midifica un cliente**/
     public void actualzarCliente (int nit, String nombre , String direccion){
         try {
             insercion = conexion.prepareStatement("UPDATE cliente SET nombre_cliente='"+nombre+"', direccion='"+direccion+"' WHERE nit="+nit+";");
@@ -140,30 +142,30 @@ public class Conector {
             ex.getMessage();
             ex.printStackTrace();        }
     }
+    /**actualiza la tarifa Global**/
     public void actualizarTarifa(int tarifa){
         try {
             insercion = conexion.prepareStatement("UPDATE registro SET tarifa_global="+tarifa+";");
             insercion.executeUpdate();
         } catch (SQLException ex) {
-            ex.getMessage();
             ex.printStackTrace();
         }
     }
+    /**actualiza el precio por libra**/
     public void actualizarLibras(int tarifa){
         try {
             insercion = conexion.prepareStatement("UPDATE registro SET precio_libra="+tarifa+";");
             insercion.executeUpdate();
         } catch (SQLException ex) {
-            ex.getMessage();
             ex.printStackTrace();
         }
     }
+    /**actualiza el precio de priorizacion**/
     public void actualizarPriosizacion(int tarifa){
         try {
             insercion = conexion.prepareStatement("UPDATE registro SET precio_priorizacion="+tarifa+";");
             insercion.executeUpdate();
         } catch (SQLException ex) {
-            ex.getMessage();
             ex.printStackTrace();
         }
     }

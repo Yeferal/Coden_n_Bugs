@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.swing.JTable;
 
 public class Reportes {
-    JTable tabla1;
+    private JTable tabla1;
     private String encabezado;
     private String cierre;
     private String pestania;
@@ -20,7 +20,7 @@ public class Reportes {
     public Reportes (JTable tabla1){
         this.tabla1 = tabla1;
     }
-    
+    /**genera el encabezado del html**/
     private void generarEncabezado(String titulo){
         encabezado = "<html lang=\"en\" dir=\"ltr\">\n";
         encabezado+= "<head>\n" +
@@ -37,15 +37,19 @@ public class Reportes {
                      "<table>\n"+
                      "<tr>\n";
     }
+    /**escribe una columna**/
     private void generarColumnas(String columna){
         pestania += "<th>"+columna+"</th>\n";
     }
+    /**cierra la culuma**/
     private void cerrarAbrir(){
         ceAb = "</tr>\n" ;
     }
+    /**escribe un celda de una fila**/
     private void generarFila(String dato){
         datoS += "<td>"+dato+"</td>\n";
     }
+    /**cierra el html**/
     private void generarCierre(){
         cierre ="\n" +
                 "</table>\n" +
@@ -54,12 +58,14 @@ public class Reportes {
                 "</body>\n" +
                 "</html>";
     }
+    /**escribe toda las columnas correspondites a la tabla**/
     private void escribirColumnas(){
         pestania="";
         for (int i = 0; i < tabla1.getColumnCount(); i++) {
             generarColumnas(tabla1.getColumnName(i));
         }
     }
+    /**escribe los registros completos dependiendo de lo que la tabla contenga**/
     private void escribirRegistros(){
         datoS="";
         for (int i = 0; i < tabla1.getRowCount(); i++) {
@@ -74,7 +80,7 @@ public class Reportes {
             datoS+="</tr>\n";
         }
     }
-    
+    /**genera el archivo binario con la extension html**/
     private void crearBinario(String titulo, String tipo,String fecha1, String fecha2,String estados){
 
         File file = new File("Reportes/Reporte "+tipo+" "+estados+""+fecha1+".html");
@@ -102,6 +108,7 @@ public class Reportes {
             ex.getMessage();
         }
     }
+    /**determina los datos que estaran en el nombre y titilo del html**/
     public void titularTabla(String tipo,String fecha1, String fecha2,String estados){
         switch(tipo){
             case "Paquetes":
@@ -119,6 +126,7 @@ public class Reportes {
                 default:
         }
     }
+    /**retorna el tipo de estado**/
     private String getEstado(String estados){
         if(estados.equals("Activos")){
             return "Activos";
@@ -127,6 +135,7 @@ public class Reportes {
         }
         return "Todos";
     }
+    /**retorna el nit**/
     private String getNit(String nit){
         if(nit.equals("")){
             return "Todos";

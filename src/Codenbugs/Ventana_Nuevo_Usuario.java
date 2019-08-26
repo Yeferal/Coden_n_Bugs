@@ -15,7 +15,7 @@ public class Ventana_Nuevo_Usuario extends javax.swing.JInternalFrame {
         this.vadmin=vadmin;
         
     }
-    
+    /**retorna el tipo de usuario que se selecciono en un entero**/
     private int tipoUserr(){
         if(comboUTipo.getSelectedItem().equals("Administrador")){
             return 1;
@@ -25,7 +25,7 @@ public class Ventana_Nuevo_Usuario extends javax.swing.JInternalFrame {
         return 3;
     }
     
-    
+    /**crea un objeto usuario y lo envia por parametro al metodo que crea usuarios nuevos**/
     private void agregar(){
             usuario= new Usuario();
             if(!cajaUNombre.getText().equals("") && !cajaUContrasenia.getText().equals("") && !cajaUCodigo.getText().equals("")){

@@ -18,7 +18,12 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
     private double tarifa;
     private int ruta;
     String destino;
-    
+    /**agrega los datos correspondientes al punto de control
+     * taless como la ruta a la que pertenece el operador asigna el apuntador
+     * y el destino del paquet y llos agrega a los textos
+     * @param marco
+     * @param id 
+     */
     public Ventana_RegistroPC(Marco marco,int id) {
         initComponents();
         this.id = id;
@@ -50,7 +55,7 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
          actualizarTablaP();
     }
     
-    
+    /**envia los datos del paquete para que pueda pasar a l siguietne punto de control**/
     private void registrarPaquete(int idPaque){
         enviarFechas();
         try {
@@ -73,7 +78,7 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
         
     }
     
-    
+    /**actualiza la tabla y agrega el modelo corresponditne**/
     public void actualizarTablaP(){
         try {
             DefaultTableModel modelo1 = new DefaultTableModel(){
@@ -102,6 +107,7 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }      
     }
+    /**agrega la fecha al texto y actualiza la misma**/
     private void fecharTxt(){
         String fechaActual = null;
         try {
@@ -117,6 +123,7 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
         labelMinutos.setText(fechaActual.substring(14, 19));
     
     }
+    /**envia las fecha para se actualizada**/
     public void enviarFechas(){
         if(!cajaAnio.getText().equals("") && !cajaMes.getText().equals("") && !cajaDia.getText().equals("") && !cajaHora.getText().equals("") ){
             String fechaNueva = cajaAnio.getText()+"-"+cajaMes.getText()+"-"+cajaDia.getText()+" "+cajaHora.getText()+":"+labelMinutos.getText();
@@ -124,6 +131,7 @@ public class Ventana_RegistroPC extends javax.swing.JInternalFrame {
             marco.vLogin.conect.pcConeC.setCostos(txtHora.getText(), Integer.toString(ruta), fechaNueva, Integer.toString(id), txtId.getText());
         }
     }
+    /**limpia los tetos**/
     private void limpiar(){
         cajaAnio.setText("");
         cajaMes.setText("");

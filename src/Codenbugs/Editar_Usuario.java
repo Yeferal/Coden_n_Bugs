@@ -19,8 +19,8 @@ public class Editar_Usuario extends javax.swing.JInternalFrame {
         this.vadmin=vadmin;
         tablaUser();
     }
-    
-        public void tablaUser(){
+    /**agrega los usuarios existentes a la tabla**/
+    public void tablaUser(){
         DefaultTableModel modelo1 = new DefaultTableModel();
         
         modelo1.addColumn("ID");
@@ -28,7 +28,7 @@ public class Editar_Usuario extends javax.swing.JInternalFrame {
         modelo1.addColumn("Codigo");
         modelo1.addColumn("Tipo");
         modelo1.addColumn("Password");
-       
+       //establece el modelo de la tabla
         tablaUsuarios.setModel(modelo1);
         String datos[]= new String[5];
         try {
@@ -36,7 +36,7 @@ public class Editar_Usuario extends javax.swing.JInternalFrame {
             vadmin.marco.vLogin.conect.res = vadmin.marco.vLogin.conect.stmt.executeQuery(vadmin.usuarios);
             
             while (vadmin.marco.vLogin.conect.res.next()) {                
-                //System.out.println(marco.vLogin.conect.res.getString(1));
+                //agregamos el modelo segun a tabla
                 datos[0]=vadmin.marco.vLogin.conect.res.getString(1);
                 datos[1]=vadmin.marco.vLogin.conect.res.getString(2);
                 datos[2]=vadmin.marco.vLogin.conect.res.getString(3);
@@ -55,23 +55,20 @@ public class Editar_Usuario extends javax.swing.JInternalFrame {
                 }
                 datos[4]=vadmin.marco.vLogin.conect.res.getString(5);
                 modelo1.addRow(datos);
-                
             }
             
         } catch (Exception e) {
-            
+          e.getMessage();
         }
-        
-        
     }
-        
+    /**limpia los label y textfile**/    
     public void limpiar(){
             cajaUNombre.setText("");
             cajaUCodigo.setText("");
             cajaUContrasenia.setText("");
             texto_Id.setText("");
         }
-        
+    /**envia las datos nuevos del usuario**/    
     public void enviar_Modificacion() throws SQLException{
         int id;
         String Nombre;
@@ -85,7 +82,6 @@ public class Editar_Usuario extends javax.swing.JInternalFrame {
             codigo=cajaUCodigo.getText();
             contrasena=cajaUContrasenia.getText();
             tipoS=(String) comboUTipo.getSelectedItem();
-            //comboUTipo.getSelectedItem().toString()
             switch(tipoS){
                 case "Administrador":
                     tipo=1;
@@ -109,14 +105,9 @@ public class Editar_Usuario extends javax.swing.JInternalFrame {
             seleccionado=false;
             vadmin.tablaUser();
         }else{
-            
             JOptionPane.showMessageDialog(null, "No se encuentran todos los campos llenos");
         }
-        
     }
-        
-
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -17,7 +17,9 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
         initComponents();
         this.vadmin=vadmin;
     }
-
+    /**le da vaalores a las variables 
+     * con las variables es enviada la informacion para poder modificar con los parametros del metodo
+     */
     public void enviar_Modificacion(){
                 int id;
         String Nombre;
@@ -31,11 +33,10 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
             capacidad = Integer.parseInt(cajaCapacidad.getText());
             tarifa= Double.parseDouble(cajaTrifa.getText());
             operadorAsi= Integer.parseInt(cajauserasig.getText());
-            //comboUTipo.getSelectedItem().toString()
                     try {
                         vadmin.marco.vLogin.conect.editarPC(id, Nombre, tarifa, capacidad, operadorAsi);
                     } catch (SQLException ex) {
-                        Logger.getLogger(Ventana_EditarPC.class.getName()).log(Level.SEVERE, null, ex);
+                        
                     }
             tablaPc();
             limpiar();
@@ -43,11 +44,12 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
             vadmin.tablaPC();
             JOptionPane.showMessageDialog(null, "Se actualizo el Punto de Control");
         }else{
-            
             JOptionPane.showMessageDialog(null, "No se encuentran todos los campos llenos");
         }
     }
-    
+    /**agrega el modelo a la tabla de puntnos
+     * y agrega los registros a la tabla
+     */
     public void tablaPc(){
         DefaultTableModel modelo1 = new DefaultTableModel();
         
@@ -64,7 +66,6 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
             vadmin.marco.vLogin.conect.res = vadmin.marco.vLogin.conect.stmt.executeQuery(vadmin.punto);
             
             while (vadmin.marco.vLogin.conect.res.next()) {                
-                //System.out.println(marco.vLogin.conect.res.getString(1));
                 datos[0]=vadmin.marco.vLogin.conect.res.getString(1);
                 datos[1]=vadmin.marco.vLogin.conect.res.getString(2);
                 datos[2]=vadmin.marco.vLogin.conect.res.getString(4);
@@ -76,6 +77,7 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
         } catch (Exception e) {    
         }
     }
+    /**limpia las caja de texto**/
     private void limpiar(){
         cajaNombre.setText("");
         cajaCapacidad.setText("");
@@ -83,8 +85,6 @@ public class Ventana_EditarPC extends javax.swing.JInternalFrame {
         cajauserasig.setText("");
         texto_Id.setText("");
     }
-    
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

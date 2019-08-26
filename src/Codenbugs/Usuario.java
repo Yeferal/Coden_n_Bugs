@@ -16,7 +16,6 @@ public class Usuario {
         this.Pass=Pass;
         
     }
-    
     public String getNombre(){
         return Nombre;
     }

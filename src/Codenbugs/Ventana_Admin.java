@@ -33,7 +33,9 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
         initComponents();
         this.marco=marco;  
     }
-    
+    /**agrega el modelo a la tabla y al mismo tiempo agrega
+     * los registro que tiene la tabla de usuarios de la base de datos
+     */
     public void tablaUser(){
         DefaultTableModel modelo1 = new DefaultTableModel();
 
@@ -71,11 +73,12 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
                 modelo1.addRow(datos);      
             }  
         } catch (Exception e) {  
-            e.getMessage();
             e.printStackTrace();
         }
     }
-    
+    /**agrega el modelo a la tabla y al mismo tiempo agrega
+     * los registro que tiene la tabla de puntos de control de la base de datos
+     */
     public void tablaPC(){
         DefaultTableModel modelo1 = new DefaultTableModel();
         
@@ -110,7 +113,9 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
-    
+    /**agrega el modelo a la tabla y al mismo tiempo agrega
+     * los registro que tiene la tabla de ruta de la base de datos
+     */
     public void tablaRuta(){
         DefaultTableModel modelo1 = new DefaultTableModel();
         
@@ -153,10 +158,9 @@ public class Ventana_Admin extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
-
+    /**actualiza las tablas y las tarifa, cuota y detino**/
     public void actualizarTablas() throws SQLException{
         tablaPC();
-        //tablaPCenRuta();
         tablaRuta();
         tablaUser();
         marco.vLogin.conect.stmt = marco.vLogin.conect.conexion.createStatement();

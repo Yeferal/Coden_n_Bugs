@@ -9,14 +9,14 @@ import javax.swing.JOptionPane;
 public class Ventana_NuevoPC extends javax.swing.JInternalFrame {
 
     Ventana_Admin vadmin;
-    boolean seleccionado;
+    private boolean seleccionado;
     
     
     public Ventana_NuevoPC(Ventana_Admin vadmin) {
         initComponents();
         this.vadmin=vadmin;
     }
-    
+    /**valida si lo datos no son los correctos**/
     public boolean verifiacardatos(String cad1, String cad2, String cad3){
         int num1, num2, num3;
         
@@ -32,6 +32,7 @@ public class Ventana_NuevoPC extends javax.swing.JInternalFrame {
         }
         
     }
+    /**limpia los textos**/
     public void limpiar(){
         cajaNombre.setText("");
         cajaCapacidad.setText("");

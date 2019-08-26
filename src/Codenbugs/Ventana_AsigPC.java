@@ -9,17 +9,19 @@ import javax.swing.table.DefaultTableModel;
 public class Ventana_AsigPC extends javax.swing.JInternalFrame {
 
      Ventana_Admin vadmin;
-     boolean agregar, eliminar, mover;
-     int idSeleccionado;
-     int idRuta;
-     int idSelEl, idApuntador, idSelEl2;
-     String idcambio1, idcambio2;
+     private boolean agregar, eliminar, mover;
+     private int idSeleccionado;
+     private int idRuta;
+     private int idSelEl, idApuntador, idSelEl2;
+     private String idcambio1, idcambio2;
      
     public Ventana_AsigPC( Ventana_Admin vadmin) {
         initComponents();
         this.vadmin=vadmin;
     }
-    
+    /**agrega el modelo para la tabla
+     * y agrega los registro que estan en la base da datos
+     */
     public void tablaRuta(){
         DefaultTableModel modelo1 = new DefaultTableModel();
         
@@ -47,7 +49,10 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
         } catch (Exception e) {    
         }
     }
-    
+    /**agrega la tabla de los puntos asigandas a la tabla correspondiente
+     * y agrega los registro p tuples
+     * @param id 
+     */
     private void tablaPCAsignados(int id){
         DefaultTableModel modelo1 = new DefaultTableModel();
         
@@ -84,7 +89,9 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
-    
+    /**agrega el modelo a la tabla de puntos disponibles
+     * y agrega los registros
+     */
     public void tablaPCDisponible(){
         DefaultTableModel modelo1 = new DefaultTableModel();
         
@@ -112,24 +119,24 @@ public class Ventana_AsigPC extends javax.swing.JInternalFrame {
         } catch (Exception e) {    
         }
     }
-    
+    /**envia los datos de asignar punto al metodo correspindiente**/
     public void enviarPcAgregar(int idR, int idPc){
         System.out.println("id Ruta: "+idR);
         System.out.println("id Punto: "+idPc);
         vadmin.marco.vLogin.conect.rutaC.agregarPC(idR, idPc);
         actualizarTabla();
     }
+    /**encia los datos al metod que elimina los puntos de la ruta**/
     public void enviarEliminar(int idPCdelet, int idsig){
         vadmin.marco.vLogin.conect.rutaC.eliminarPCdeRuta(idPCdelet, idsig);
         actualizarTabla();
     }
-    
+    /**encia los datos de cambiar putos**/
     public void enviarCambiar(int idsele1, int idsele2, String sig1 , String sig2) throws SQLException{
-        
         vadmin.marco.vLogin.conect.rutaC.cambiarPCs(idsele1, idsele2, sig1, sig2);
         actualizarTabla();
     }
-    
+    /**actualiza las tablas**/
     public void actualizarTabla(){
         tablaPCAsignados(idRuta);
         tablaPCDisponible();

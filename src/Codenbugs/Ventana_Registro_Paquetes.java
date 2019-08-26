@@ -13,16 +13,16 @@ import javax.xml.bind.ParseConversionEvent;
 
 public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
     
-    Ventana_Recepcionista vRecep;
-    String clientes = "SELECT * FROM cliente;";
-    int nitActual;
-    int idActualClinete;
-    boolean clienteExiste;
-    Factura html;
-    double total;
-    double totalAcumulado;
-    DefaultTableModel modelo1 = new DefaultTableModel();
-    
+    private Ventana_Recepcionista vRecep;
+    private String clientes = "SELECT * FROM cliente;";
+    private int nitActual;
+    private int idActualClinete;
+    private boolean clienteExiste;
+    private Factura html;
+    private double total;
+    private double totalAcumulado;
+    private DefaultTableModel modelo1 = new DefaultTableModel();
+    /**inicializa el mmodelo para la tabla**/
     public Ventana_Registro_Paquetes(Ventana_Recepcionista vRecep) {
         initComponents();
         this.vRecep = vRecep;
@@ -33,7 +33,7 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
         modelo1.addColumn("Acumulado");
         tablaPaquetes.setModel(modelo1);
     }
-
+    /**agrega la lista de destino que tenga asignado las rutas**/
     private void listarDestino(){
         comboDesstinos.removeAllItems();
         try {
@@ -43,7 +43,6 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
                 comboDesstinos.addItem(vRecep.marco.vLogin.conect.res.getString(1));
             }   
         } catch (SQLException ex) {
-            ex.getMessage();
             ex.printStackTrace();
         }
     }
@@ -54,7 +53,8 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
         }
         return false;
     }
-    
+    /**busca el nit del cliente si exite llena los textfiles  de lo contrario muestra un mesaje
+     y retorna su existencia**/
     public boolean buscarNit( int nitEx){
         try {
             vRecep.marco.vLogin.conect.stmt = vRecep.marco.vLogin.conect.conexion.createStatement();
@@ -77,12 +77,11 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
             }
         } catch (SQLException ex) {
             System.out.println("No existesss");
-            ex.getMessage();
             ex.printStackTrace();
         }
         return false;
     }
-    
+    /**regsitra un  paquete coon todos sus datos y lo envia al metodo de crear paquete**/
     public void registrar(){
         double peso = Double.parseDouble(textoPeso.getText());
         int nitC;
@@ -99,7 +98,7 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
         vRecep.marco.vLogin.conect.registroC.crearPaquete(peso, nitC, priorizdo, total, destinoS, couta);
         agregarFila();
     }
-    
+    /**agrega a la tabla una fila con los datos del paquete**/
     private void agregarFila(){
         String datos[]= new String[5];
         
@@ -116,6 +115,7 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
         modelo1.addRow(datos);
         
     }
+    /**genera el html de la factura**/
     private void generarFactura(String Nombre){
         Date fecha = new Date();
         String fechaS = fecha.getYear()+""+fecha.getMonth()+""+fecha.getDay()+""+fecha.getHours()+""+fecha.getMinutes();
@@ -146,6 +146,7 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
         }
 
     }
+    /**verifica el nit del cliente**/
     private void verificarNt(){
         if(verificarTamanio(cajaNIT.getText())){
             
@@ -170,6 +171,7 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "El NIT debe de tener Ocho numeros");
         }
     }
+    /**hace la suma de los totales**/
     private void totales(){
         if(!textoPeso.getText().equals("")){
             total = (Integer.parseInt(textoPeso.getText()))*(vRecep.marco.vLogin.conect.pcConeC.precioLibra);
@@ -473,7 +475,6 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
 
             botonBuscar.doClick();
         }
-        //if(c<'0' || c>'9') evt.consume();
         if (cajaNIT.getText().length()== 8) {
 
             evt.consume();
@@ -503,17 +504,18 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
 
     private void textoPesoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoPesoKeyTyped
 
-        char c = evt.getKeyChar();
-        //if(c!='.' || c!='1' || c!='1') evt.consume();
     }//GEN-LAST:event_textoPesoKeyTyped
 
     private void botonConfirmarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonConfirmarMouseClicked
-        totalAcumulado = totalAcumulado+total;
-        txtAcumulado.setText("TOTAL FINAL: "+totalAcumulado);
-        registrar();
-        textoPeso.setText("");
-        textoCuota.setText("");
-        textototal.setText("");
+        
+        if(!textoPeso.getText().equals("") && !textoCuota.getText().equals("") && !textototal.getText().equals("") && !textotnit.getText().equals("")){
+            totalAcumulado = totalAcumulado+total;
+            txtAcumulado.setText("TOTAL FINAL: "+totalAcumulado);
+            registrar();
+            textoPeso.setText("");
+            textoCuota.setText("");
+            textototal.setText("");
+        }
     }//GEN-LAST:event_botonConfirmarMouseClicked
 
     private void botonFinalizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonFinalizarMouseClicked
@@ -522,9 +524,15 @@ public class Ventana_Registro_Paquetes extends javax.swing.JInternalFrame {
         textoCuota.setText("");
         textototal.setText("");
         cajaNIT.setText("");
+        txtAcumulado.setText("");
+        textotnit.setText("");
+        textoNombre.setText("");
+        textoDireccion.setText("");
+        totalAcumulado=0;
         tablaPaquetes.clearSelection();
-        for (int i = 0;i<tablaPaquetes.countComponents(); i++) {
+        for(int i=0;i<tablaPaquetes.getRowCount();i++){
             modelo1.removeRow(i);
+            i-=1;
         }
     }//GEN-LAST:event_botonFinalizarMouseClicked
 

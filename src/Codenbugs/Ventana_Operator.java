@@ -13,7 +13,7 @@ public class Ventana_Operator extends javax.swing.JInternalFrame {
         initComponents();
         this.marco=marco;
     }
-
+    /**actualiza la lista que tiene el comboBox y le agrega los nuevos items**/
     public void actualizarLista(){
         comboPcs.removeAllItems();
         System.out.println(marco.vLogin.usuarioLogin.toString());
@@ -29,7 +29,7 @@ public class Ventana_Operator extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }  
     }
-    
+    /**busca el ud del punto de control con el parametreo de nombre y lo retorna**/
     public int idPc(String nombre){
         int ids=0;
         try {

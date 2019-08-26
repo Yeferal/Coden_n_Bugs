@@ -28,7 +28,7 @@ public class Ventana_Recepcionista extends javax.swing.JInternalFrame {
         this.marco=marco;
         
     }
-    
+    /**agrega el modelo y los registros de la tabla de paquetes arrivdos**/
     private void actualizarArribados(){
         DefaultTableModel modelo1 = new DefaultTableModel(){
             @Override
